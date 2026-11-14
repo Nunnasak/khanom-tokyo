@@ -1,0 +1,1140 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>ขนมโตเกียว</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mitr:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f5e8d3; --ink:#4a2e1a; --muted:#8c6b50; --panel:#fffaf2; --line:#ecd9bd;
+  --chip:#f1dfc3; --accent:#e0682f; --accent-2:#f29a52; --accent-ink:#fff; --shadow:rgba(90,50,20,.18);
+  --overlay:rgba(48,28,14,.5);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#1e1611; --ink:#f4e7d6; --muted:#c2a68c; --panel:#2a2019; --line:#3f3127;
+    --chip:#3a2c22; --accent:#f07a3f; --accent-2:#f5a463; --shadow:rgba(0,0,0,.4); --overlay:rgba(0,0,0,.6);color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#1e1611; --ink:#f4e7d6; --muted:#c2a68c; --panel:#2a2019; --line:#3f3127;
+  --chip:#3a2c22; --accent:#f07a3f; --accent-2:#f5a463; --shadow:rgba(0,0,0,.4); --overlay:rgba(0,0,0,.6);color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family:'Mitr',system-ui,-apple-system,'Segoe UI',sans-serif;font-weight:400}
+body{overflow:hidden;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+#app{display:flex;flex-direction:column;height:100%}
+header{display:flex;align-items:center;gap:12px;padding:10px 16px}
+.brand{font-weight:600;font-size:20px;white-space:nowrap;display:flex;align-items:center;gap:8px}
+.brand i{display:inline-block;width:26px;height:12px;border-radius:7px;background:linear-gradient(90deg,#c98a3c,#f0c06a 45%,#c98a3c);box-shadow:inset 0 -2px 0 rgba(0,0,0,.15)}
+#steps{display:flex;gap:6px;flex:1;justify-content:center;min-width:0;overflow:hidden}
+.pill{font-size:13px;padding:5px 11px;border-radius:999px;background:var(--chip);color:var(--muted);white-space:nowrap;transition:.2s}
+.pill b{font-weight:600}
+.pill.on{background:var(--accent);color:var(--accent-ink)}
+.pill.done{color:var(--ink)}
+.hbtn{padding:7px 12px;border-radius:12px;background:var(--chip);font-size:14px;display:flex;align-items:center;gap:6px;white-space:nowrap}
+.hbtn:hover{filter:brightness(.97)}
+.hbtn svg{width:18px;height:18px}
+main{flex:1;display:flex;min-height:0;gap:16px;padding:0 16px 16px}
+#stage{flex:1;min-width:0;min-height:0;display:flex;align-items:center;justify-content:center;position:relative}
+#c{display:block;touch-action:none;border-radius:22px;box-shadow:0 10px 30px var(--shadow)}
+aside{width:310px;flex:none;background:var(--panel);border-radius:22px;padding:18px;display:flex;flex-direction:column;gap:14px;overflow:auto;box-shadow:0 6px 20px var(--shadow)}
+.stepno{font-size:13px;color:var(--muted)}
+aside h2{margin:2px 0 4px;font-size:24px;font-weight:600}
+aside p{margin:0;font-size:14.5px;line-height:1.55;color:var(--muted);font-weight:300}
+.lbl{font-size:13px;color:var(--muted);margin-bottom:6px}
+.seg{display:flex;background:var(--chip);border-radius:12px;padding:3px;gap:3px}
+.seg button{flex:1;padding:7px 0;border-radius:9px;font-size:14px;color:var(--muted)}
+.seg button.on{background:var(--panel);color:var(--ink);box-shadow:0 1px 4px var(--shadow)}
+.seg button.on[data-h="3"]{color:#d24a1e}
+.meter .mrow{display:flex;justify-content:space-between;font-size:13.5px;margin-bottom:6px;color:var(--muted)}
+.meter .mrow b{color:var(--ink);font-weight:500}
+.bar{position:relative;height:12px;border-radius:7px;background:var(--chip);overflow:hidden}
+.bar i{position:absolute;left:0;top:0;bottom:0;width:0;border-radius:7px;background:linear-gradient(90deg,var(--accent-2),var(--accent));transition:width .12s}
+.bar .zone{position:absolute;top:0;bottom:0;background:rgba(106,168,79,.35);border-left:2px solid rgba(80,140,60,.7);border-right:2px solid rgba(80,140,60,.7)}
+.bar.cook{background:linear-gradient(90deg,#f3ead0 0%,#f4dc98 17%,#eac26c 33%,#d6974a 50%,#a0602a 67%,#56301a 83%,#24170e 100%);overflow:visible}
+.bar.cook em{position:absolute;top:-4px;width:6px;height:20px;margin-left:-3px;border-radius:3px;background:var(--ink);box-shadow:0 0 0 2px var(--panel);transition:left .15s;left:0}
+.fills{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.fillbtn{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 2px 7px;border-radius:14px;background:var(--chip);font-size:12.5px;line-height:1.2;border:2px solid transparent;text-align:center}
+.fillbtn canvas{width:44px;height:44px}
+.fillbtn.on{border-color:var(--accent);background:var(--panel)}
+.row{display:flex;gap:8px}
+.ghost{flex:1;padding:8px;border-radius:12px;background:var(--chip);font-size:14px}
+.spacer{flex:1}
+.primary{padding:13px 16px;border-radius:16px;background:var(--accent);color:var(--accent-ink);font-size:17px;font-weight:500;box-shadow:0 4px 0 rgba(150,60,20,.35);transition:transform .08s}
+.primary:active{transform:translateY(2px);box-shadow:0 2px 0 rgba(150,60,20,.35)}
+.primary:disabled{opacity:.45;cursor:default}
+.secondary{padding:12px 16px;border-radius:16px;background:var(--chip);font-size:16px}
+.hidden{display:none!important}
+#toast{position:absolute;left:50%;top:18px;transform:translate(-50%,-10px);background:rgba(40,24,12,.86);color:#fff;padding:9px 16px;border-radius:14px;font-size:15px;opacity:0;pointer-events:none;transition:.25s;max-width:90%;text-align:center}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+.overlay{position:fixed;inset:0;background:var(--overlay);display:none;align-items:center;justify-content:center;padding:16px;z-index:10;-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
+.overlay.show{display:flex}
+.card{background:var(--panel);border-radius:26px;padding:26px;max-width:min(920px,100%);max-height:100%;overflow:auto;box-shadow:0 20px 50px rgba(0,0,0,.3)}
+.hero{text-align:center;max-width:460px}
+.hero h1{margin:0;font-size:46px;font-weight:600;letter-spacing:.5px}
+.hero .sub{margin:4px 0 18px;color:var(--muted);font-weight:300}
+.flow{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin:0 0 22px;padding:0;list-style:none}
+.flow li{background:var(--chip);padding:5px 11px;border-radius:999px;font-size:14px}
+.hero .btns{display:flex;flex-direction:column;gap:10px}
+.hero .stat{margin-top:14px;font-size:13.5px;color:var(--muted)}
+.result{display:grid;grid-template-columns:320px 1fr;gap:24px;align-items:start}
+.result img{width:100%;border-radius:18px;display:block;box-shadow:0 6px 18px var(--shadow)}
+.stars{color:#f2a51c;font-size:22px;letter-spacing:2px}
+.total{font-size:15px;color:var(--muted)}
+.total b{font-size:48px;color:var(--ink);font-weight:600;line-height:1}
+.ttl{font-size:13px;color:var(--muted);margin-top:10px}
+.result h2{margin:0;font-size:30px;font-weight:600;color:var(--accent)}
+.result .desc{margin:2px 0 14px;color:var(--muted);font-weight:300}
+.sbar{display:grid;grid-template-columns:96px 1fr 44px;align-items:center;gap:10px;font-size:14px;margin:7px 0}
+.sbar .bar{height:10px}
+.sbar span:last-child{text-align:right;color:var(--muted)}
+.badges{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0 18px}
+.badge{background:var(--chip);border-radius:999px;padding:4px 10px;font-size:13px}
+.badge.new{background:var(--accent);color:var(--accent-ink)}
+.result .btns{display:flex;gap:10px;flex-wrap:wrap}
+.result .btns button{flex:1;min-width:140px}
+.gal{width:min(920px,100%)}
+.galhead{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.galhead h2{margin:0;font-size:24px;font-weight:600}
+.x{width:38px;height:38px;border-radius:12px;background:var(--chip);font-size:18px}
+.galsub{color:var(--muted);font-size:14px;margin:6px 0 10px}
+.titles{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px}
+.titles .badge.lock{opacity:.5}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:14px}
+.gcard{background:var(--chip);border-radius:16px;overflow:hidden}
+.gcard img{width:100%;display:block;aspect-ratio:1}
+.gcard div{padding:8px 10px;font-size:13.5px}
+.gcard b{display:block;font-weight:500;color:var(--ink)}
+.gcard small{color:var(--muted)}
+.empty{color:var(--muted);text-align:center;padding:30px 0}
+@media (max-width:820px),(max-aspect-ratio:1/1){
+  main{flex-direction:column;gap:10px;padding:0 12px 12px}
+  aside{width:auto;max-height:44%;padding:14px;gap:10px;border-radius:18px}
+  aside h2{font-size:19px;display:inline}
+  .stepno{display:none}
+  aside p{font-size:13.5px}
+  .fills{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:76px;overflow-x:auto;padding-bottom:4px}
+  .pill span{display:none}
+  .pill{padding:5px 10px}
+  .brand{font-size:17px}
+  .hbtn .t{display:none}
+  .result{grid-template-columns:1fr}
+  .result img{max-width:300px;margin:0 auto}
+  .primary{padding:11px 14px;font-size:16px}
+  header{padding:8px 12px;gap:8px}
+}
+@media (max-width:820px),(max-aspect-ratio:1/1){
+  #nextBtn{position:sticky;bottom:0;z-index:2;flex:none}
+  .spacer{display:none}
+}
+@media (max-width:520px){ .brand{display:none} #steps{justify-content:flex-start;gap:4px} .pill{padding:4px 9px} .hbtn{padding:7px 9px} }
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <div class="brand"><i></i><span>ขนมโตเกียว</span></div>
+    <div id="steps"></div>
+    <button class="hbtn" id="muteBtn" title="เสียง"></button>
+    <button class="hbtn" id="galBtn" title="แกลเลอรี"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></svg><span class="t">แกลเลอรี</span></button>
+    <button class="hbtn" id="restartBtn" title="เริ่มใหม่"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg><span class="t">เริ่มใหม่</span></button>
+  </header>
+  <main>
+    <div id="stage"><canvas id="c"></canvas><div id="toast"></div></div>
+    <aside id="panel">
+      <div>
+        <div class="stepno" id="stepNo"></div>
+        <h2 id="stepName"></h2>
+        <p id="stepHint"></p>
+      </div>
+      <div id="toolArea"></div>
+      <div id="heatBox">
+        <div class="lbl">ระดับไฟ</div>
+        <div class="seg" id="heatSeg">
+          <button data-h="0">ปิด</button><button data-h="1">อ่อน</button><button data-h="2">กลาง</button><button data-h="3">แรง</button>
+        </div>
+      </div>
+      <div class="meter" id="mButter"><div class="mrow"><span>เนยทั่วกระทะ</span><b id="vButter">0%</b></div><div class="bar"><i id="fButter"></i></div></div>
+      <div class="meter" id="mBatter"><div class="mrow"><span>ปริมาณแป้ง</span><b id="vBatter">0 ml</b></div><div class="bar"><span class="zone" id="zBatter"></span><i id="fBatter"></i></div></div>
+      <div class="meter" id="mCook"><div class="mrow"><span>ความสุก</span><b id="vCook">–</b></div><div class="bar cook"><em id="kCook"></em></div></div>
+      <div class="meter" id="mRoll"><div class="mrow"><span>ม้วนแล้ว</span><b id="vRoll">0%</b></div><div class="bar"><i id="fRoll"></i></div></div>
+      <div class="spacer"></div>
+      <button class="primary" id="nextBtn">ต่อไป</button>
+    </aside>
+  </main>
+</div>
+
+<div class="overlay show" id="titleScreen">
+  <div class="card hero">
+    <h1>ขนมโตเกียว</h1>
+    <p class="sub">ร้านรถเข็นหน้าโรงเรียน · ทำเองทุกขั้นตอน</p>
+    <ol class="flow"><li>เช็ดเนย</li><li>หยอดแป้ง</li><li>ละเลง</li><li>ใส่ไส้</li><li>ม้วน</li><li>เสิร์ฟ</li></ol>
+    <div class="btns">
+      <button class="primary" id="startBtn">เริ่มทำขนม</button>
+      <button class="secondary" id="titleGal">แกลเลอรี &amp; ฉายา</button>
+    </div>
+    <div class="stat" id="titleStat"></div>
+  </div>
+</div>
+
+<div class="overlay" id="resultOv">
+  <div class="card result">
+    <img id="resImg" alt="ขนมโตเกียวที่ทำเสร็จ">
+    <div>
+      <div class="stars" id="resStars"></div>
+      <div class="total"><b id="resTotal">0</b> / 100 คะแนน</div>
+      <div class="ttl">ได้ฉายาว่า</div>
+      <h2 id="resTitle"></h2>
+      <p class="desc" id="resDesc"></p>
+      <div id="resBars"></div>
+      <div class="badges" id="resBadges"></div>
+      <div class="btns">
+        <button class="primary" id="againBtn">ทำอีกแผ่น</button>
+        <button class="secondary" id="resGal">ดูแกลเลอรี</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="galOv">
+  <div class="card gal">
+    <div class="galhead"><h2>แกลเลอรีขนมโตเกียว</h2><button class="x" id="galClose" aria-label="ปิด">✕</button></div>
+    <div class="galsub" id="galSub"></div>
+    <div class="titles" id="galTitles"></div>
+    <div class="grid" id="galGrid"></div>
+  </div>
+</div>
+
+<script>
+(()=>{
+'use strict';
+const $=s=>document.querySelector(s);
+const clamp=(v,a,b)=>v<a?a:v>b?b:v;
+const TAU=Math.PI*2;
+function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function mk(w,h){const c=document.createElement('canvas');c.width=w;c.height=h;return c}
+function circle(c,x,y,r){c.beginPath();c.arc(x,y,r,0,TAU)}
+function rr(c,x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath()}
+const mem={};
+const store={get(k,d){if(k in mem)return mem[k];try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},
+  set(k,v){try{localStorage.setItem(k,JSON.stringify(v));delete mem[k];return true}catch(e){mem[k]=v;return false}}};
+
+/* ---------------- simulation grid ---------------- */
+const N=220, CELL=4, G0=60, GC=500, GR=440, GRC=GR/CELL, NN=N*N;
+const batter=new Float32Array(NN), cook=new Float32Array(NN), butter=new Float32Array(NN);
+const tmp=new Float32Array(NN), fillAmt=new Float32Array(NN);
+const heatMap=new Float32Array(NN), inG=new Uint8Array(NN), pore=new Float32Array(NN);
+function valueNoise(scale,seed){
+  const r=rng(seed), gw=Math.ceil(N/scale)+2, g=new Float32Array(gw*gw);
+  for(let i=0;i<g.length;i++) g[i]=r();
+  const out=new Float32Array(NN);
+  for(let y=0;y<N;y++)for(let x=0;x<N;x++){
+    const fx=x/scale, fy=y/scale, ix=fx|0, iy=fy|0;
+    let tx=fx-ix, ty=fy-iy; tx=tx*tx*(3-2*tx); ty=ty*ty*(3-2*ty);
+    const a=g[iy*gw+ix], b=g[iy*gw+ix+1], c=g[(iy+1)*gw+ix], d=g[(iy+1)*gw+ix+1];
+    out[y*N+x]=(a+(b-a)*tx)*(1-ty)+(c+(d-c)*tx)*ty;
+  }
+  return out;
+}
+const lace=new Float32Array(NN), spot=new Float32Array(NN);
+{
+  const a=valueNoise(6,1), b=valueNoise(2.5,2), c=valueNoise(10,3), d=valueNoise(3,4), r=rng(5);
+  for(let i=0;i<NN;i++){ lace[i]=a[i]*0.6+b[i]*0.4; spot[i]=c[i]*0.65+d[i]*0.35; pore[i]=r(); }
+  for(let y=0;y<N;y++)for(let x=0;x<N;x++){
+    const i=y*N+x, dx=x+0.5-N/2, dy=y+0.5-N/2, d2=Math.hypot(dx,dy);
+    inG[i]=d2<GRC-3?1:0; heatMap[i]=1.12-0.3*Math.pow(d2/GRC,2);
+  }
+}
+const innerIdx=[]; for(let y=0;y<N;y++)for(let x=0;x<N;x++){ if(Math.hypot(x+0.5-N/2,y+0.5-N/2)<GRC*0.78) innerIdx.push(y*N+x); }
+
+// cook-colour lookup (top surface): raw cream -> set -> golden -> brown -> burnt
+const CST=[[0,246,236,208],[0.5,246,224,162],[1.0,238,196,112],[1.5,214,150,74],[2.0,162,98,44],[2.5,86,50,24],[3.0,36,24,14]];
+const LUT=new Uint8Array(301*3);
+for(let k=0;k<=300;k++){const c=k/100;let j=0;while(j<CST.length-2&&c>CST[j+1][0])j++;const a=CST[j],b=CST[j+1],t=clamp((c-a[0])/(b[0]-a[0]),0,1);for(let q=0;q<3;q++)LUT[k*3+q]=a[q+1]+(b[q+1]-a[q+1])*t;}
+function cookRGB(c){const k=(clamp(c,0,3)*100|0)*3;return[LUT[k],LUT[k+1],LUT[k+2]]}
+
+/* ---------------- canvases ---------------- */
+const cv=$('#c'), ctx=cv.getContext('2d');
+let SC=1, bgC=mk(10,10), serveBg=mk(10,10);
+const baC=mk(N,N), bactx=baC.getContext('2d'), baImg=bactx.createImageData(N,N);
+const buC=mk(N,N), buctx=buC.getContext('2d'), buImg=buctx.createImageData(N,N);
+const FLS=1.4, fillLayer=mk(1400,1400), flctx=fillLayer.getContext('2d');
+flctx.setTransform(FLS,0,0,FLS,0,0);
+const shadeStrip=mk(64,1);
+{const c=shadeStrip.getContext('2d'),g=c.createLinearGradient(0,0,64,0);
+ g.addColorStop(0,'rgba(40,20,5,.55)');g.addColorStop(.13,'rgba(40,20,5,.15)');g.addColorStop(.32,'rgba(255,250,235,.32)');g.addColorStop(.46,'rgba(255,250,235,.04)');g.addColorStop(.78,'rgba(40,20,5,.14)');g.addColorStop(1,'rgba(40,20,5,.5)');
+ c.fillStyle=g;c.fillRect(0,0,64,1);}
+const steamSprite=mk(64,64);
+{const c=steamSprite.getContext('2d'),g=c.createRadialGradient(32,32,0,32,32,32);g.addColorStop(0,'rgba(255,255,255,.9)');g.addColorStop(1,'rgba(255,255,255,0)');c.fillStyle=g;c.fillRect(0,0,64,64);}
+
+/* ---------------- fillings ---------------- */
+const FILLS=[
+  {id:'custard',name:'สังขยา',kind:'cream',color:'#F0B43C',hi:'#FFE7A6',w:18,sweet:1},
+  {id:'pandan',name:'สังขยาใบเตย',kind:'cream',color:'#86BC4A',hi:'#D9F2AE',w:18,sweet:1},
+  {id:'taro',name:'ครีมเผือก',kind:'cream',color:'#B088CC',hi:'#EADCF4',w:18,sweet:1},
+  {id:'choco',name:'ช็อกโกแลต',kind:'cream',color:'#5B3421',hi:'#B07E60',w:12,sweet:1},
+  {id:'foithong',name:'ฝอยทอง',kind:'fiber',color:'#F3B320',sweet:1},
+  {id:'floss',name:'หมูหยอง',kind:'fiber',color:'#C57B3B',savory:1},
+  {id:'sausage',name:'ไส้กรอก',kind:'piece',gap:34,color:'#C0444A',savory:1},
+  {id:'egg',name:'ไข่นกกระทา',kind:'piece',gap:58,color:'#F5A623',savory:1},
+  {id:'corn',name:'ข้าวโพด',kind:'piece',gap:22,color:'#F6C437',savory:1},
+];
+const FD={}; FILLS.forEach(f=>FD[f.id]=f);
+
+function creamPath(c,pts,ox,oy){
+  c.beginPath(); c.moveTo(pts[0]+ox,pts[1]+oy);
+  if(pts.length<=2){c.lineTo(pts[0]+ox+0.1,pts[1]+oy);return}
+  for(let k=2;k<pts.length-2;k+=2){const mx=(pts[k]+pts[k+2])/2,my=(pts[k+1]+pts[k+3])/2;c.quadraticCurveTo(pts[k]+ox,pts[k+1]+oy,mx+ox,my+oy)}
+  c.lineTo(pts[pts.length-2]+ox,pts[pts.length-1]+oy);
+}
+function drawCream(c,type,pts){
+  const f=FD[type], w=f.w;
+  c.save(); c.lineCap='round'; c.lineJoin='round';
+  creamPath(c,pts,2,3.5); c.strokeStyle='rgba(70,35,5,.22)'; c.lineWidth=w+2; c.stroke();
+  creamPath(c,pts,0,0); c.strokeStyle=f.color; c.lineWidth=w; c.stroke();
+  creamPath(c,pts,w*0.1,w*0.12); c.strokeStyle='rgba(0,0,0,.08)'; c.lineWidth=w*0.5; c.stroke();
+  creamPath(c,pts,-w*0.17,-w*0.2); c.strokeStyle=f.hi; c.globalAlpha=.6; c.lineWidth=w*0.3; c.stroke();
+  c.restore();
+}
+const PAL={foithong:['#F7B81E','#F2A413','#FFCB3D','#E89A0C','#FFD45A'],floss:['#C9823F','#B56E31','#D99A57','#A85F28','#E0AE6C']};
+function makeFiber(type,x,y,sp){
+  const a=Math.random()*TAU, d=Math.sqrt(Math.random())*sp, pal=PAL[type];
+  const fo=type==='foithong';
+  return {x:x+Math.cos(a)*d,y:y+Math.sin(a)*d,a:Math.random()*TAU,
+    len:fo?20+Math.random()*26:6+Math.random()*11, w:fo?1.1+Math.random()*0.8:1.8+Math.random()*1.3,
+    curl:(Math.random()-0.5)*(fo?0.9:1.7), col:pal[(Math.random()*pal.length)|0]};
+}
+function fiberPath(c,f,ox,oy){
+  let x=f.x,y=f.y,a=f.a; const st=f.len/5; c.beginPath(); c.moveTo(x+ox,y+oy);
+  for(let k=0;k<5;k++){a+=f.curl;x+=Math.cos(a)*st;y+=Math.sin(a)*st;c.lineTo(x+ox,y+oy)}
+}
+function drawFiber(c,f){
+  c.lineCap='round'; c.lineJoin='round';
+  fiberPath(c,f,1,1.6); c.strokeStyle='rgba(80,40,0,.2)'; c.lineWidth=f.w+0.6; c.stroke();
+  fiberPath(c,f,0,0); c.strokeStyle=f.col; c.lineWidth=f.w; c.stroke();
+}
+function makePiece(type,x,y){
+  const p={type,x,y,seed:(Math.random()*1e9)|0,rot:Math.random()*TAU,cook:0};
+  if(type==='corn'){p.k=[];const n=4+(Math.random()*3|0);for(let i=0;i<n;i++){const a=Math.random()*TAU,d=Math.random()*17;p.k.push({dx:Math.cos(a)*d,dy:Math.sin(a)*d,r:Math.random()*TAU})}}
+  return p;
+}
+function drawPiece(c,p){
+  const r=rng(p.seed);
+  c.save(); c.translate(p.x,p.y);
+  if(p.type==='sausage'){
+    const R=17; c.rotate(p.rot);
+    c.fillStyle='rgba(60,20,0,.22)'; circle(c,2.5,3.5,R); c.fill();
+    c.fillStyle='#9E2630'; circle(c,0,0,R); c.fill();
+    c.fillStyle='#DC7A71'; circle(c,0,0,R*0.8); c.fill();
+    for(let i=0;i<8;i++){const a=r()*TAU,d=r()*R*0.62;c.fillStyle=r()<.5?'#F4B6AC':'#B9484C';circle(c,Math.cos(a)*d,Math.sin(a)*d,1+r()*1.5);c.fill()}
+    c.strokeStyle='rgba(255,255,255,.35)'; c.lineWidth=2.5; c.beginPath(); c.arc(0,0,R*0.88,3.5,4.6); c.stroke();
+  } else if(p.type==='egg'){
+    const ck=Math.min(1,p.cook), pts=[], n=12;
+    for(let i=0;i<n;i++){const a=i/n*TAU+p.rot;const d=25+r()*8;pts.push(Math.cos(a)*d,Math.sin(a)*d)}
+    const blob=()=>{c.beginPath();for(let i=0;i<n;i++){const x0=pts[i*2],y0=pts[i*2+1],x1=pts[((i+1)%n)*2],y1=pts[((i+1)%n)*2+1];const mx=(x0+x1)/2,my=(y0+y1)/2;if(i===0)c.moveTo((pts[(n-1)*2]+x0)/2,(pts[(n-1)*2+1]+y0)/2);c.quadraticCurveTo(x0,y0,mx,my)}c.closePath()};
+    blob(); c.fillStyle=`rgba(255,253,246,${0.32+0.63*ck})`; c.fill();
+    if(p.cook>1.3){c.lineWidth=3;c.strokeStyle=`rgba(175,112,48,${Math.min(.65,(p.cook-1.3)*0.8)})`;c.stroke()}
+    c.strokeStyle=`rgba(255,255,255,${0.5-0.3*ck})`; c.lineWidth=1.5; blob(); c.stroke();
+    const yx=(r()-0.5)*8, yy=(r()-0.5)*8;
+    c.fillStyle='rgba(120,60,0,.2)'; circle(c,yx+1.5,yy+2,11); c.fill();
+    c.fillStyle=p.cook>1.4?'#F6BE52':'#F59A12'; circle(c,yx,yy,10.5); c.fill();
+    c.fillStyle='rgba(255,255,255,.65)'; c.beginPath(); c.ellipse(yx-3.5,yy-4,3.6,2.2,-0.6,0,TAU); c.fill();
+  } else if(p.type==='corn'){
+    for(const k of p.k){
+      c.save(); c.translate(k.dx,k.dy); c.rotate(k.r);
+      c.fillStyle='rgba(90,50,0,.25)'; rr(c,-5.5,-5,13,14,5); c.fill();
+      c.fillStyle='#F2BB2C'; rr(c,-7,-7.5,14,15,5.5); c.fill();
+      c.fillStyle='#FFE27F'; rr(c,-4.8,-6,7.5,6,3); c.fill();
+      c.restore();
+    }
+  }
+  c.restore();
+}
+function drawIcon(cnv,f){
+  const c=cnv.getContext('2d'); c.setTransform(cnv.width/100,0,0,cnv.width/100,0,0);
+  if(f.kind==='cream'){ drawCream(c,f.id,[20,72,30,40,50,58,68,74,80,34]); }
+  else if(f.kind==='fiber'){ for(let i=0;i<(f.id==='foithong'?18:34);i++) drawFiber(c,makeFiber(f.id,50,50,22)); }
+  else { const p=makePiece(f.id,0,0); p.cook=1; c.translate(50,50); c.scale(f.id==='corn'?2.1:f.id==='egg'?1.35:2,f.id==='corn'?2.1:f.id==='egg'?1.35:2); drawPiece(c,p); }
+}
+
+/* ---------------- state ---------------- */
+const STEPS=[
+  {name:'เช็ดเนย',hint:'ลากก้อนเนยถูให้ทั่วกระทะ เนยช่วยให้แป้งไม่ติด สุกสม่ำเสมอ และหอม',next:'ต่อไป: หยอดแป้ง'},
+  {name:'หยอดแป้ง',hint:'กดค้างบนกระทะเพื่อเทแป้งจากกระบวย ปล่อยเมื่อพอดีตามแถบสีเขียว',next:'ต่อไป: ละเลง'},
+  {name:'ละเลงแป้ง',hint:'ลากก้นกระบวยวนเป็นก้นหอยจากกลางออกไปหาขอบ ให้แผ่นบางและกลม รีบละเลงก่อนแป้งเซ็ตตัว!',next:'ต่อไป: ใส่ไส้'},
+  {name:'ใส่ไส้',hint:'เลือกไส้แล้วบีบ โรย หรือแตะวาง ใส่ได้ไม่อั้น แต่แป้งยังสุกต่อเรื่อยๆ ลดไฟได้นะ',next:'ต่อไป: ม้วน'},
+  {name:'ม้วน',hint:'จับไม้พายที่ขอบซ้ายของแผ่น แล้วลากไปทางขวาช้าๆ ม้วนช้าจะแน่นสวย',next:'เสิร์ฟ!'},
+  {name:'เสิร์ฟ',hint:'ใส่ซองกระดาษ พร้อมเสิร์ฟ!',next:''},
+];
+const HEATS=[0,0.5,1,1.8];
+const S={step:-1,heat:2,pouring:false,rubbing:false,carry:0,poured:0,hasBatter:false,actions:[],cur:null,curLast:null,
+  tool:'custard',roll:null,tube:null,stats:null,serveT:0,resultShown:false,rawMass:0,sumT:0,sumTC:0,steamAcc:0,
+  muted:store.get('tokyo.muted',false),buDirty:true,meterT:0};
+const P={x:500,y:500,down:false,inside:false};
+
+/* ---------------- audio ---------------- */
+let AC=null, sizzleG=null, master=null;
+function initAudio(){
+  if(AC){ if(AC.state==='suspended') AC.resume(); return; }
+  try{
+    AC=new (window.AudioContext||window.webkitAudioContext)();
+    master=AC.createGain(); master.gain.value=S.muted?0:1; master.connect(AC.destination);
+    const len=AC.sampleRate*2, buf=AC.createBuffer(1,len,AC.sampleRate), d=buf.getChannelData(0);
+    for(let i=0;i<len;i++) d[i]=(Math.random()*2-1)*(Math.random()<0.015?1:0.3);
+    const src=AC.createBufferSource(); src.buffer=buf; src.loop=true;
+    const bp=AC.createBiquadFilter(); bp.type='bandpass'; bp.frequency.value=4200; bp.Q.value=0.6;
+    const hp=AC.createBiquadFilter(); hp.type='highpass'; hp.frequency.value=1200;
+    sizzleG=AC.createGain(); sizzleG.gain.value=0;
+    src.connect(bp); bp.connect(hp); hp.connect(sizzleG); sizzleG.connect(master); src.start();
+  }catch(e){AC=null}
+}
+function setSizzle(v){ if(AC&&sizzleG) sizzleG.gain.setTargetAtTime(v,AC.currentTime,0.12); }
+function blip(freq,dur,vol,type){
+  if(!AC||S.muted) return;
+  try{const o=AC.createOscillator(),g=AC.createGain();o.type=type||'sine';o.frequency.setValueAtTime(freq,AC.currentTime);o.frequency.exponentialRampToValueAtTime(freq*0.6,AC.currentTime+dur);
+  g.gain.setValueAtTime(vol,AC.currentTime);g.gain.exponentialRampToValueAtTime(0.0001,AC.currentTime+dur);o.connect(g);g.connect(master);o.start();o.stop(AC.currentTime+dur+0.02);}catch(e){}
+}
+function chime(){[660,880,1320].forEach((f,i)=>setTimeout(()=>blip(f,0.35,0.12,'triangle'),i*110))}
+function renderMute(){
+  $('#muteBtn').innerHTML=S.muted
+    ?'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="m22 9-6 6M16 9l6 6"/></svg>'
+    :'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/></svg>';
+  if(master) master.gain.value=S.muted?0:1;
+}
+
+/* ---------------- batter physics ---------------- */
+function addBatter(i,m){const t=batter[i];cook[i]=t>0?cook[i]*t/(t+m):0;batter[i]=t+m}
+function toCell(x,y){return{x:(x-G0)/CELL,y:(y-G0)/CELL}}
+function onGriddle(x,y){return Math.hypot(x-GC,y-GC)<GR-12}
+function pour(dt){
+  if(!onGriddle(P.x,P.y)) return;
+  if(S.poured>=8600){ if(!S.toldFull){toast('แป้งหมดกระบวยแล้ว');S.toldFull=true} return; }
+  const c=toCell(P.x,P.y), amt=2300*dt, sg=3.2, R=8; let ws=0;
+  const xa=Math.max(1,Math.floor(c.x-R)),xb=Math.min(N-2,Math.ceil(c.x+R)),ya=Math.max(1,Math.floor(c.y-R)),yb=Math.min(N-2,Math.ceil(c.y+R));
+  for(let pass=0;pass<2;pass++){
+    for(let y=ya;y<=yb;y++)for(let x=xa;x<=xb;x++){const i=y*N+x;if(!inG[i])continue;const dx=x+0.5-c.x,dy=y+0.5-c.y,w=Math.exp(-(dx*dx+dy*dy)/(2*sg*sg));
+      if(pass===0)ws+=w;else addBatter(i,amt*w/ws)}
+    if(ws<=0) return;
+  }
+  S.poured+=amt; S.hasBatter=true;
+}
+const NB=[1,-1,N,-N,N+1,N-1,-N+1,-N-1], NBW=[1,1,1,1,0.7071,0.7071,0.7071,0.7071];
+function flow(){
+  tmp.fill(0);
+  for(let y=1;y<N-1;y++){for(let x=1;x<N-1;x++){
+    const i=y*N+x,t=batter[i]; if(t<0.5) continue; const ck=cook[i]; if(ck>0.45) continue;
+    const mob=0.075*(1-ck/0.45);
+    for(let k=0;k<8;k++){
+      const j=i+NB[k]; if(!inG[j]) continue;
+      const d=(t-batter[j])*NBW[k]-0.012; if(d>0){const m=d*mob*NBW[k];tmp[i]-=m;tmp[j]+=m}
+    }
+  }}
+  for(let i=0;i<NN;i++){const m=tmp[i];if(m>0)addBatter(i,m);else if(m<0)batter[i]+=m}
+}
+const LR=15, FILM=0.2, dIdx=new Int32Array(600), dW=new Float32Array(600);
+function spreadAt(px,py,ux,uy){
+  const r2=LR*LR, ro=(LR+3)*(LR+3);
+  const xa=Math.max(1,Math.floor(px-LR-4)),xb=Math.min(N-2,Math.ceil(px+LR+4)),ya=Math.max(1,Math.floor(py-LR-4)),yb=Math.min(N-2,Math.ceil(py+LR+4));
+  let cnt=0,ws=0;
+  for(let y=ya;y<=yb;y++)for(let x=xa;x<=xb;x++){
+    const i=y*N+x; if(!inG[i]) continue;
+    const ex=x+0.5-px, ey=y+0.5-py, d2=ex*ex+ey*ey;
+    if(d2<=r2){
+      const t=batter[i];
+      if(t>FILM){const mob=1-Math.min(1,cook[i]);if(mob>0){const take=(t-FILM)*0.5*mob;batter[i]=t-take;S.carry+=take}}
+    }else if(d2<=ro&&cnt<600){
+      const d=Math.sqrt(d2), dot=(ex*ux+ey*uy)/d;
+      if(dot>0.25){dIdx[cnt]=i;dW[cnt]=dot-0.25;ws+=dot-0.25;cnt++}
+    }
+  }
+  if(cnt>0&&S.carry>0.001){const amt=S.carry*0.3;for(let k=0;k<cnt;k++)addBatter(dIdx[k],amt*dW[k]/ws);S.carry-=amt}
+}
+function spreadSeg(x0,y0,x1,y1){
+  const a=toCell(x0,y0), b=toCell(x1,y1), dx=b.x-a.x, dy=b.y-a.y, L=Math.hypot(dx,dy);
+  if(L<0.05) return;
+  const ux=dx/L, uy=dy/L, n=Math.ceil(L);
+  for(let k=1;k<=n;k++) spreadAt(a.x+dx*k/n,a.y+dy*k/n,ux,uy);
+}
+function dropCarry(x,y){
+  if(S.carry<0.01){S.carry=0;return}
+  const c=toCell(x,y); let cnt=0;
+  const xa=Math.max(1,Math.floor(c.x-LR-4)),xb=Math.min(N-2,Math.ceil(c.x+LR+4)),ya=Math.max(1,Math.floor(c.y-LR-4)),yb=Math.min(N-2,Math.ceil(c.y+LR+4));
+  for(let pass=0;pass<2;pass++){
+    for(let y2=ya;y2<=yb;y2++)for(let x2=xa;x2<=xb;x2++){const i=y2*N+x2;if(!inG[i])continue;const d=Math.hypot(x2+0.5-c.x,y2+0.5-c.y);
+      if(d>=LR-1&&d<=LR+3){if(pass===0)cnt++;else addBatter(i,S.carry/cnt)}}
+    if(cnt===0) break;
+  }
+  if(cnt>0) S.carry=0;
+}
+function rubSeg(x0,y0,x1,y1){
+  const a=toCell(x0,y0), b=toCell(x1,y1), L=Math.hypot(b.x-a.x,b.y-a.y), n=Math.max(1,Math.ceil(L/2)), R=14;
+  for(let k=0;k<=n;k++){
+    const px=a.x+(b.x-a.x)*k/n, py=a.y+(b.y-a.y)*k/n;
+    for(let y=Math.max(0,Math.floor(py-R));y<=Math.min(N-1,Math.ceil(py+R));y++)
+      for(let x=Math.max(0,Math.floor(px-R));x<=Math.min(N-1,Math.ceil(px+R));x++){
+        const i=y*N+x; if(!inG[i]) continue; const d=Math.hypot(x+0.5-px,y+0.5-py); if(d>R) continue;
+        butter[i]=Math.min(1.2,butter[i]+0.14*(1-d/R));
+      }
+  }
+  S.buDirty=true;
+}
+function cookUpdate(dt,H){
+  let raw=0,sT=0,sTC=0;
+  const k=dt*H*0.014;
+  for(let i=0;i<NN;i++){
+    const t=batter[i]; if(t<0.006) continue;
+    if(k>0){const bu=Math.min(1,butter[i]);const uneven=1+(spot[i]-0.5)*(0.2+0.8*(1-bu));cook[i]+=k*heatMap[i]*uneven/(0.15+t)}
+    if(t>0.03){sT+=t;sTC+=t*cook[i]}
+    if(cook[i]<1) raw+=t*(1-cook[i]);
+  }
+  S.rawMass=raw; S.sumT=sT; S.sumTC=sTC;
+}
+function renderBatter(){
+  const d=baImg.data;
+  for(let i=0;i<NN;i++){
+    const o=i<<2, t=batter[i];
+    if(t<0.004){d[o+3]=0;continue}
+    const n=lace[i]; let a=(t*(0.4+1.2*n)-0.03)/0.06; a=a<0?0:a>1?1:a*a*(3-2*a);
+    if(a<=0.002){d[o+3]=0;continue}
+    const ck=cook[i]; let c=ck*(0.9+0.2*spot[i]);
+    if(t<0.1) c+=(0.1-t)*3*Math.min(1,ck);
+    const k=(c>=3?300:(c*100)|0)*3;
+    const gx=batter[i+1]-batter[i-1], gy=batter[i+N]-batter[i-N];
+    let g=(gx+gy)*0.7; g=g<-0.28?-0.28:g>0.28?0.28:g; let sh=1+g;
+    if(pore[i]>0.974&&ck>0.32&&t<1) sh*=0.8;
+    const wet=ck<0.55?1-ck/0.55:0;
+    let sp=wet*((gx+gy)*260); sp=(sp<0?0:sp>70?70:sp)+wet*8;
+    d[o]=LUT[k]*sh+sp; d[o+1]=LUT[k+1]*sh+sp; d[o+2]=LUT[k+2]*sh+sp; d[o+3]=a*255;
+  }
+  bactx.putImageData(baImg,0,0);
+}
+function renderButter(){
+  const d=buImg.data;
+  for(let i=0;i<NN;i++){const o=i<<2,b=butter[i];if(b<0.01){d[o+3]=0;continue}
+    const l=0.8+0.2*lace[i];
+    d[o]=215*l;d[o+1]=165*l;d[o+2]=80*l;d[o+3]=Math.min(1,b)*(0.38+0.14*lace[i])*255}
+  buctx.putImageData(buImg,0,0); S.buDirty=false;
+}
+
+/* ---------------- background ---------------- */
+function drawTable(c){
+  const r=rng(7);
+  c.fillStyle='#b98152'; c.fillRect(0,0,1000,1000);
+  for(let p=0;p<5;p++){
+    c.fillStyle=p%2?'rgba(255,225,180,.07)':'rgba(80,40,10,.07)'; c.fillRect(p*200,0,200,1000);
+    for(let k=0;k<22;k++){
+      c.strokeStyle=`rgba(95,52,22,${0.05+r()*0.09})`; c.lineWidth=0.8+r()*2.2;
+      const x0=p*200+r()*200, amp=2+r()*7, ph=r()*6, fr=0.004+r()*0.01;
+      c.beginPath(); c.moveTo(x0,0); for(let y=0;y<=1000;y+=25) c.lineTo(x0+Math.sin(y*fr+ph)*amp,y); c.stroke();
+    }
+    if(r()<.9){const kx=p*200+30+r()*140,ky=r()*1000;c.strokeStyle='rgba(90,48,20,.18)';c.lineWidth=2;c.beginPath();c.ellipse(kx,ky,6+r()*6,14+r()*12,0,0,TAU);c.stroke()}
+    c.fillStyle='rgba(60,30,10,.4)'; c.fillRect(p*200-1.5,0,3,1000);
+  }
+  const v=c.createRadialGradient(500,500,300,500,500,760); v.addColorStop(0,'rgba(0,0,0,0)'); v.addColorStop(1,'rgba(40,20,5,.35)');
+  c.fillStyle=v; c.fillRect(0,0,1000,1000);
+}
+function drawGriddle(c){
+  c.save(); c.shadowColor='rgba(20,10,0,.5)'; c.shadowBlur=40; c.shadowOffsetY=18;
+  c.fillStyle='#202022'; circle(c,GC,GC,478); c.fill(); c.restore();
+  let g=c.createLinearGradient(100,100,900,900); g.addColorStop(0,'#77787d'); g.addColorStop(.5,'#36373b'); g.addColorStop(1,'#151517');
+  c.fillStyle=g; circle(c,GC,GC,478); c.fill();
+  g=c.createRadialGradient(440,420,10,GC,GC,460); g.addColorStop(0,'#4a4b50'); g.addColorStop(.65,'#2f3034'); g.addColorStop(1,'#222326');
+  c.fillStyle=g; circle(c,GC,GC,450); c.fill();
+  c.lineWidth=5; c.strokeStyle='rgba(0,0,0,.55)'; circle(c,GC,GC,449); c.stroke();
+  c.lineWidth=2; c.strokeStyle='rgba(255,255,255,.1)'; circle(c,GC,GC,455); c.stroke();
+  const r=rng(11);
+  for(let i=0;i<70;i++){const a=r()*TAU;c.strokeStyle=`rgba(255,255,255,${0.012+r()*0.03})`;c.lineWidth=1+r()*3;c.beginPath();c.arc(GC,GC,30+r()*400,a,a+0.3+r()*1.4);c.stroke()}
+  for(let i=0;i<26;i++){const x=GC+(r()-0.5)*640,y=GC+(r()-0.5)*640;if(Math.hypot(x-GC,y-GC)>400)continue;const rr2=20+r()*70;const gg=c.createRadialGradient(x,y,0,x,y,rr2);gg.addColorStop(0,'rgba(110,70,35,.10)');gg.addColorStop(1,'rgba(110,70,35,0)');c.fillStyle=gg;circle(c,x,y,rr2);c.fill()}
+}
+function resize(){
+  const st=$('#stage'), w=st.clientWidth, h=st.clientHeight;
+  const size=Math.max(200,Math.floor(Math.min(w,h)));
+  cv.style.width=cv.style.height=size+'px';
+  const dpr=Math.min(2.5,window.devicePixelRatio||1);
+  cv.width=cv.height=Math.round(size*dpr); SC=cv.width/1000;
+  bgC=mk(cv.width,cv.height); let c=bgC.getContext('2d'); c.setTransform(SC,0,0,SC,0,0); drawTable(c); drawGriddle(c);
+  serveBg=mk(cv.width,cv.height); c=serveBg.getContext('2d'); c.setTransform(SC,0,0,SC,0,0); drawTable(c);
+}
+
+/* ---------------- tools drawing ---------------- */
+function line(c,x0,y0,x1,y1){c.beginPath();c.moveTo(x0,y0);c.lineTo(x1,y1);c.stroke()}
+function drawButterTool(c,x,y){
+  c.save(); c.translate(x,y); c.rotate(-0.25);
+  c.fillStyle='rgba(0,0,0,.25)'; rr(c,-38,-22,84,56,12); c.fill();
+  let g=c.createLinearGradient(0,-26,0,26); g.addColorStop(0,'#fff6c9'); g.addColorStop(1,'#f3d77a');
+  c.fillStyle=g; rr(c,-42,-28,84,56,12); c.fill();
+  c.fillStyle='rgba(255,255,255,.6)'; rr(c,-34,-22,40,10,5); c.fill();
+  c.fillStyle='#f4efe6'; rr(c,-46,2,92,30,8); c.fill();
+  c.fillStyle='#3d7fc1'; c.fillRect(-46,10,92,3); c.fillRect(-46,17,92,1.5);
+  c.fillStyle='#c0392b'; c.font='600 11px Mitr,sans-serif'; c.textAlign='center'; c.fillText('BUTTER',0,29);
+  c.restore();
+}
+function drawLadleTop(c,x,y,alpha){
+  c.save(); c.globalAlpha=alpha; c.lineCap='round';
+  c.strokeStyle='rgba(0,0,0,.22)'; c.lineWidth=16; line(c,x+58,y+62,x+268,y+262);
+  c.strokeStyle='#9aa1aa'; c.lineWidth=14; line(c,x+46,y+46,x+260,y+250);
+  c.strokeStyle='rgba(255,255,255,.55)'; c.lineWidth=3; line(c,x+44,y+42,x+256,y+244);
+  c.fillStyle='rgba(0,0,0,.22)'; circle(c,x+8,y+12,62); c.fill();
+  const g=c.createRadialGradient(x-22,y-26,4,x,y,64); g.addColorStop(0,'#ffffff'); g.addColorStop(.35,'#dadee3'); g.addColorStop(.8,'#8d949d'); g.addColorStop(1,'#5d636b');
+  c.fillStyle=g; circle(c,x,y,60); c.fill(); c.strokeStyle='rgba(60,64,70,.8)'; c.lineWidth=2; c.stroke();
+  c.restore();
+}
+function drawPourTool(c,x,y,pouring,time){
+  const bx=x-70, by=y-120;
+  c.save(); c.lineCap='round';
+  if(pouring){
+    c.strokeStyle='#F4EAD2'; c.lineWidth=10;
+    c.beginPath(); c.moveTo(bx+46,by+22); c.quadraticCurveTo(bx+60+Math.sin(time*18)*3,by+70,x,y); c.stroke();
+    c.strokeStyle='rgba(255,255,255,.6)'; c.lineWidth=3;
+    c.beginPath(); c.moveTo(bx+44,by+22); c.quadraticCurveTo(bx+57+Math.sin(time*18)*3,by+70,x-2,y); c.stroke();
+  }
+  c.strokeStyle='rgba(0,0,0,.2)'; c.lineWidth=14; line(c,bx-40,by-20+8,bx-230,by-190+8);
+  c.strokeStyle='#9aa1aa'; c.lineWidth=12; line(c,bx-40,by-24,bx-230,by-196);
+  c.strokeStyle='rgba(255,255,255,.5)'; c.lineWidth=3; line(c,bx-42,by-28,bx-228,by-198);
+  c.translate(bx,by); c.rotate(pouring?0.5:0.15);
+  const g=c.createRadialGradient(-20,-20,4,0,0,62); g.addColorStop(0,'#fff'); g.addColorStop(.4,'#d4d8de'); g.addColorStop(1,'#646a72');
+  c.fillStyle='rgba(0,0,0,.2)'; c.beginPath(); c.ellipse(10,14,60,48,0,0,TAU); c.fill();
+  c.fillStyle=g; c.beginPath(); c.ellipse(0,0,60,48,0,0,TAU); c.fill();
+  c.fillStyle='#F3E6C6'; c.beginPath(); c.ellipse(pouring?10:0,0,pouring?36:46,pouring?28:36,0,0,TAU); c.fill();
+  c.fillStyle='rgba(255,255,255,.45)'; c.beginPath(); c.ellipse(-10,-10,14,8,-0.5,0,TAU); c.fill();
+  c.restore();
+}
+function drawBag(c,x,y,f){
+  c.save(); c.translate(x,y); c.rotate(0.55);
+  c.fillStyle='rgba(0,0,0,.18)'; c.beginPath(); c.moveTo(8,6); c.lineTo(-26,-124); c.lineTo(44,-124); c.closePath(); c.fill();
+  c.fillStyle=f.color; c.globalAlpha=.9; c.beginPath(); c.moveTo(0,-6); c.lineTo(-30,-130); c.lineTo(30,-130); c.closePath(); c.fill();
+  c.globalAlpha=1; c.fillStyle='rgba(255,255,255,.35)'; c.beginPath(); c.moveTo(-2,-14); c.lineTo(-24,-128); c.lineTo(-10,-128); c.closePath(); c.fill();
+  c.strokeStyle='rgba(255,255,255,.7)'; c.lineWidth=2; c.beginPath(); c.moveTo(0,-6); c.lineTo(-30,-130); c.lineTo(30,-130); c.closePath(); c.stroke();
+  c.fillStyle='#b8bec6'; c.beginPath(); c.moveTo(-5,-2); c.lineTo(5,-2); c.lineTo(9,-20); c.lineTo(-9,-20); c.closePath(); c.fill();
+  c.restore();
+}
+function drawSpatula(c,x,y0,y1){
+  const ym=(y0+y1)/2;
+  c.save(); c.lineCap='round';
+  c.fillStyle='rgba(0,0,0,.25)'; rr(c,x-4+8,y0+10,16,y1-y0,4); c.fill();
+  c.strokeStyle='rgba(0,0,0,.25)'; c.lineWidth=24; line(c,x+20,ym+10,x+150,ym+110);
+  const g=c.createLinearGradient(x-8,0,x+10,0); g.addColorStop(0,'#6f757d'); g.addColorStop(.45,'#eef0f2'); g.addColorStop(1,'#949aa2');
+  c.fillStyle=g; rr(c,x-6,y0,16,y1-y0,4); c.fill(); c.strokeStyle='rgba(60,64,70,.6)'; c.lineWidth=1.5; c.stroke();
+  c.strokeStyle='#8b5a2b'; c.lineWidth=22; line(c,x+12,ym,x+140,ym+96);
+  c.strokeStyle='rgba(255,220,170,.35)'; c.lineWidth=6; line(c,x+12,ym-6,x+136,ym+88);
+  c.fillStyle='#c9ced4'; circle(c,x+22,ym+8,4); c.fill();
+  c.restore();
+}
+
+/* ---------------- rolling ---------------- */
+function drawEggs(c){for(const a of S.actions) if(a.type==='egg') for(const p of a.items) drawPiece(c,p); if(S.cur&&S.cur.type==='egg') for(const p of S.cur.items) drawPiece(c,p);}
+function redrawFillLayer(){
+  flctx.setTransform(1,0,0,1,0,0); flctx.clearRect(0,0,fillLayer.width,fillLayer.height); flctx.setTransform(FLS,0,0,FLS,0,0);
+  for(const a of S.actions){
+    if(a.kind==='cream') drawCream(flctx,a.type,a.items[0].pts);
+    else if(a.kind==='fiber') for(const f of a.items) drawFiber(flctx,f);
+    else if(a.type!=='egg') for(const p of a.items) drawPiece(flctx,p);
+  }
+}
+function setupRoll(){
+  // fill coverage grid
+  const fc=mk(N,N), fx=fc.getContext('2d');
+  fx.drawImage(fillLayer,G0*FLS,G0*FLS,N*CELL*FLS,N*CELL*FLS,0,0,N,N);
+  fx.setTransform(1/CELL,0,0,1/CELL,-G0/CELL,-G0/CELL); drawEggs(fx);
+  const fd=fx.getImageData(0,0,N,N).data; for(let i=0;i<NN;i++) fillAmt[i]=fd[i*4+3]/255;
+  const W=fillLayer.width;
+  const flat=mk(W,W), f=flat.getContext('2d'); f.setTransform(FLS,0,0,FLS,0,0);
+  f.drawImage(fillLayer,0,0,1000,1000); drawEggs(f);
+  f.globalCompositeOperation='destination-in'; f.drawImage(baC,G0,G0,N*CELL,N*CELL);
+  f.globalCompositeOperation='destination-over'; f.drawImage(baC,G0,G0,N*CELL,N*CELL);
+  const spill=mk(W,W), s=spill.getContext('2d'); s.setTransform(FLS,0,0,FLS,0,0);
+  s.drawImage(fillLayer,0,0,1000,1000); drawEggs(s);
+  s.globalCompositeOperation='destination-out'; s.drawImage(baC,G0,G0,N*CELL,N*CELL);
+  let xmin=N,xmax=-1,ymin=N,ymax=-1;
+  const rowCum=new Float32Array(NN), rowT=new Float32Array(NN), rowTC=new Float32Array(NN), rowFill=new Float32Array(N);
+  for(let y=0;y<N;y++){let a=0,b=0,cc=0;for(let x=0;x<N;x++){const i=y*N+x,t=batter[i];
+    if(t>0.02){a+=t+fillAmt[i]*0.6;b+=t;cc+=t*cook[i];rowFill[y]+=fillAmt[i];if(x<xmin)xmin=x;if(x>xmax)xmax=x;if(y<ymin)ymin=y;if(y>ymax)ymax=y}
+    rowCum[i]=a;rowT[i]=b;rowTC[i]=cc}}
+  S.roll={flat,spill,rowCum,rowT,rowTC,rowFill,xminL:G0+xmin*CELL,xmaxL:G0+(xmax+1)*CELL,y0L:G0+ymin*CELL,y1L:G0+(ymax+1)*CELL,
+    X:G0+xmin*CELL,rad:new Float32Array(N),raw:new Float32Array(N),ck:new Float32Array(N),loose:0,lw:0,ld:0,lt:0,dragging:false,done:false,tearFrac:0,ooze:null};
+  updateProfile();
+}
+function updateProfile(){
+  const R=S.roll, col=clamp(Math.floor((R.X-G0)/CELL),0,N-1), k=8.6*(1+0.5*R.loose);
+  for(let r=0;r<N;r++){const i=r*N+col,m=R.rowCum[i];R.raw[r]=m>0.04?6+Math.pow(m,0.4)*k:0;const tt=R.rowT[i];R.ck[r]=tt>0?R.rowTC[i]/tt:0}
+  const a=R.raw, b=R.rad;
+  for(let pass=0;pass<2;pass++){const src=pass?b.slice():a;for(let r=0;r<N;r++){const p=src[Math.max(0,r-1)],q=src[Math.min(N-1,r+1)];b[r]=(p+2*src[r]+q)/4}}
+}
+function drawTube(c){
+  const R=S.roll, X=R.X, rad=R.rad;
+  let mr=0; for(let r=0;r<N;r++) if(rad[r]>mr) mr=rad[r];
+  const cx=X-mr;
+  c.fillStyle='rgba(40,20,5,.28)';
+  for(let r=0;r<N;r++){const w=2*rad[r];if(w>1)c.fillRect(cx-rad[r]+7,G0+r*CELL+9,w,CELL+0.8)}
+  for(let r=0;r<N;r++){
+    const w=2*rad[r]; if(w<=1) continue;
+    const y=G0+r*CELL, x0=cx-rad[r], rgb=cookRGB(R.ck[r]+0.45), tx=0.92+0.16*lace[r*N+90];
+    c.fillStyle=`rgb(${rgb[0]*tx|0},${rgb[1]*tx|0},${rgb[2]*tx|0})`; c.fillRect(x0,y,w,CELL+0.8);
+    if(R.raw[r]>0&&R.ck[r]<0.45&&lace[r*N+40]>0.45){c.fillStyle='rgba(248,238,205,.6)';c.fillRect(x0+w*0.25,y,w*0.3,CELL+0.8)}
+    c.drawImage(shadeStrip,x0,y,w,CELL+0.8);
+  }
+  c.fillStyle='rgba(110,60,20,.22)';
+  for(let r=0;r<N;r++){if(rad[r]>1)c.fillRect(cx+rad[r]*0.55,G0+r*CELL,2.2,CELL+0.8)}
+  const O=R.ooze;
+  if(R.done&&O&&O.size>0){
+    for(const [r,dir] of [[O.rTop,-1],[O.rBot,1]]){
+      const x=cx, y=G0+r*CELL+(dir>0?CELL:0)+dir*O.size*0.35;
+      c.fillStyle='rgba(60,30,5,.2)'; c.beginPath(); c.ellipse(x+3,y+4,O.size,O.size*0.75,0,0,TAU); c.fill();
+      c.fillStyle=O.color; c.beginPath(); c.ellipse(x,y,O.size,O.size*0.75,0,0,TAU); c.fill();
+      c.fillStyle='rgba(255,255,255,.4)'; c.beginPath(); c.ellipse(x-O.size*0.3,y-O.size*0.25,O.size*0.35,O.size*0.2,-0.5,0,TAU); c.fill();
+    }
+  }
+}
+function rollDown(p){
+  const R=S.roll; if(!R||R.done) return;
+  if(p.x<R.X+110&&p.x>R.X-160){R.dragging=true;R.lt=performance.now();}
+  else toast('จับไม้พายที่ขอบซ้ายของแผ่นก่อนนะ');
+}
+function rollMove(x){
+  const R=S.roll; if(!R||!R.dragging||R.done) return;
+  const now=performance.now(), nx=Math.min(R.xmaxL,Math.max(R.X,x)), dx=nx-R.X;
+  if(dx>0){
+    const sp=dx/(Math.max(8,now-R.lt)/1000);
+    R.lw+=clamp((sp-700)/1600,0,1)*dx; R.ld+=dx; R.loose=R.lw/Math.max(1,R.ld);
+    R.X=nx; R.lt=now; updateProfile();
+    if(R.X>=R.xmaxL-12) finishRoll();
+  } else R.lt=now;
+}
+function finishRoll(){
+  const R=S.roll; R.done=true; R.dragging=false; R.X=R.xmaxL; updateProfile();
+  let tm=0,tt=0; for(let r=0;r<N;r++){const m=R.rowCum[r*N+N-1];if(m>0){tt+=m;if(R.ck[r]<0.45)tm+=m}}
+  R.tearFrac=tt?tm/tt:0;
+  S.stats=computeStats();
+  // ooze
+  let rTop=-1,rBot=-1; for(let r=0;r<N;r++) if(R.rad[r]>4){if(rTop<0)rTop=r;rBot=r}
+  const cov=S.stats.cov;
+  if(rTop>=0&&cov>0.02){
+    const size=5+clamp((cov-0.25)/0.45,0,1)*22;
+    R.ooze={rTop,rBot,size,color:dominantColor()};
+  }
+  captureTube(); renderPanel(); chime();
+  toast(R.tearFrac>0.3?'แป้งยังไม่สุกดี ม้วนแล้วขาดนิดหน่อย…':'ม้วนเสร็จแล้ว! กด "เสิร์ฟ" ได้เลย');
+}
+function fillMass(){
+  const m={};
+  for(const a of S.actions){
+    let v=0;
+    if(a.kind==='cream'){const p=a.items[0].pts;let L=4;for(let k=2;k<p.length;k+=2)L+=Math.hypot(p[k]-p[k-2],p[k+1]-p[k-1]);v=L/10}
+    else if(a.type==='corn') v=a.items.reduce((s,p)=>s+p.k.length,0);
+    else v=a.items.length;
+    m[a.type]=(m[a.type]||0)+v;
+  }
+  return m;
+}
+function dominantColor(){
+  const m=fillMass(), W={custard:18,pandan:18,taro:18,choco:12,foithong:1.2,floss:1,sausage:9,egg:20,corn:1};
+  let best=null,bv=0; for(const k in m){const v=m[k]*W[k];if(v>bv){bv=v;best=k}}
+  return best?FD[best].color:'#F0B43C';
+}
+function captureTube(){
+  const R=S.roll; let r0=-1,r1=-1,maxR=0;
+  for(let r=0;r<N;r++) if(R.rad[r]>0.5){if(r0<0)r0=r;r1=r;if(R.rad[r]>maxR)maxR=R.rad[r]}
+  if(r0<0){S.tube=null;return}
+  const bx=R.X-2*maxR-40, by=G0+r0*CELL-50, bw=2*maxR+80, bh=(r1-r0+1)*CELL+100, TS=2;
+  const cnv=mk(Math.ceil(bw*TS),Math.ceil(bh*TS)), x=cnv.getContext('2d');
+  x.setTransform(TS,0,0,TS,-bx*TS,-by*TS); drawTube(x);
+  S.tube={cv:cnv,bx,by,bw,bh,cx:R.X-maxR,cy:G0+(r0+r1+1)/2*CELL,Lt:(r1-r0+1)*CELL,maxR};
+}
+
+/* ---------------- scoring ---------------- */
+const TITLES=[
+  {id:'master',name:'โตเกียวแห่งสยาม',desc:'ทุกอย่างเป๊ะ ระดับตำนานหน้าโรงเรียน',t:s=>s.total>=90},
+  {id:'charcoal',name:'ถ่านหุงข้าว',desc:'ไหม้ดำไปเกินครึ่งแผ่น',t:s=>s.burnt>0.5},
+  {id:'raw',name:'แป้งดิบดิ้นได้',desc:'ยังไม่สุกก็รีบม้วนซะแล้ว',t:s=>s.raw>0.55},
+  {id:'tiny',name:'จิ๋วแต่แจ๋ว',desc:'แผ่นเล็กกระจิ๋วหลิว',t:s=>s.meanR<130},
+  {id:'giant',name:'โตเกียวยักษ์',desc:'ใหญ่เต็มกระทะ',t:s=>s.meanR>370},
+  {id:'overflow',name:'ไส้ทะลักจักรวาล',desc:'ไส้เยอะจนม้วนแทบไม่มิด',t:s=>s.cov>0.6},
+  {id:'tear',name:'ม้วนขาดใจ',desc:'แป้งขาดระหว่างม้วน',t:s=>s.tearFrac>0.3},
+  {id:'burnt',name:'ไหม้ใจ',desc:'มีรอยไหม้ให้จดจำ',t:s=>s.burnt>0.18},
+  {id:'abstract',name:'ศิลปะนามธรรม',desc:'รูปทรงอิสระ ไม่ยึดติดความกลม',t:s=>s.roundness<0.72},
+  {id:'lace',name:'ผ้าลูกไม้ฉลุ',desc:'รูพรุนทั่วแผ่น',t:s=>s.holeFrac>0.18},
+  {id:'pancake',name:'หนานุ่มสไตล์แพนเค้ก',desc:'แป้งหนาเกินโตเกียวไปนิด',t:s=>s.m>0.9},
+  {id:'compass',name:'กลมดิกเหมือนวงเวียน',desc:'กลมจนเรขาคณิตอาย',t:s=>s.roundness>0.955&&s.meanR>=200},
+  {id:'paper',name:'บางเฉียบเหมือนกระดาษ',desc:'บางและเรียบเนียนทั้งแผ่น',t:s=>s.m<0.3&&s.holeFrac<0.06&&s.cv<0.5},
+  {id:'golden',name:'เหลืองทองอร่าม',desc:'สุกกำลังดีเกือบทั้งแผ่น',t:s=>s.good>0.8},
+  {id:'plain',name:'โตเกียวเปลือย',desc:'ไม่ใส่ไส้ เน้นแป้งล้วนๆ',t:s=>s.cov<0.01},
+  {id:'buffet',name:'บุฟเฟ่ต์ไส้',desc:'ใส่ไส้ตั้งแต่ 5 อย่างขึ้นไป',t:s=>s.types.length>=5},
+  {id:'egglove',name:'ไข่นกกระทาคลั่งรัก',desc:'ไข่นกกระทาตั้งแต่ 4 ฟอง',t:s=>(s.counts.egg||0)>=4},
+  {id:'sausage',name:'ไส้กรอกล้นรถเข็น',desc:'ไส้กรอกตั้งแต่ 10 แว่น',t:s=>(s.counts.sausage||0)>=10},
+  {id:'sweetsalty',name:'หวานมันเค็มครบรส',desc:'ใส่ทั้งไส้หวานและไส้เค็ม',t:s=>s.sweet&&s.savory},
+  {id:'pandan',name:'สังขยาใบเตยแท้',desc:'สังขยาใบเตยล้วน',t:s=>s.only==='pandan'},
+  {id:'custard',name:'คลาสสิกสังขยา',desc:'สังขยาล้วนแบบดั้งเดิม',t:s=>s.only==='custard'},
+  {id:'taro',name:'คนรักเผือก',desc:'ครีมเผือกล้วน',t:s=>s.only==='taro'},
+  {id:'choco',name:'โกโก้ครองใจ',desc:'ช็อกโกแลตล้วน',t:s=>s.only==='choco'},
+  {id:'gold',name:'ทองทั้งแผ่น',desc:'ฝอยทองจัดเต็ม',t:s=>(s.counts.foithong||0)>=150},
+  {id:'floss',name:'หมูหยองฟูฟ่อง',desc:'หมูหยองจัดเต็ม',t:s=>(s.counts.floss||0)>=200},
+  {id:'corn',name:'ข้าวโพดหวานกรุบ',desc:'ข้าวโพดตั้งแต่ 30 เม็ด',t:s=>(s.counts.corn||0)>=30},
+  {id:'tight',name:'ม้วนแน่นเปรี๊ยะ',desc:'ม้วนช้าๆ แน่นทุกรอบ',t:s=>s.loose<0.08&&s.tearFrac<0.05},
+  {id:'loose',name:'ม้วนหลวมชิลๆ',desc:'ม้วนเร็วไปนิด หลวมโพรก',t:s=>s.loose>0.5},
+  {id:'nobutter',name:'ลืมเนย',desc:'ไม่ได้เช็ดเนยกระทะ',t:s=>s.butterCov<0.15},
+  {id:'leopard',name:'ลายเสือดาว',desc:'จุดน้ำตาลกระจายสวย',t:s=>s.brown>0.2&&s.brown<0.45&&s.burnt<0.08},
+  {id:'pro',name:'แม่ค้าหน้าโรงเรียน',desc:'ฝีมือขายได้จริง',t:s=>s.total>=72},
+  {id:'learner',name:'มือใหม่หัดละเลง',desc:'เริ่มจับทางได้แล้ว',t:s=>s.total>=45},
+  {id:'kid',name:'หนูน้อยหัดทำขนม',desc:'ลองอีกสักแผ่นนะ',t:()=>true},
+];
+function computeStats(){
+  let A=0,sT=0,sT2=0,sx=0,sy=0,raw=0,good=0,brown=0,burnt=0,bc=0,fin=0,fout=0;
+  for(let y=0;y<N;y++)for(let x=0;x<N;x++){const i=y*N+x,t=batter[i],f=fillAmt[i];
+    if(t>0.03){A++;sT+=t;sT2+=t*t;sx+=x;sy+=y;const c=cook[i];if(c<0.55)raw++;else if(c<1.6)good++;else if(c<2.2)brown++;else burnt++;if(butter[i]>0.15)bc++;fin+=f}else fout+=f}
+  const R=S.roll, counts=fillMass(), types=Object.keys(counts).filter(k=>counts[k]>0);
+  const s={A,counts,types,loose:R?R.loose:0,tearFrac:R?R.tearFrac:0,sweet:types.some(t=>FD[t].sweet),savory:types.some(t=>FD[t].savory),only:types.length===1?types[0]:null};
+  if(A<20){Object.assign(s,{m:0,cv:0,roundness:0,meanR:0,holeFrac:0,raw:1,good:0,brown:0,burnt:0,butterCov:0,cov:0,spill:0,sc:{round:0,thin:0,cook:0,fill:0,roll:0},total:0});return s}
+  const cx=sx/A+0.5, cy=sy/A+0.5, m=sT/A, cv=Math.sqrt(Math.max(0,sT2/A-m*m))/m;
+  const rays=[]; for(let k=0;k<72;k++){const a=k/72*TAU,ca=Math.cos(a),sa=Math.sin(a);let last=0,gap=0;
+    for(let d=0;d<GRC+6;d+=0.5){const xi=Math.floor(cx+ca*d),yi=Math.floor(cy+sa*d);if(xi<0||yi<0||xi>=N||yi>=N)break;
+      if(batter[yi*N+xi]>0.03){last=d;gap=0}else{gap+=0.5;if(gap>3)break}}
+    rays.push(last)}
+  const mean=rays.reduce((a,b)=>a+b,0)/72, sd=Math.sqrt(rays.reduce((a,b)=>a+(b-mean)*(b-mean),0)/72);
+  const roundness=mean>0?clamp(1-sd/mean,0,1):0;
+  let tot=0,emp=0; const HR=mean*0.8;
+  for(let y=Math.max(0,Math.floor(cy-HR));y<=Math.min(N-1,Math.ceil(cy+HR));y++)for(let x=Math.max(0,Math.floor(cx-HR));x<=Math.min(N-1,Math.ceil(cx+HR));x++){
+    if(Math.hypot(x+0.5-cx,y+0.5-cy)<=HR){tot++;if(batter[y*N+x]<=0.03)emp++}}
+  Object.assign(s,{m,cv,roundness,meanR:mean*CELL,holeFrac:tot?emp/tot:0,raw:raw/A,good:good/A,brown:brown/A,burnt:burnt/A,butterCov:bc/A,cov:fin/A,spill:fout/(fin+fout+1e-6)});
+  const sc={};
+  let rp=clamp((roundness-0.8)/0.17,0,1); if(s.meanR<200) rp*=clamp(0.3+0.7*(s.meanR-100)/100,0.3,1); else if(s.meanR>390) rp*=0.8; sc.round=20*rp;
+  const thinP=clamp(1-(m-0.4)/0.7,0,1), evenP=clamp(1-(cv-0.35)/0.9,0,1), holeP=clamp(1-s.holeFrac*2.5,0,1);
+  sc.thin=20*(0.5*thinP+0.5*evenP)*holeP;
+  let ck=clamp(s.good+0.5*s.brown+0.15*s.raw-0.6*s.burnt,0,1); if(s.butterCov<0.3) ck*=0.85; sc.cook=20*ck;
+  const cov=s.cov, ap=cov<0.005?0.25:cov<0.08?0.35+0.65*cov/0.08:cov<=0.42?1:Math.max(0.3,1-(cov-0.42)*1.4);
+  sc.fill=20*ap*(1-Math.min(0.6,s.spill*1.5));
+  sc.roll=20*(1-0.6*s.loose)*(1-0.55*s.tearFrac);
+  s.sc=sc; s.total=Math.round(sc.round+sc.thin+sc.cook+sc.fill+sc.roll);
+  return s;
+}
+
+/* ---------------- serve scene ---------------- */
+const easeOutBack=t=>{const c1=1.4,c3=c1+1;return 1+c3*Math.pow(t-1,3)+c1*Math.pow(t-1,2)};
+const easeOut=t=>1-Math.pow(1-t,3);
+function drawSleeve(c,T){
+  const L=T.Lt, mr=T.maxR, yTop=-L*0.03, yBot=L/2+18, hw=mr*1.5, hb=mr*1.32, n=8;
+  const path=(ox,oy)=>{c.beginPath();c.moveTo(-hw+ox,yTop+oy);for(let i=0;i<n;i++){const x0=-hw+2*hw*i/n,x1=-hw+2*hw*(i+1)/n;c.lineTo((x0+x1)/2+ox,yTop-8+oy);c.lineTo(x1+ox,yTop+oy)}
+    c.lineTo(hb+ox,yBot-12+oy);c.quadraticCurveTo(hb+ox,yBot+oy,hb-12+ox,yBot+oy);c.lineTo(-hb+12+ox,yBot+oy);c.quadraticCurveTo(-hb+ox,yBot+oy,-hb+ox,yBot-12+oy);c.closePath()};
+  c.fillStyle='rgba(50,25,5,.22)'; path(7,9); c.fill();
+  const g=c.createLinearGradient(-hw,0,hw,0); g.addColorStop(0,'#a97a43'); g.addColorStop(.32,'#e6c792'); g.addColorStop(.6,'#d6ae72'); g.addColorStop(1,'#9c6f3c');
+  c.fillStyle=g; path(0,0); c.fill();
+  c.save(); path(0,0); c.clip();
+  c.fillStyle='rgba(120,80,40,.18)'; c.fillRect(-hw,yTop+16,2*hw,2);
+  c.fillStyle='#c0392b'; c.fillRect(-hw,yTop+26,2*hw,4); c.fillRect(-hw,yTop+34,2*hw,1.6);
+  c.translate(0,(yTop+40+yBot)/2); c.rotate(-Math.PI/2);
+  c.font='600 24px Mitr,sans-serif'; c.textAlign='center'; c.textBaseline='middle'; c.fillStyle='#b8322a';
+  c.fillText('ขนมโตเกียว',0,0);
+  c.restore();
+}
+function star(c,x,y,r){c.beginPath();for(let i=0;i<8;i++){const a=i/8*TAU,d=i%2?r*0.28:r;c.lineTo(x+Math.cos(a)*d,y+Math.sin(a)*d)}c.closePath();c.fill()}
+function drawServeContent(c,t){
+  c.save(); c.shadowColor='rgba(40,20,5,.4)'; c.shadowBlur=34; c.shadowOffsetY=16; c.fillStyle='#f3efe8'; circle(c,500,510,388); c.fill(); c.restore();
+  let g=c.createRadialGradient(440,450,20,500,510,388); g.addColorStop(0,'#ffffff'); g.addColorStop(1,'#e4ded4');
+  c.fillStyle=g; circle(c,500,510,388); c.fill();
+  g=c.createRadialGradient(470,480,10,500,510,300); g.addColorStop(0,'#fdfcfa'); g.addColorStop(1,'#eee9e1');
+  c.fillStyle=g; circle(c,500,510,300); c.fill(); c.strokeStyle='rgba(0,0,0,.06)'; c.lineWidth=2; c.stroke();
+  c.strokeStyle='#4f86c2'; c.lineWidth=3.5; circle(c,500,510,364); c.stroke(); c.lineWidth=1.5; circle(c,500,510,350); c.stroke();
+  c.fillStyle='#4f86c2'; for(let i=0;i<40;i++){const a=i/40*TAU;circle(c,500+Math.cos(a)*357,510+Math.sin(a)*357,2.4);c.fill()}
+  const T=S.tube; if(!T) return;
+  const e1=easeOutBack(clamp(t/0.7,0,1)), e2=easeOut(clamp((t-0.75)/0.55,0,1)), k=clamp(680/T.Lt,0.8,1.35);
+  c.save(); c.translate(500,500-(1-e1)*700); c.rotate(-0.62); c.scale(k,k);
+  c.drawImage(T.cv,T.bx-T.cx,T.by-T.cy,T.bw,T.bh);
+  if(e2>0){c.save();c.globalAlpha=Math.min(1,e2*1.6);c.translate(0,(1-e2)*420);drawSleeve(c,T);c.restore()}
+  c.restore();
+  if(t>1.3){c.fillStyle='#fff6c8';const pos=[[250,250],[770,300],[300,760],[740,720],[520,180],[180,520]];
+    pos.forEach((p,i)=>{c.globalAlpha=clamp(0.5+0.5*Math.sin(t*4+i*1.7),0,1)*clamp((t-1.3)*3,0,1);star(c,p[0],p[1],10+(i%3)*5)});c.globalAlpha=1}
+}
+function makeThumb(){const c=mk(360,360),x=c.getContext('2d');x.setTransform(.36,0,0,.36,0,0);drawTable(x);drawServeContent(x,1.29);try{return c.toDataURL('image/jpeg',0.82)}catch(e){return ''}}
+
+/* ---------------- frame ---------------- */
+const steam=[];
+function updSteam(dt){
+  const H=HEATS[S.heat];
+  if(S.step>=1&&S.step<=3&&S.hasBatter&&H>0){
+    S.steamAcc+=dt*Math.min(24,S.rawMass*0.01*H+2*H);
+    while(S.steamAcc>1&&steam.length<90){S.steamAcc--;for(let tr=0;tr<8;tr++){const i=(Math.random()*NN)|0;if(batter[i]>0.05){
+      steam.push({x:G0+(i%N)*CELL,y:G0+((i/N)|0)*CELL,vx:(Math.random()-0.5)*16,vy:-30-Math.random()*40,life:0,max:1.5+Math.random()*1.3,s:26+Math.random()*30});break}}}
+  }
+  for(let i=steam.length-1;i>=0;i--){const p=steam[i];p.life+=dt;p.x+=p.vx*dt;p.y+=p.vy*dt;p.s+=dt*30;if(p.life>p.max)steam.splice(i,1)}
+}
+let lastT=performance.now(), clock=0;
+function frame(now){
+  const dt=Math.min(0.05,(now-lastT)/1000); lastT=now; clock+=dt;
+  update(dt); draw();
+  requestAnimationFrame(frame);
+}
+function update(dt){
+  const st=S.step, H=HEATS[S.heat];
+  if(st>=1&&st<=3){
+    if(S.pouring&&st===1&&P.down) pour(dt);
+    if(S.hasBatter){ const it=st===1?3:1; for(let k=0;k<it;k++) flow(); cookUpdate(dt,H); renderBatter(); }
+    for(const a of S.actions) if(a.type==='egg') for(const p of a.items) p.cook+=dt*H*0.07;
+    if(S.cur&&S.cur.type==='egg') for(const p of S.cur.items) p.cook+=dt*H*0.07;
+  }
+  if(S.buDirty) renderButter();
+  updSteam(dt);
+  let sz=0;
+  if(st===0&&S.rubbing) sz=0.05*H;
+  else if(st>=1&&st<=3&&S.hasBatter) sz=Math.min(0.32,0.04+S.rawMass/3200*0.28)*Math.min(1.3,H);
+  setSizzle(S.muted?0:sz);
+  if(st===5){S.serveT+=dt;if(S.serveT>1.9&&!S.resultShown)showResult()}
+  S.meterT-=dt; if(S.meterT<=0){S.meterT=0.1;updateMeters()}
+}
+function draw(){
+  const c=ctx;
+  c.setTransform(1,0,0,1,0,0);
+  if(S.step===5){c.drawImage(serveBg,0,0);c.setTransform(SC,0,0,SC,0,0);drawServeContent(c,S.serveT);return}
+  c.drawImage(bgC,0,0); c.setTransform(SC,0,0,SC,0,0);
+  const H=HEATS[S.heat];
+  if(H>0&&S.step<4){
+    const fl=0.85+0.15*Math.sin(clock*7)*Math.sin(clock*3.1);
+    const g=c.createRadialGradient(GC,GC,470,GC,GC,530); g.addColorStop(0,`rgba(255,120,30,${0.32*H*fl})`); g.addColorStop(1,'rgba(255,90,20,0)');
+    c.fillStyle=g; c.beginPath(); c.arc(GC,GC,530,0,TAU); c.arc(GC,GC,476,0,TAU,true); c.fill('evenodd');
+  }
+  c.imageSmoothingEnabled=true; c.imageSmoothingQuality='high';
+  c.globalCompositeOperation='screen'; c.drawImage(buC,G0,G0,N*CELL,N*CELL); c.globalCompositeOperation='source-over';
+  if(S.step===4&&S.roll){
+    const R=S.roll;
+    c.drawImage(R.spill,0,0,1000,1000);
+    c.save(); c.beginPath(); c.rect(R.X,0,1000-R.X,1000); c.clip(); c.drawImage(R.flat,0,0,1000,1000); c.restore();
+    drawTube(c);
+  }else{
+    if(S.hasBatter) c.drawImage(baC,G0,G0,N*CELL,N*CELL);
+    c.drawImage(fillLayer,0,0,1000,1000);
+    drawEggs(c);
+    if(S.cur&&S.cur.kind==='cream') drawCream(c,S.cur.type,S.cur.items[0].pts);
+  }
+  for(const p of steam){c.globalAlpha=0.17*Math.sin(Math.PI*p.life/p.max);c.drawImage(steamSprite,p.x-p.s/2,p.y-p.s/2,p.s,p.s)} c.globalAlpha=1;
+  drawHints(c); drawTool(c);
+}
+function hintText(c,txt,x,y){
+  c.font='500 30px Mitr,sans-serif'; c.textAlign='center'; c.textBaseline='middle';
+  c.lineWidth=6; c.strokeStyle='rgba(30,15,5,.55)'; c.strokeText(txt,x,y); c.fillStyle='#fff8ea'; c.fillText(txt,x,y);
+}
+function drawHints(c){
+  const pulse=0.5+0.5*Math.sin(clock*4);
+  if(S.step===0&&butterCov()<0.04&&!P.down){hintText(c,'ถูเนยให้ทั่วกระทะ',GC,GC)}
+  if(S.step===1&&S.poured===0){c.strokeStyle=`rgba(255,240,200,${0.35+0.4*pulse})`;c.lineWidth=4;c.setLineDash([12,10]);circle(c,GC,GC,60+pulse*12);c.stroke();c.setLineDash([]);hintText(c,'กดค้างเพื่อเทแป้ง',GC,GC+120)}
+  if(S.step===2&&!S.spreadStarted){hintText(c,'วนกระบวยจากกลางออกไปขอบ',GC,GC+250)}
+  if(S.step===4&&S.roll&&!S.roll.done&&!S.roll.dragging){
+    const R=S.roll, y=(R.y0L+R.y1L)/2, x=R.X+60+pulse*30;
+    c.fillStyle='rgba(255,248,234,.92)'; c.beginPath(); c.moveTo(x+40,y); c.lineTo(x,y-26); c.lineTo(x,y-10); c.lineTo(x-50,y-10); c.lineTo(x-50,y+10); c.lineTo(x,y+10); c.lineTo(x,y+26); c.closePath(); c.fill();
+    if(R.X<=R.xminL+1) hintText(c,'ลากไม้พายไปทางขวา',GC,Math.min(930,R.y1L+50));
+  }
+}
+function butterCov(){let n=0;for(const i of innerIdx) if(butter[i]>0.15) n++;return n/innerIdx.length}
+function drawTool(c){
+  const st=S.step;
+  if(st===4&&S.roll&&!S.roll.done){
+    const R=S.roll; let x=R.X; if(!R.dragging&&P.inside&&!P.down) x=clamp(P.x,R.xminL-60,R.xmaxL);
+    drawSpatula(c,R.dragging?R.X+8:x,R.y0L-40,R.y1L+40); return;
+  }
+  if(!(P.inside||P.down)) return;
+  if(st===0) drawButterTool(c,P.x,P.y);
+  else if(st===1) drawPourTool(c,P.x,P.y,S.pouring&&P.down&&onGriddle(P.x,P.y),clock);
+  else if(st===2) drawLadleTop(c,P.x,P.y,0.92);
+  else if(st===3){
+    const f=FD[S.tool];
+    if(f.kind==='cream') drawBag(c,P.x,P.y,f);
+    else if(f.kind==='fiber'){c.strokeStyle='rgba(255,250,235,.8)';c.lineWidth=2;c.setLineDash([6,6]);circle(c,P.x,P.y,26);c.stroke();c.setLineDash([])}
+    else if(!P.down){c.globalAlpha=.6;const p=S.ghost&&S.ghost.type===f.id?S.ghost:(S.ghost=makePiece(f.id,0,0));p.x=P.x;p.y=P.y;p.cook=f.id==='egg'?0:1;drawPiece(c,p);c.globalAlpha=1}
+  }
+}
+
+/* ---------------- input ---------------- */
+function toL(e){const r=cv.getBoundingClientRect();return{x:(e.clientX-r.left)/r.width*1000,y:(e.clientY-r.top)/r.height*1000}}
+cv.addEventListener('pointerdown',e=>{
+  if(S.step<0||S.step>4) return;
+  e.preventDefault(); initAudio(); try{cv.setPointerCapture(e.pointerId)}catch(_){}
+  const p=toL(e); P.down=true; P.inside=true; P.x=p.x; P.y=p.y;
+  switch(S.step){
+    case 0: S.rubbing=true; rubSeg(p.x,p.y,p.x,p.y); break;
+    case 1: S.pouring=true; break;
+    case 3: fillDown(p); break;
+    case 4: rollDown(p); break;
+  }
+});
+cv.addEventListener('pointermove',e=>{
+  const p=toL(e), lx=P.x, ly=P.y; P.inside=true; P.x=p.x; P.y=p.y;
+  if(!P.down) return;
+  switch(S.step){
+    case 0: rubSeg(lx,ly,p.x,p.y); break;
+    case 2: if(S.hasBatter){spreadSeg(lx,ly,p.x,p.y);S.spreadStarted=true} break;
+    case 3: fillMove(p.x,p.y); break;
+    case 4: rollMove(p.x); break;
+  }
+});
+function pUp(e){
+  if(!P.down) return; P.down=false;
+  switch(S.step){
+    case 0: S.rubbing=false; break;
+    case 1: S.pouring=false; break;
+    case 2: dropCarry(P.x,P.y); break;
+    case 3: fillUp(); break;
+    case 4: if(S.roll){S.roll.dragging=false;if(!S.roll.done&&S.roll.X>=S.roll.xmaxL-50)finishRoll()} break;
+  }
+  if(e.pointerType!=='mouse') P.inside=false;
+}
+cv.addEventListener('pointerup',pUp); cv.addEventListener('pointercancel',pUp);
+cv.addEventListener('pointerleave',()=>{if(!P.down)P.inside=false});
+
+function fillDown(p){
+  if(!onGriddle(p.x,p.y)) return;
+  const f=FD[S.tool]; S.cur={type:f.id,kind:f.kind,items:[]}; S.curLast={x:p.x,y:p.y};
+  if(f.kind==='cream') S.cur.items.push({pts:[p.x,p.y]});
+  else if(f.kind==='fiber') spawnFibers(p.x,p.y,5);
+  else placePiece(p.x,p.y);
+}
+function fillMove(x,y){
+  const c=S.cur; if(!c||!onGriddle(x,y)) return;
+  const f=FD[c.type], d=Math.hypot(x-S.curLast.x,y-S.curLast.y);
+  if(f.kind==='cream'){if(d>=3){c.items[0].pts.push(x,y);S.curLast={x,y}}}
+  else if(f.kind==='fiber'){if(d>=5){spawnFibers(x,y,Math.ceil(d/6)+1);S.curLast={x,y}}}
+  else if(d>=f.gap){placePiece(x,y);S.curLast={x,y}}
+}
+function fillUp(){
+  const c=S.cur; if(!c) return; S.cur=null;
+  if(c.kind==='cream'){drawCream(flctx,c.type,c.items[0].pts);blip(220,0.12,0.06)}
+  if(c.items.length) S.actions.push(c);
+}
+function spawnFibers(x,y,n){for(let i=0;i<n;i++){const f=makeFiber(S.cur.type,x,y,26);S.cur.items.push(f);drawFiber(flctx,f)}}
+function placePiece(x,y){
+  const p=makePiece(S.cur.type,x,y); S.cur.items.push(p);
+  if(p.type!=='egg') drawPiece(flctx,p);
+  blip(p.type==='egg'?300:480+Math.random()*240,0.09,0.1);
+}
+
+/* ---------------- UI ---------------- */
+function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show');clearTimeout(toast.h);toast.h=setTimeout(()=>t.classList.remove('show'),2200)}
+function buildSteps(){$('#steps').innerHTML=STEPS.map((s,i)=>`<div class="pill" data-i="${i}"><b>${i+1}</b><span> ${s.name}</span></div>`).join('')}
+function renderPanel(){
+  const st=S.step, s=STEPS[Math.max(0,st)];
+  document.querySelectorAll('.pill').forEach(p=>{const i=+p.dataset.i;p.classList.toggle('on',i===st);p.classList.toggle('done',i<st)});
+  $('#stepNo').textContent=`ขั้นที่ ${Math.max(0,st)+1} / 6`;
+  $('#stepName').textContent=s.name; $('#stepHint').textContent=s.hint;
+  $('#heatBox').classList.toggle('hidden',!(st>=0&&st<=3));
+  $('#mButter').classList.toggle('hidden',st!==0);
+  $('#mBatter').classList.toggle('hidden',st!==1&&st!==2);
+  $('#mCook').classList.toggle('hidden',!(st>=1&&st<=4));
+  $('#mRoll').classList.toggle('hidden',st!==4);
+  document.querySelectorAll('#heatSeg button').forEach(b=>b.classList.toggle('on',+b.dataset.h===S.heat));
+  const ta=$('#toolArea'); ta.replaceChildren();
+  if(st===3){
+    const wrap=document.createElement('div'); wrap.className='fills';
+    FILLS.forEach(f=>{const b=document.createElement('button');b.className='fillbtn'+(S.tool===f.id?' on':'');b.dataset.id=f.id;
+      const ic=mk(88,88);drawIcon(ic,f);const sp=document.createElement('span');sp.textContent=f.name;b.append(ic,sp);
+      b.onclick=()=>{S.tool=f.id;S.ghost=null;wrap.querySelectorAll('.fillbtn').forEach(x=>x.classList.toggle('on',x.dataset.id===f.id))};wrap.append(b)});
+    const row=document.createElement('div'); row.className='row';
+    const u=document.createElement('button'); u.className='ghost'; u.textContent='↶ ย้อนไส้ล่าสุด'; u.onclick=()=>{if(S.actions.length){S.actions.pop();redrawFillLayer()}};
+    const cl=document.createElement('button'); cl.className='ghost'; cl.textContent='ล้างไส้ทั้งหมด'; cl.onclick=()=>{S.actions=[];redrawFillLayer()};
+    row.append(u,cl); ta.append(wrap,row);
+  }
+  const nb=$('#nextBtn'); nb.classList.toggle('hidden',st===5||st<0); nb.textContent=s.next+(st<4?' →':'');
+  nb.disabled=(st===1&&S.poured<500)||(st===4&&!(S.roll&&S.roll.done));
+  cv.style.cursor=(st>=0&&st<=4)?'none':'default';
+}
+function updateMeters(){
+  const st=S.step;
+  if(st===0){const v=butterCov();$('#vButter').textContent=Math.round(v*100)+'%';$('#fButter').style.width=Math.min(100,v*100)+'%'}
+  if(st===1||st===2){const ml=S.poured/80;$('#vBatter').textContent=Math.round(ml)+' ml';$('#fBatter').style.width=Math.min(100,S.poured/7200*100)+'%';
+    if(st===1){const nb=$('#nextBtn');nb.disabled=S.poured<500}}
+  if(st>=1&&st<=4){
+    if(S.sumT>1){const a=S.sumTC/S.sumT;$('#kCook').style.left=clamp(a/3,0,1)*100+'%';
+      $('#vCook').textContent=a<0.3?'ยังดิบ':a<0.6?'เริ่มเซ็ตตัว':a<1.0?'เริ่มสุก':a<1.6?'เหลืองทอง กำลังดี!':a<2.2?'เริ่มเกรียม':'ไหม้แล้ว!'}
+    else{$('#vCook').textContent='–';$('#kCook').style.left='0%'}
+  }
+  if(st===4&&S.roll){const R=S.roll,v=(R.X-R.xminL)/Math.max(1,R.xmaxL-R.xminL);$('#vRoll').textContent=Math.round(v*100)+'%';$('#fRoll').style.width=v*100+'%'}
+}
+$('#zBatter').style.left=(2600/7200*100)+'%'; $('#zBatter').style.width=((4300-2600)/7200*100)+'%';
+document.querySelectorAll('#heatSeg button').forEach(b=>b.onclick=()=>{S.heat=+b.dataset.h;renderPanel();initAudio()});
+
+function goNext(){
+  const st=S.step;
+  if(st===1&&S.poured<500) return;
+  if(st===2) dropCarry(P.x,P.y);
+  if(st===3){
+    if(S.sumT<15){toast('ยังไม่มีแป้งพอจะม้วนเลย ลองเริ่มใหม่นะ');return}
+    if(S.cur) fillUp();
+    setupRoll(); S.step=4; renderPanel(); return;
+  }
+  if(st===4){ if(!S.roll||!S.roll.done) return; S.step=5; S.serveT=0; S.resultShown=false; renderPanel(); blip(520,0.15,0.1,'triangle'); return; }
+  S.step=st+1;
+  if(S.step===3) S.tool=S.tool||'custard';
+  renderPanel();
+}
+$('#nextBtn').onclick=goNext;
+
+function reset(){
+  batter.fill(0); cook.fill(0); butter.fill(0); fillAmt.fill(0);
+  Object.assign(S,{pouring:false,rubbing:false,carry:0,poured:0,hasBatter:false,actions:[],cur:null,roll:null,tube:null,stats:null,serveT:0,resultShown:false,rawMass:0,sumT:0,sumTC:0,spreadStarted:false,toldFull:false,buDirty:true});
+  steam.length=0; redrawFillLayer(); renderBatter();
+}
+function startGame(){ reset(); S.step=0; S.heat=2; hideAll(); renderPanel(); initAudio(); }
+function hideAll(){document.querySelectorAll('.overlay').forEach(o=>o.classList.remove('show'))}
+$('#startBtn').onclick=startGame;
+$('#restartBtn').onclick=()=>{ if(S.step<0) return startGame(); startGame(); toast('เริ่มแผ่นใหม่'); };
+$('#againBtn').onclick=startGame;
+$('#muteBtn').onclick=()=>{S.muted=!S.muted;store.set('tokyo.muted',S.muted);renderMute();initAudio()};
+
+function stars(n){return '★★★★★'.slice(0,n)+'☆☆☆☆☆'.slice(0,5-n)}
+function starCount(t){return t>=90?5:t>=75?4:t>=60?3:t>=40?2:1}
+function showResult(){
+  S.resultShown=true;
+  const s=S.stats; const matched=TITLES.filter(t=>{try{return t.t(s)}catch(e){return false}});
+  const main=matched[0]||TITLES[TITLES.length-1];
+  const unlocked=new Set(store.get('tokyo.titles',[])); const fresh=matched.filter(t=>!unlocked.has(t.id)).map(t=>t.id);
+  matched.forEach(t=>unlocked.add(t.id)); store.set('tokyo.titles',[...unlocked]);
+  const img=makeThumb();
+  const gal=store.get('tokyo.gallery',[]);
+  gal.unshift({img,total:s.total,title:main.name,date:Date.now()}); while(gal.length>40) gal.pop();
+  if(!store.set('tokyo.gallery',gal)){gal.length=Math.min(gal.length,10);store.set('tokyo.gallery',gal)}
+  if(s.total>store.get('tokyo.best',0)) store.set('tokyo.best',s.total);
+  $('#resImg').src=img; $('#resStars').textContent=stars(starCount(s.total)); $('#resTotal').textContent=s.total;
+  $('#resTitle').textContent=main.name; $('#resDesc').textContent=main.desc;
+  const L=[['ความกลม','round'],['บางสม่ำเสมอ','thin'],['ความสุก','cook'],['ไส้','fill'],['การม้วน','roll']];
+  $('#resBars').innerHTML=L.map(([n,k])=>`<div class="sbar"><span>${n}</span><div class="bar"><i style="width:${s.sc[k]/20*100}%"></i></div><span>${Math.round(s.sc[k])}/20</span></div>`).join('');
+  $('#resBadges').innerHTML=matched.filter(t=>t!==main).slice(0,8).map(t=>`<span class="badge${fresh.includes(t.id)?' new':''}" title="${t.desc}">${fresh.includes(t.id)?'ใหม่! ':''}${t.name}</span>`).join('')
+    +(fresh.includes(main.id)?'<span class="badge new">ปลดล็อกฉายาใหม่!</span>':'');
+  $('#resultOv').classList.add('show'); chime();
+}
+function openGallery(){
+  const gal=store.get('tokyo.gallery',[]), un=new Set(store.get('tokyo.titles',[]));
+  $('#galSub').textContent=`ทำไปแล้ว ${gal.length} แผ่น · คะแนนสูงสุด ${store.get('tokyo.best',0)} · ฉายาที่ปลดล็อก ${TITLES.filter(t=>un.has(t.id)).length}/${TITLES.length}`;
+  $('#galTitles').innerHTML=TITLES.map(t=>un.has(t.id)?`<span class="badge" title="${t.desc}">${t.name}</span>`:`<span class="badge lock" title="ยังไม่ปลดล็อก">???</span>`).join('');
+  const grid=$('#galGrid');
+  grid.innerHTML=gal.length?'':'<div class="empty">ยังไม่มีขนมในแกลเลอรี ลองทำสักแผ่นสิ!</div>';
+  gal.forEach(g=>{const d=document.createElement('div');d.className='gcard';const im=document.createElement('img');im.src=g.img;im.alt=g.title;
+    const info=document.createElement('div');info.innerHTML=`<b></b><small></small>`;info.querySelector('b').textContent=g.title;
+    info.querySelector('small').textContent=`${g.total} คะแนน · ${new Date(g.date).toLocaleDateString('th-TH',{day:'numeric',month:'short'})}`;d.append(im,info);grid.append(d)});
+  $('#galOv').classList.add('show');
+}
+$('#galBtn').onclick=openGallery; $('#titleGal').onclick=openGallery; $('#resGal').onclick=openGallery;
+$('#galClose').onclick=()=>{$('#galOv').classList.remove('show')};
+$('#galOv').addEventListener('click',e=>{if(e.target.id==='galOv')$('#galOv').classList.remove('show')});
+
+function titleStat(){const un=store.get('tokyo.titles',[]);$('#titleStat').textContent=`คะแนนสูงสุด ${store.get('tokyo.best',0)} · ฉายา ${un.length}/${TITLES.length}`}
+
+/* demo pancake behind title screen */
+function makeDemo(){
+  for(let y=0;y<N;y++)for(let x=0;x<N;x++){const i=y*N+x;if(!inG[i])continue;const dx=x+0.5-N/2,dy=y+0.5-N/2,d=Math.hypot(dx,dy),a=Math.atan2(dy,dx);
+    const R=66+2.5*Math.sin(5*a)+3*lace[i]; butter[i]=d<90?0.7:0;
+    if(d<R){batter[i]=0.22+0.1*lace[i]+(d>R-3?-0.12:0);cook[i]=1.05+0.55*(spot[i]-0.5)+(d>R-5?0.6:0)}}
+  S.hasBatter=true; renderBatter(); S.buDirty=true;
+  S.actions=[{type:'custard',kind:'cream',items:[{pts:[440,340,470,400,445,470,475,540,450,610,470,660]}]},
+    {type:'pandan',kind:'cream',items:[{pts:[540,350,520,420,548,490,522,560,546,640]}]}];
+  const fib={type:'foithong',kind:'fiber',items:[]}; for(let i=0;i<40;i++) fib.items.push(makeFiber('foithong',500,500,120)); S.actions.push(fib);
+  redrawFillLayer();
+}
+
+buildSteps(); renderMute(); titleStat();
+const ro=new ResizeObserver(()=>resize()); ro.observe($('#stage')); resize();
+makeDemo(); renderPanel();
+requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
