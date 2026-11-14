@@ -279,6 +279,10 @@ const shadeStrip=mk(64,1);
 {const c=shadeStrip.getContext('2d'),g=c.createLinearGradient(0,0,64,0);
  g.addColorStop(0,'rgba(60,25,0,.5)');g.addColorStop(.14,'rgba(60,25,0,.12)');g.addColorStop(.3,'rgba(255,248,220,.38)');g.addColorStop(.42,'rgba(255,248,220,.06)');g.addColorStop(.75,'rgba(60,25,0,.12)');g.addColorStop(1,'rgba(60,25,0,.48)');
  c.fillStyle=g;c.fillRect(0,0,64,1);}
+const flatStrip=mk(64,1);
+{const c=flatStrip.getContext('2d'),g=c.createLinearGradient(0,0,64,0);
+ g.addColorStop(0,'rgba(60,25,0,.42)');g.addColorStop(.08,'rgba(60,25,0,.08)');g.addColorStop(.16,'rgba(255,248,220,.18)');g.addColorStop(.5,'rgba(255,248,220,.04)');g.addColorStop(.88,'rgba(60,25,0,.06)');g.addColorStop(1,'rgba(60,25,0,.42)');
+ c.fillStyle=g;c.fillRect(0,0,64,1);}
 const steamSprite=mk(64,64);
 {const c=steamSprite.getContext('2d'),g=c.createRadialGradient(32,32,0,32,32,32);g.addColorStop(0,'rgba(255,255,255,.9)');g.addColorStop(1,'rgba(255,255,255,0)');c.fillStyle=g;c.fillRect(0,0,64,64);}
 
@@ -388,7 +392,7 @@ const STEPS=[
   {name:'หยอดแป้ง',hint:'กดค้างบนกระทะ แป้งจะไหลลงตรงหัวลูกศร ปล่อยเมื่อปริมาณถึงแถบสีเขียว',next:'ต่อไป: ละเลง'},
   {name:'ละเลงแป้ง',hint:'ลากก้นกระบวยดันแป้งออกไปให้บางทั่วแผ่น ทรงไหนก็ได้ จะกลม รี หรือทรงอิสระก็ได้ ขอแค่บางเสมอกันและไม่เป็นรู รีบละเลงก่อนแป้งเซ็ตตัว!',next:'ต่อไป: ใส่ไส้'},
   {name:'ใส่ไส้',hint:'เลือกไส้หวานหรือไส้เค็ม ไข่ไก่: แตะเพื่อตอก แล้วลากบนไข่เพื่อคนให้ทั่วแผ่น ไส้กรอกวางเป็นแท่งตามแนวตั้ง แล้วโรยหมูสับรอบๆ',next:'ต่อไป: ม้วน'},
-  {name:'ม้วน',hint:'ปัดนิ้วจากขอบแผ่นเข้าหาไส้ ทิศไหน มุมไหนก็ได้ เพื่อพับขอบและกำหนดทิศม้วน จากนั้นปัดตามลูกศรทีละครั้ง แต่ละครั้งม้วนพลิกไป 1 รอบ ปัดเบี้ยวหรือแรงเกินม้วนจะหลวม',next:'เสิร์ฟ!'},
+  {name:'พับม้วน',hint:'ปัดนิ้วจากขอบแผ่นเข้าหาไส้ ทิศไหน มุมไหนก็ได้ เพื่อพับขอบและกำหนดทิศ จากนั้นปัดตามลูกศรทีละครั้ง แต่ละครั้งพลิกพับไป 1 ทบ แผ่นจะแบนซ้อนกันเป็นชั้น ปัดเบี้ยวหรือแรงเกินจะพับหลวม',next:'เสิร์ฟ!'},
   {name:'เสิร์ฟ',hint:'จัดใส่จาน พร้อมเสิร์ฟ!',next:''},
 ];
 const HEATS=[0,0.5,1,1.8];
@@ -824,34 +828,17 @@ function tubeGeo(X){
 }
 function patternAt(xL,row){const R=S.roll,col=Math.floor((xL-G0)/CELL);if(!R||!R.bR||col<0||col>=N||row<0||row>=N)return 0;const i=row*N+col;return R.bR[i]>0.02?R.pR[i]:0}
 const TH0=1.05;
-function drawTubeTop(c){
-  const R=S.roll, g=tubeGeo(R.X); if(g.rTop<0) return;
-  const rad=g.rad, cx=R.X-rad, y0=G0+g.rTop*CELL-rad*0.12, y1=G0+(g.rBot+1)*CELL+rad*0.12, h=y1-y0, cr=Math.min(rad*0.5,h/2);
-  const outer=cookRGB(g.ck+0.75), inner=cookRGB(Math.max(0.5,g.ck*0.85));
-  c.fillStyle='rgba(40,20,5,.3)'; rr(c,cx-rad+7,y0+9,2*rad,h,cr); c.fill();
-  c.save(); rr(c,cx-rad,y0,2*rad,h,cr); c.clip();
-  c.fillStyle=rgbs(outer); c.fillRect(cx-rad,y0,2*rad,h);
-  {
-    const circ=TAU*rad*2.2, nT=22;
-    for(let r=g.rTop;r<=g.rBot;r++){const y=G0+r*CELL, e=R.rowEdge[r];
-      for(let j=0;j<nT;j++){const th=-Math.PI/2+(j+0.5)/nT*Math.PI, du=((TH0-th)%TAU+TAU)%TAU;
-        let x=R.X-du/TAU*circ, under=false; if(x>e){x-=circ;under=true}
-        const sx=cx+rad*Math.sin(th), w=rad*Math.PI/nT*Math.cos(th)+1.4;
-        if(under){c.fillStyle='rgba(110,45,5,.22)';c.fillRect(sx-w/2,y,w,CELL+0.6)}
-        if(S.hasPat&&patternAt(x,r)>=0.12){c.fillStyle=under?'#E9C46E':'#FBE08A';c.fillRect(sx-w/2,y,w,CELL+0.6)}
-      }
-      const te=TH0-Math.max(0,R.X-e)/circ*TAU, tw=((te+Math.PI)%TAU+TAU)%TAU-Math.PI;
-      if(tw>-Math.PI/2&&tw<Math.PI/2){c.fillStyle='rgba(110,50,10,.5)';c.fillRect(cx+rad*Math.sin(tw)-1.2,y,2.4,CELL+0.6)}
-    }
-  }
-  if(g.ck<0.45){c.fillStyle='rgba(250,240,205,.55)';for(let r=g.rTop;r<=g.rBot;r+=3){if(lace[r*N+40]>0.5)c.fillRect(cx-rad*0.4,G0+r*CELL,rad*0.5,CELL*2)}}
-  c.drawImage(shadeStrip,cx-rad,y0,2*rad,h);
+// A folded piece is a stack of strips of the real sheet. Each strip keeps its own outline and is
+// mirrored across every fold line it went over: x -> a*x + b in the roll frame (a = +1 top side up, -1 underside up).
+function layerDraw(c,L,flip){
+  const R=S.roll, d0=Math.min(L.a*L.x0+L.b,L.a*L.x1+L.b), d1=Math.max(L.a*L.x0+L.b,L.a*L.x1+L.b);
+  c.save(); c.beginPath(); c.rect(d0,-1000,d1-d0,3000); c.clip();
+  c.translate(L.b,0); c.scale(L.a,1);
+  if((L.a>0)!==!!flip) worldDraw(c,R.flat,0,0,1000,1000); else worldDraw(c,R.under,G0,G0,N*CELL,N*CELL);
   c.restore();
-  // open ends: crepe layers with filling peeking out
-  for(const yy of [y0+rad*0.16,y1-rad*0.16]){
-    c.fillStyle=rgbs(inner,0.95); c.beginPath(); c.ellipse(cx,yy,rad*0.86,rad*0.22,0,0,TAU); c.fill();
-    c.fillStyle=R.dom?R.dom.color:'rgba(90,50,15,.55)'; c.beginPath(); c.ellipse(cx,yy,rad*0.55,rad*0.14,0,0,TAU); c.fill();
-  }
+}
+function drawStack(c,layers,flip){
+  for(const L of layers){ c.save(); c.shadowColor='rgba(40,20,5,.32)'; c.shadowBlur=6; c.shadowOffsetX=1.5; c.shadowOffsetY=3; layerDraw(c,L,flip); c.restore(); }
 }
 function rollGestureStart(p){const R=S.roll;if(!R||R.done||R.anim)return;R.g0={x:p.x,y:p.y,t:performance.now()};R.gc={x:p.x,y:p.y}}
 function rollGestureMove(p){const R=S.roll;if(R&&R.g0)R.gc={x:p.x,y:p.y}}
@@ -861,25 +848,31 @@ function rollGestureEnd(){
   if(R.phase==='aim'){
     if(L<50){toast('ปัดนิ้วยาวขึ้นอีกนิด จากขอบแผ่นเข้าหาไส้');return}
     orientRoll(Math.atan2(dy,dx));
-    const w=clamp(L*0.45,30,(R.xmaxL-R.xminL)*0.4);
-    R.foldX=R.xminL+w; R.foldCover=R.fillLeft==null||R.xminL+2*w>=R.fillLeft;
-    R.phase='folding'; R.anim={kind:'fold',t:0,dur:0.5,p:0}; blip(300,0.1,0.1,'triangle'); renderPanel(); return;
+    const w=clamp(L*0.45,45,(R.xmaxL-R.xminL)*0.4);
+    R.w=w; R.cut=R.xminL; R.E=R.xminL+w; R.stack=[];
+    R.foldCover=R.fillLeft==null||R.xminL+2*w>=R.fillLeft;
+    R.phase='roll'; R.anim={kind:'flip',t:0,dur:0.5,p:0,first:true}; blip(300,0.1,0.1,'triangle'); renderPanel(); return;
   }
   if(R.phase!=='roll'||L<40) return;
   const ca=Math.cos(R.alpha), sa=Math.sin(R.alpha), along=dx*ca+dy*sa, side=-dx*sa+dy*ca;
   if(along<=0||Math.abs(side)>along*1.4){R.slips++;toast('ปัดไปทางเดียวกับลูกศรนะ');blip(170,0.12,0.1);return}
-  const dev=Math.atan2(Math.abs(side),along), g=tubeGeo(R.X);
-  let adv=clamp(TAU*g.rad*0.75,70,190); if(R.xmaxL-R.X<adv*1.35) adv=R.xmaxL-R.X;
+  if(R.anim) return;
+  const dev=Math.atan2(Math.abs(side),along), adv=R.E-R.cut;
   const lz=clamp((sp-1800)/1800,0,1)*0.6+clamp(dev/0.8,0,1)*0.6;
   R.lw+=lz*adv; R.ld+=adv; R.loose=R.lw/Math.max(1,R.ld); R.flips++;
-  R.anim={kind:'flip',t:0,dur:0.4,from:R.X,to:R.X+adv,p:0}; blip(360+R.flips*45,0.1,0.11,'triangle');
+  R.anim={kind:'flip',t:0,dur:0.45,p:0}; blip(360+R.flips*45,0.1,0.11,'triangle');
   if(dev>0.45) toast('ปัดเบี้ยวไปนิด ม้วนหลวมลง'); else if(sp>2600) toast('ปัดแรงไป ม้วนหลวมลง');
 }
 function rollAnim(dt){
   const R=S.roll; if(!R||!R.anim) return; const A=R.anim; A.t+=dt;
   const p=clamp(A.t/A.dur,0,1), e=p<0.5?2*p*p:1-Math.pow(-2*p+2,2)/2; A.p=e;
-  if(A.kind==='fold'){ if(p>=1){R.anim=null;R.phase='roll';R.X=R.foldX;renderPanel();toast(R.foldCover?'พับขอบคลุมไส้แล้ว! ปัดตามลูกศรเพื่อม้วน':'ขอบยังไม่คลุมไส้ แต่ม้วนต่อได้')} }
-  else { R.X=A.from+(A.to-A.from)*e; if(p>=1){R.anim=null;if(R.X>=R.xmaxL-1)finishRoll()} }
+  if(p<1) return;
+  // land the lifted part (sheet segment under the stack + the stack) on the other side of the fold line
+  const E=R.E, grp=[{x0:R.cut,x1:E,a:1,b:0},...R.stack];
+  R.stack=grp.reverse().map(L=>({x0:L.x0,x1:L.x1,a:-L.a,b:2*E-L.b}));
+  const nc=E; R.E=2*E-R.cut; R.cut=nc; R.X=Math.min(R.E,R.xmaxL); R.anim=null;
+  if(R.E>=R.xmaxL-6){finishRoll();return}
+  if(A.first){renderPanel();toast(R.foldCover?'พับขอบคลุมไส้แล้ว! ปัดตามลูกศรเพื่อพลิกพับต่อ':'ขอบยังไม่คลุมไส้ แต่พับต่อได้')}
 }
 function drawArrow(c,x0,y0,x1,y1,col,w){
   const a=Math.atan2(y1-y0,x1-x0), hl=w*3.2;
@@ -896,20 +889,6 @@ function drawShells(c){
   for(const k of S.cracks){const a=1-k.t/0.6,s=k.t*90;c.globalAlpha=Math.max(0,a);c.fillStyle='#F3E6D0';c.strokeStyle='#C9A77A';c.lineWidth=2;
     for(const dir of [-1,1]){c.beginPath();c.ellipse(k.x+dir*(18+s),k.y-30-s*0.6,15,20,dir*0.6,dir>0?-Math.PI/2:Math.PI/2,dir>0?Math.PI/2:Math.PI*1.5);c.closePath();c.fill();c.stroke()}}
   c.globalAlpha=1;
-}
-function drawFlap(c){
-  // the strip [xmin, foldX] swings over the fold line: top side while lifting, underside once past upright
-  const R=S.roll, fx=R.foldX, w=fx-R.xminL, e=R.anim?R.anim.p:1, s=-Math.cos(Math.PI*e), lift=1-Math.abs(s);
-  if(w<1) return;
-  c.save(); c.beginPath();
-  if(s<0) c.rect(fx+w*s,-1000,-w*s,3000); else c.rect(fx,-1000,w*s+2,3000);
-  c.clip();
-  c.shadowColor='rgba(40,20,5,.32)'; c.shadowBlur=10+24*lift; c.shadowOffsetX=4; c.shadowOffsetY=6+18*lift;
-  c.translate(fx,0); c.scale(-s,1); c.translate(-fx,0);
-  if(s<0) worldDraw(c,R.flat,0,0,1000,1000); else worldDraw(c,R.under,G0,G0,N*CELL,N*CELL);
-  c.restore();
-  const col=clamp(Math.floor((fx-G0)/CELL),0,N-1);
-  for(let r=0;r<N;r++){if(R.bR[r*N+col]>0.02){const y=G0+r*CELL;c.fillStyle='rgba(255,236,170,.8)';c.fillRect(fx-1.5,y,3.5,CELL+0.5);c.fillStyle='rgba(90,40,5,.22)';c.fillRect(fx+2,y,5,CELL+0.5)}}
 }
 function finishRoll(){
   const R=S.roll; R.done=true; R.dragging=false; R.X=R.xmaxL;
@@ -939,108 +918,23 @@ function dominantFill(){
 }
 
 /* ---------------- finished roll illustration (3/4 view) ---------------- */
-function drawFilling(c,ri,m){
-  const r0=rng(99), has=k=>(m[k]||0)>0;
-  const creams=['custard','pandan','taro','choco'].filter(has);
-  const any=Object.keys(m).some(k=>m[k]>0&&k!=='chili');
-  c.save(); circle(c,0,0,ri); c.clip();
-  if(!any){
-    const g=c.createRadialGradient(0,ri*0.2,0,0,0,ri); g.addColorStop(0,'#4a2a0c'); g.addColorStop(0.65,'#a8742e'); g.addColorStop(1,'#efc46a');
-    c.fillStyle=g; circle(c,0,0,ri); c.fill(); c.restore(); return;
-  }
-  const base=creams.length?FD[creams[0]].color:has('hen')?'#F8D37A':has('pork')?'#A87A4C':has('floss')?'#C57B3B':has('foithong')?'#F3B320':'#E7BE68';
-  c.fillStyle=base; circle(c,0,0,ri); c.fill();
-  creams.forEach((t,k)=>{
-    const f=FD[t], ang=k/creams.length*TAU+0.6, d=creams.length>1?ri*0.42:0, cx=Math.cos(ang)*d, cy=Math.sin(ang)*d;
-    for(let i=0;i<10;i++){const x=cx+(r0()-.5)*ri*0.8,y=cy+(r0()-.5)*ri*0.8,rad=ri*(0.2+r0()*0.18);
-      c.fillStyle=f.color; circle(c,x,y,rad); c.fill();
-      c.fillStyle=f.hi; c.globalAlpha=.55; circle(c,x-rad*0.3,y-rad*0.3,rad*0.45); c.fill(); c.globalAlpha=1;
-      c.fillStyle='rgba(0,0,0,.08)'; circle(c,x+rad*0.25,y+rad*0.3,rad*0.5); c.fill();}
-  });
-  if(has('hen')){for(let i=0;i<16;i++){const a=r0()*TAU,d=Math.sqrt(r0())*ri*0.85,x=Math.cos(a)*d,y=Math.sin(a)*d,rad=ri*(0.14+r0()*0.16);
-      c.fillStyle=r0()<0.55?'#F6A623':'#FFF8E6';c.beginPath();c.ellipse(x,y,rad,rad*0.7,r0()*3,0,TAU);c.fill()}
-    c.strokeStyle='#F7B43A';c.lineWidth=ri*0.12;circle(c,0,0,ri*0.92);c.stroke()}
-  if(has('pork')) for(let i=0;i<80;i++){const a=r0()*TAU,d=Math.sqrt(r0())*ri,rad=ri*(0.05+r0()*0.06);
-    c.fillStyle=PAL.pork[(r0()*5)|0]; circle(c,Math.cos(a)*d,Math.sin(a)*d,rad); c.fill();
-    c.fillStyle='rgba(255,240,210,.3)'; circle(c,Math.cos(a)*d-rad*0.3,Math.sin(a)*d-rad*0.3,rad*0.35); c.fill();}
-  if(has('floss')){c.lineCap='round';for(let i=0;i<70;i++){const a=r0()*TAU,d=Math.sqrt(r0())*ri,x=Math.cos(a)*d,y=Math.sin(a)*d,b=r0()*TAU;
-    c.strokeStyle=PAL.floss[(r0()*5)|0]; c.lineWidth=ri*0.035; c.beginPath(); c.moveTo(x,y); c.quadraticCurveTo(x+Math.cos(b)*ri*0.1,y+Math.sin(b)*ri*0.1,x+Math.cos(b+1)*ri*0.18,y+Math.sin(b+1)*ri*0.18); c.stroke();}}
-  if(has('foithong')){c.lineCap='round';for(let i=0;i<45;i++){const a=r0()*TAU,d=Math.sqrt(r0())*ri,x=Math.cos(a)*d,y=Math.sin(a)*d,b=r0()*TAU;
-    c.strokeStyle=PAL.foithong[(r0()*5)|0]; c.lineWidth=ri*0.022; c.beginPath(); c.moveTo(x,y); c.bezierCurveTo(x+ri*0.2*Math.cos(b),y+ri*0.2*Math.sin(b),x-ri*0.15,y+ri*0.25,x+ri*0.3*Math.cos(b+2),y+ri*0.3*Math.sin(b+2)); c.stroke();}}
-  const ns=Math.min(2,Math.round(m.sausage||0));
-  const sPos=ns===1?[[ri*0.12,-ri*0.08,ri*0.5]]:ns===2?[[-ri*0.32,-ri*0.12,ri*0.38],[ri*0.34,ri*0.14,ri*0.38]]:[];
-  for(const [x,y,rad] of sPos){
-    c.fillStyle='rgba(60,15,0,.3)'; circle(c,x+rad*0.08,y+rad*0.12,rad); c.fill();
-    c.fillStyle='#A92F1C'; circle(c,x,y,rad); c.fill();
-    const g=c.createRadialGradient(x-rad*0.3,y-rad*0.3,rad*0.1,x,y,rad*0.9); g.addColorStop(0,'#F0906A'); g.addColorStop(1,'#C8452E');
-    c.fillStyle=g; circle(c,x,y,rad*0.88); c.fill();
-    c.fillStyle='rgba(255,210,190,.35)'; for(let i=0;i<7;i++){const a=r0()*TAU,d=r0()*rad*0.6;circle(c,x+Math.cos(a)*d,y+Math.sin(a)*d,rad*0.05);c.fill()}
-    c.strokeStyle='rgba(255,230,210,.5)'; c.lineWidth=rad*0.08; c.beginPath(); c.arc(x,y,rad*0.72,3.6,4.6); c.stroke();
-  }
-  if(has('egg')){const x=-ri*0.38,y=ri*0.38;
-    c.fillStyle='#FFFCF2'; c.beginPath(); c.ellipse(x,y,ri*0.34,ri*0.28,0.4,0,TAU); c.fill();
-    c.fillStyle='#F6B13A'; circle(c,x+ri*0.03,y,ri*0.15); c.fill();
-    c.fillStyle='rgba(255,255,255,.6)'; circle(c,x-ri*0.03,y-ri*0.05,ri*0.05); c.fill();}
-  if(has('chili')){c.lineCap='round';c.strokeStyle='#C92A16';c.lineWidth=ri*0.09;c.beginPath();c.moveTo(-ri,ri*0.1);
-    for(let x=-ri;x<=ri;x+=ri*0.1)c.lineTo(x,ri*0.05+Math.sin(x/ri*7)*ri*0.12);c.stroke();
-    c.strokeStyle='rgba(255,170,140,.6)';c.lineWidth=ri*0.025;c.stroke();}
-  const g=c.createRadialGradient(0,ri*0.15,ri*0.5,0,0,ri); g.addColorStop(0,'rgba(60,30,5,0)'); g.addColorStop(1,'rgba(60,30,5,.45)');
-  c.fillStyle=g; circle(c,0,0,ri); c.fill();
-  c.restore();
-}
 function buildArt(){
-  const R=S.roll, g=R.geo; if(!g||g.rTop<0) return null;
+  const R=S.roll; if(!R||!R.stack) return null;
+  const pad=30, x0=R.cut-pad, x1=R.E+pad, y0=R.y0L-pad, y1=R.y1L+pad, w=x1-x0, h=y1-y0, SC2=1.6;
+  const piece=mk(Math.ceil(w*SC2),Math.ceil(h*SC2)), pc=piece.getContext('2d');
+  pc.setTransform(SC2,0,0,SC2,-x0*SC2,-y0*SC2);
+  const layers=[{x0:R.cut,x1:Math.min(R.E,R.xmaxL),a:1,b:0},...R.stack];
+  for(const L of layers) layerDraw(pc,L,false);
+  // darker copy for the visible thickness of the stacked layers
+  const dark=mk(piece.width,piece.height), dc=dark.getContext('2d');
+  dc.drawImage(piece,0,0); dc.globalCompositeOperation='source-atop'; dc.fillStyle='rgba(120,60,15,.55)'; dc.fillRect(0,0,dark.width,dark.height);
   const A=mk(1200,1200), c=A.getContext('2d'); c.setTransform(1.2,0,0,1.2,0,0);
-  const span=(g.rBot-g.rTop+1)*CELL, L=clamp(span*0.68,290,450), r=Math.min(L/2.9,clamp(g.rad*1.75,56,108));
-  const rN=r*1.08, rF=r*0.8, rad=s=>rN+(rF-rN)*s;
-  const phi=-0.42, ax=Math.cos(phi), ay=Math.sin(phi), px=-ay, py=ax, rot=Math.atan2(py,px), e=0.62;
-  const C={x:515,y:470}, F={x:C.x+ax*L/2,y:C.y+ay*L/2}, Nn={x:C.x-ax*L/2,y:C.y-ay*L/2};
-  const outer=cookRGB(g.ck+0.75), inner=cookRGB(Math.max(0.55,g.ck*0.8));
-  const body=()=>{c.beginPath();c.moveTo(F.x-px*rF,F.y-py*rF);c.lineTo(Nn.x-px*rN,Nn.y-py*rN);c.lineTo(Nn.x+px*rN,Nn.y+py*rN);c.lineTo(F.x+px*rF,F.y+py*rF);c.ellipse(F.x,F.y,rF,rF*e,rot,0,Math.PI,true);c.closePath()};
-  c.save(); c.shadowColor='rgba(70,35,8,.4)'; c.shadowBlur=28; c.shadowOffsetX=10; c.shadowOffsetY=22; body(); c.fillStyle=rgbs(outer,0.8); c.fill();
-  c.beginPath(); c.ellipse(Nn.x,Nn.y,rN,rN*e,rot,0,TAU); c.fill(); c.restore();
-  const gr=c.createLinearGradient(C.x-px*r,C.y-py*r,C.x+px*r,C.y+py*r);
-  gr.addColorStop(0,rgbs(outer,0.7)); gr.addColorStop(0.2,rgbs(outer,1.05,24)); gr.addColorStop(0.38,rgbs(outer,1.0,4)); gr.addColorStop(0.8,rgbs(outer,0.86)); gr.addColorStop(1,rgbs(outer,0.6));
-  body(); c.fillStyle=gr; c.fill();
-  c.save(); body(); c.clip();
-  const rr0=rng(31);
-  for(let i=0;i<150;i++){const s=rr0(), o=(rr0()*2-1)*rad(s), x=Nn.x+ax*L*s+px*o, y=Nn.y+ay*L*s+py*o;
-    c.fillStyle=rr0()<0.6?'rgba(150,70,10,.1)':'rgba(255,230,160,.1)'; c.beginPath(); c.ellipse(x,y,3+rr0()*9,2+rr0()*5,phi,0,TAU); c.fill();}
-  // outer wrap sampled from the real pancake: where the sheet ends you see the layer under it
-  const nS=230, nT=64, circ=TAU*g.rad*2.2, step=L/nS, seam=[];
-  for(let i=0;i<nS;i++){
-    const s=i/(nS-1), row=Math.round(g.rTop+s*(g.rBot-g.rTop)), bx=Nn.x+ax*L*s, by=Nn.y+ay*L*s, rs=rad(s), edge=R.rowEdge[row];
-    for(let j=0;j<nT;j++){
-      const th=-Math.PI/2+(j+0.5)/nT*Math.PI, du=((TH0-th)%TAU+TAU)%TAU;
-      let x=R.X-du/TAU*circ, under=false; if(x>edge){x-=circ;under=true}
-      const pv=S.hasPat?patternAt(x,row):0; if(!under&&pv<0.12) continue;
-      const o=rs*Math.sin(th), sz=Math.max(1.9,Math.max(step,rs*Math.PI/nT*Math.cos(th))*0.72), X=bx+px*o, Y=by+py*o;
-      if(under){c.fillStyle='rgba(120,50,5,.2)';circle(c,X,Y,sz);c.fill()}
-      if(pv>=0.12){c.fillStyle='rgba(150,75,10,.32)';circle(c,X+1.2,Y+1.8,sz*0.85);c.fill();c.fillStyle=under?'#EDC86C':'#FCE59A';circle(c,X,Y,sz*0.85);c.fill()}
-    }
-    const te=TH0-Math.max(0,R.X-edge)/circ*TAU, tw=((te+Math.PI)%TAU+TAU)%TAU-Math.PI;
-    seam.push(tw>-Math.PI/2+0.05&&tw<Math.PI/2-0.05?{x:bx+px*rs*Math.sin(tw),y:by+py*rs*Math.sin(tw)}:null);
-  }
-  for(const [w,col,ox,oy] of [[4.5,'rgba(110,45,5,.42)',1.5,2.5],[2,'rgba(255,236,170,.8)',0,0]]){
-    c.strokeStyle=col; c.lineWidth=w; c.lineJoin='round'; c.lineCap='round'; c.beginPath(); let on=false;
-    for(const p of seam){if(!p){on=false;continue}on?c.lineTo(p.x+ox,p.y+oy):c.moveTo(p.x+ox,p.y+oy);on=true}
-    c.stroke();
-  }
-  if(R.tearFrac>0.3){c.strokeStyle='rgba(250,240,205,.75)';c.lineWidth=5;for(let i=0;i<5;i++){const s=0.15+i*0.17,x=Nn.x+ax*L*s,y=Nn.y+ay*L*s,rs=rad(s);c.beginPath();c.moveTo(x-px*rs*0.6,y-py*rs*0.6);c.lineTo(x+px*rs*0.1+ax*8,y+py*rs*0.1+ay*8);c.lineTo(x+px*rs*0.5,y+py*rs*0.5);c.stroke()}}
-  c.restore();
-  // open end: one thin crepe sheet wrapped around the filling
-  const m=fillMass(), cov=S.stats?S.stats.cov:0, anyFill=Object.keys(m).some(k=>m[k]>0);
-  c.save(); c.translate(Nn.x,Nn.y); c.rotate(rot); c.scale(1,e);
-  c.fillStyle=rgbs(outer,0.8); circle(c,0,0,rN); c.fill();
-  c.fillStyle=rgbs(inner,1.04,8); circle(c,0,0,rN*0.955); c.fill();
-  c.lineCap='round'; c.strokeStyle=rgbs(outer,0.84); c.lineWidth=rN*0.03;
-  c.beginPath(); for(let t=0;t<=1.001;t+=0.02){const rho=rN*0.925-rN*0.07*t,a=0.9+t*TAU;const x=Math.cos(a)*rho,y=Math.sin(a)*rho;t?c.lineTo(x,y):c.moveTo(x,y)} c.stroke();
-  c.fillStyle=rgbs(outer,0.9); circle(c,Math.cos(0.9)*rN*0.925,Math.sin(0.9)*rN*0.925,rN*0.03); c.fill();
-  const ri=anyFill?rN*0.84:rN*0.86;
-  drawFilling(c,ri,m);
-  if(anyFill&&cov>0.35){const d=dominantFill();if(d){const n=3+Math.round(cov*6);for(let i=0;i<n;i++){const a=Math.PI*0.5+(i/(n-1)-0.5)*1.6,x=Math.cos(a)*ri*0.8,y=Math.sin(a)*ri*0.8+ri*0.15,rd=ri*(0.22+0.1*Math.sin(i*2.3));
-    c.fillStyle=d.color; circle(c,x,y,rd); c.fill(); if(d.hi){c.fillStyle=d.hi;c.globalAlpha=.5;circle(c,x-rd*0.3,y-rd*0.3,rd*0.4);c.fill();c.globalAlpha=1}}}}
-  c.strokeStyle=rgbs(outer,0.6); c.lineWidth=rN*0.025; circle(c,0,0,rN*0.99); c.stroke();
+  const k=clamp(540/h,0.8,1.5), th=Math.min(10,3+layers.length*1.2);
+  c.save(); c.translate(500,500); c.rotate(0.72); c.scale(k,k);
+  c.shadowColor='rgba(60,30,5,.4)'; c.shadowBlur=26; c.shadowOffsetX=14; c.shadowOffsetY=6;
+  c.drawImage(dark,-w/2+th*0.4,-h/2+th,w,h); c.shadowColor='transparent';
+  for(let i=th;i>0;i-=1) c.drawImage(dark,-w/2+i*0.4,-h/2+i,w,h);
+  c.drawImage(piece,-w/2,-h/2,w,h);
   c.restore();
   return A;
 }
@@ -1197,10 +1091,19 @@ function draw(){
     c.drawImage(R.spill,0,0,1000,1000);
     if(R.alpha==null) c.drawImage(R.flat,0,0,1000,1000);
     else{
-      const cut=R.phase==='folding'?R.foldX:R.X;
+      const A=R.anim, base=R.cut==null?R.xminL:(A?R.E:R.cut);
       c.save(); c.translate(GC,GC); c.rotate(R.alpha); c.translate(-GC,-GC);
-      c.save(); c.beginPath(); c.rect(cut,-1000,3000,3000); c.clip(); worldDraw(c,R.flat,0,0,1000,1000); c.restore();
-      if(R.phase==='folding') drawFlap(c); else drawTubeTop(c);
+      c.save(); c.beginPath(); c.rect(base,-1000,3000,3000); c.clip(); worldDraw(c,R.flat,0,0,1000,1000); c.restore();
+      if(R.stack){
+        if(!A) drawStack(c,R.stack,false);
+        else{
+          const sg=-Math.cos(Math.PI*A.p), lift=1-Math.abs(sg), grp=[{x0:R.cut,x1:R.E,a:1,b:0},...R.stack];
+          c.save(); c.translate(R.E,0); c.scale(-sg,1); c.translate(-R.E,0);
+          if(lift>0.02){c.globalAlpha=1;}
+          if(sg<0) drawStack(c,grp,false); else drawStack(c,grp.slice().reverse(),true);
+          c.restore();
+        }
+      }
       c.restore();
     }
   }else{
@@ -1242,11 +1145,11 @@ function drawHints(c){
         drawArrow(c,cx,cy,cx+(GC-cx)*0.4,cy+(GC-cy)*0.4,'rgba(255,248,234,.9)',7);
         hintText(c,'ปัดจากขอบแผ่นเข้าหาไส้ ทิศไหนก็ได้',GC,930,26);
       } else if(R.phase==='roll'){
-        const g=tubeGeo(R.X), mid=(g.rTop+g.rBot+1)/2*CELL+G0, b=pulse*24;
-        const p0=rollToWorld(R.X+30+b,mid), p1=rollToWorld(R.X+170+b,mid);
+        const mid=(R.y0L+R.y1L)/2, b=pulse*24;
+        const p0=rollToWorld(R.E+30+b,mid), p1=rollToWorld(R.E+170+b,mid);
         drawArrow(c,p0.x,p0.y,p1.x,p1.y,'rgba(255,248,234,.92)',9);
-        const left=Math.max(1,Math.ceil((R.xmaxL-R.X)/clamp(TAU*g.rad*0.75,70,190)));
-        hintText(c,`ปัดตามลูกศรเพื่อพลิกม้วน · อีกราว ${left} ครั้ง`,GC,930,26);
+        const left=Math.max(1,Math.ceil((R.xmaxL-R.E)/(R.E-R.cut)-0.1));
+        hintText(c,`ปัดตามลูกศรเพื่อพลิกพับ · อีกราว ${left} ครั้ง`,GC,930,26);
       }
     }
   }
