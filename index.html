@@ -30,7 +30,7 @@ button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
 #app{display:flex;flex-direction:column;height:100%}
 header{display:flex;align-items:center;gap:12px;padding:10px 16px}
 .brand{font-weight:600;font-size:20px;white-space:nowrap;display:flex;align-items:center;gap:8px}
-.brand i{display:inline-block;width:26px;height:12px;border-radius:7px;background:linear-gradient(90deg,#c98a3c,#f0c06a 45%,#c98a3c);box-shadow:inset 0 -2px 0 rgba(0,0,0,.15)}
+.brand i{display:inline-block;width:26px;height:12px;border-radius:7px;background:linear-gradient(90deg,#d98a2c,#f7c64e 45%,#d98a2c);box-shadow:inset 0 -2px 0 rgba(0,0,0,.15)}
 #steps{display:flex;gap:6px;flex:1;justify-content:center;min-width:0;overflow:hidden}
 .pill{font-size:13px;padding:5px 11px;border-radius:999px;background:var(--chip);color:var(--muted);white-space:nowrap;transition:.2s}
 .pill b{font-weight:600}
@@ -42,7 +42,7 @@ header{display:flex;align-items:center;gap:12px;padding:10px 16px}
 main{flex:1;display:flex;min-height:0;gap:16px;padding:0 16px 16px}
 #stage{flex:1;min-width:0;min-height:0;display:flex;align-items:center;justify-content:center;position:relative}
 #c{display:block;touch-action:none;border-radius:22px;box-shadow:0 10px 30px var(--shadow)}
-aside{width:310px;flex:none;background:var(--panel);border-radius:22px;padding:18px;display:flex;flex-direction:column;gap:14px;overflow:auto;box-shadow:0 6px 20px var(--shadow)}
+aside{width:320px;flex:none;background:var(--panel);border-radius:22px;padding:18px;display:flex;flex-direction:column;gap:14px;overflow:auto;box-shadow:0 6px 20px var(--shadow)}
 .stepno{font-size:13px;color:var(--muted)}
 aside h2{margin:2px 0 4px;font-size:24px;font-weight:600}
 aside p{margin:0;font-size:14.5px;line-height:1.55;color:var(--muted);font-weight:300}
@@ -56,12 +56,16 @@ aside p{margin:0;font-size:14.5px;line-height:1.55;color:var(--muted);font-weigh
 .bar{position:relative;height:12px;border-radius:7px;background:var(--chip);overflow:hidden}
 .bar i{position:absolute;left:0;top:0;bottom:0;width:0;border-radius:7px;background:linear-gradient(90deg,var(--accent-2),var(--accent));transition:width .12s}
 .bar .zone{position:absolute;top:0;bottom:0;background:rgba(106,168,79,.35);border-left:2px solid rgba(80,140,60,.7);border-right:2px solid rgba(80,140,60,.7)}
-.bar.cook{background:linear-gradient(90deg,#f3ead0 0%,#f4dc98 17%,#eac26c 33%,#d6974a 50%,#a0602a 67%,#56301a 83%,#24170e 100%);overflow:visible}
+.bar.cook{background:linear-gradient(90deg,#faf0cd 0%,#fae496 17%,#f7c85a 33%,#eca034 50%,#be6920 67%,#64371a 83%,#24170e 100%);overflow:visible}
 .bar.cook em{position:absolute;top:-4px;width:6px;height:20px;margin-left:-3px;border-radius:3px;background:var(--ink);box-shadow:0 0 0 2px var(--panel);transition:left .15s;left:0}
+.fgroup{display:flex;flex-direction:column;gap:6px}
+.fgroup .glbl{font-size:13px;color:var(--muted)}
 .fills{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .fillbtn{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 2px 7px;border-radius:14px;background:var(--chip);font-size:12.5px;line-height:1.2;border:2px solid transparent;text-align:center}
 .fillbtn canvas{width:44px;height:44px}
 .fillbtn.on{border-color:var(--accent);background:var(--panel)}
+#toolArea{display:flex;flex-direction:column;gap:10px}
+#toolArea:empty{display:none}
 .row{display:flex;gap:8px}
 .ghost{flex:1;padding:8px;border-radius:12px;background:var(--chip);font-size:14px}
 .spacer{flex:1}
@@ -75,14 +79,14 @@ aside p{margin:0;font-size:14.5px;line-height:1.55;color:var(--muted);font-weigh
 .overlay{position:fixed;inset:0;background:var(--overlay);display:none;align-items:center;justify-content:center;padding:16px;z-index:10;-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
 .overlay.show{display:flex}
 .card{background:var(--panel);border-radius:26px;padding:26px;max-width:min(920px,100%);max-height:100%;overflow:auto;box-shadow:0 20px 50px rgba(0,0,0,.3)}
-.hero{text-align:center;max-width:460px}
+.hero{text-align:center;max-width:480px}
 .hero h1{margin:0;font-size:46px;font-weight:600;letter-spacing:.5px}
 .hero .sub{margin:4px 0 18px;color:var(--muted);font-weight:300}
 .flow{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin:0 0 22px;padding:0;list-style:none}
 .flow li{background:var(--chip);padding:5px 11px;border-radius:999px;font-size:14px}
 .hero .btns{display:flex;flex-direction:column;gap:10px}
 .hero .stat{margin-top:14px;font-size:13.5px;color:var(--muted)}
-.result{display:grid;grid-template-columns:320px 1fr;gap:24px;align-items:start}
+.result{display:grid;grid-template-columns:340px 1fr;gap:24px;align-items:start}
 .result img{width:100%;border-radius:18px;display:block;box-shadow:0 6px 18px var(--shadow)}
 .stars{color:#f2a51c;font-size:22px;letter-spacing:2px}
 .total{font-size:15px;color:var(--muted)}
@@ -124,15 +128,13 @@ aside p{margin:0;font-size:14.5px;line-height:1.55;color:var(--muted);font-weigh
   .brand{font-size:17px}
   .hbtn .t{display:none}
   .result{grid-template-columns:1fr}
-  .result img{max-width:300px;margin:0 auto}
+  .result img{max-width:320px;margin:0 auto}
   .primary{padding:11px 14px;font-size:16px}
   header{padding:8px 12px;gap:8px}
-}
-@media (max-width:820px),(max-aspect-ratio:1/1){
   #nextBtn{position:sticky;bottom:0;z-index:2;flex:none}
   .spacer{display:none}
 }
-@media (max-width:520px){ .brand{display:none} #steps{justify-content:flex-start;gap:4px} .pill{padding:4px 9px} .hbtn{padding:7px 9px} }
+@media (max-width:520px){ .brand{display:none} #steps{justify-content:flex-start;gap:4px} .pill{padding:4px 8px} .hbtn{padding:7px 9px} }
 </style>
 </head>
 <body>
@@ -173,7 +175,7 @@ aside p{margin:0;font-size:14.5px;line-height:1.55;color:var(--muted);font-weigh
   <div class="card hero">
     <h1>ขนมโตเกียว</h1>
     <p class="sub">ร้านรถเข็นหน้าโรงเรียน · ทำเองทุกขั้นตอน</p>
-    <ol class="flow"><li>เช็ดเนย</li><li>หยอดแป้ง</li><li>ละเลง</li><li>ใส่ไส้</li><li>ม้วน</li><li>เสิร์ฟ</li></ol>
+    <ol class="flow"><li>เช็ดเนย</li><li>โรยลาย</li><li>หยอดแป้ง</li><li>ละเลง</li><li>ใส่ไส้</li><li>ม้วน</li><li>เสิร์ฟ</li></ol>
     <div class="btns">
       <button class="primary" id="startBtn">เริ่มทำขนม</button>
       <button class="secondary" id="titleGal">แกลเลอรี &amp; ฉายา</button>
@@ -219,14 +221,19 @@ const TAU=Math.PI*2;
 function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
 function mk(w,h){const c=document.createElement('canvas');c.width=w;c.height=h;return c}
 function circle(c,x,y,r){c.beginPath();c.arc(x,y,r,0,TAU)}
-function rr(c,x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath()}
+function rr(c,x,y,w,h,r){r=Math.max(0,Math.min(r,w/2,h/2));c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath()}
 const mem={};
 const store={get(k,d){if(k in mem)return mem[k];try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},
   set(k,v){try{localStorage.setItem(k,JSON.stringify(v));delete mem[k];return true}catch(e){mem[k]=v;return false}}};
 
+/* steps */
+const BUT=0, LACE=1, POUR=2, SPREAD=3, FILL=4, ROLL=5, SERVE=6;
+
 /* ---------------- simulation grid ---------------- */
 const N=220, CELL=4, G0=60, GC=500, GR=440, GRC=GR/CELL, NN=N*N;
 const batter=new Float32Array(NN), cook=new Float32Array(NN), butter=new Float32Array(NN);
+const pat=new Float32Array(NN), patCk=new Float32Array(NN);
+const eggW=new Float32Array(NN), eggY=new Float32Array(NN), eggCk=new Float32Array(NN), eggTmp=new Float32Array(NN);
 const tmp=new Float32Array(NN), fillAmt=new Float32Array(NN);
 const heatMap=new Float32Array(NN), inG=new Uint8Array(NN), pore=new Float32Array(NN);
 function valueNoise(scale,seed){
@@ -252,39 +259,45 @@ const lace=new Float32Array(NN), spot=new Float32Array(NN);
 }
 const innerIdx=[]; for(let y=0;y<N;y++)for(let x=0;x<N;x++){ if(Math.hypot(x+0.5-N/2,y+0.5-N/2)<GRC*0.78) innerIdx.push(y*N+x); }
 
-// cook-colour lookup (top surface): raw cream -> set -> golden -> brown -> burnt
-const CST=[[0,246,236,208],[0.5,246,224,162],[1.0,238,196,112],[1.5,214,150,74],[2.0,162,98,44],[2.5,86,50,24],[3.0,36,24,14]];
+// egg-yellow Thai batter: raw cream -> set yellow -> golden -> orange-brown -> burnt
+const CST=[[0,250,240,206],[0.5,251,229,150],[1.0,248,203,92],[1.5,238,162,52],[2.0,192,106,30],[2.5,102,56,20],[3.0,36,24,14]];
 const LUT=new Uint8Array(301*3);
 for(let k=0;k<=300;k++){const c=k/100;let j=0;while(j<CST.length-2&&c>CST[j+1][0])j++;const a=CST[j],b=CST[j+1],t=clamp((c-a[0])/(b[0]-a[0]),0,1);for(let q=0;q<3;q++)LUT[k*3+q]=a[q+1]+(b[q+1]-a[q+1])*t;}
 function cookRGB(c){const k=(clamp(c,0,3)*100|0)*3;return[LUT[k],LUT[k+1],LUT[k+2]]}
+function rgbs(a,m,add){m=m==null?1:m;add=add||0;return`rgb(${clamp(a[0]*m+add,0,255)|0},${clamp(a[1]*m+add,0,255)|0},${clamp(a[2]*m+add,0,255)|0})`}
 
 /* ---------------- canvases ---------------- */
 const cv=$('#c'), ctx=cv.getContext('2d');
 let SC=1, bgC=mk(10,10), serveBg=mk(10,10);
 const baC=mk(N,N), bactx=baC.getContext('2d'), baImg=bactx.createImageData(N,N);
 const buC=mk(N,N), buctx=buC.getContext('2d'), buImg=buctx.createImageData(N,N);
+const paC=mk(N,N), pactx=paC.getContext('2d'), paImg=pactx.createImageData(N,N);
+const egC=mk(N,N), egctx=egC.getContext('2d'), egImg=egctx.createImageData(N,N);
 const FLS=1.4, fillLayer=mk(1400,1400), flctx=fillLayer.getContext('2d');
 flctx.setTransform(FLS,0,0,FLS,0,0);
 const shadeStrip=mk(64,1);
 {const c=shadeStrip.getContext('2d'),g=c.createLinearGradient(0,0,64,0);
- g.addColorStop(0,'rgba(40,20,5,.55)');g.addColorStop(.13,'rgba(40,20,5,.15)');g.addColorStop(.32,'rgba(255,250,235,.32)');g.addColorStop(.46,'rgba(255,250,235,.04)');g.addColorStop(.78,'rgba(40,20,5,.14)');g.addColorStop(1,'rgba(40,20,5,.5)');
+ g.addColorStop(0,'rgba(60,25,0,.5)');g.addColorStop(.14,'rgba(60,25,0,.12)');g.addColorStop(.3,'rgba(255,248,220,.38)');g.addColorStop(.42,'rgba(255,248,220,.06)');g.addColorStop(.75,'rgba(60,25,0,.12)');g.addColorStop(1,'rgba(60,25,0,.48)');
  c.fillStyle=g;c.fillRect(0,0,64,1);}
 const steamSprite=mk(64,64);
 {const c=steamSprite.getContext('2d'),g=c.createRadialGradient(32,32,0,32,32,32);g.addColorStop(0,'rgba(255,255,255,.9)');g.addColorStop(1,'rgba(255,255,255,0)');c.fillStyle=g;c.fillRect(0,0,64,64);}
 
 /* ---------------- fillings ---------------- */
 const FILLS=[
-  {id:'custard',name:'สังขยา',kind:'cream',color:'#F0B43C',hi:'#FFE7A6',w:18,sweet:1},
-  {id:'pandan',name:'สังขยาใบเตย',kind:'cream',color:'#86BC4A',hi:'#D9F2AE',w:18,sweet:1},
-  {id:'taro',name:'ครีมเผือก',kind:'cream',color:'#B088CC',hi:'#EADCF4',w:18,sweet:1},
-  {id:'choco',name:'ช็อกโกแลต',kind:'cream',color:'#5B3421',hi:'#B07E60',w:12,sweet:1},
+  {id:'custard',name:'ครีมคัสตาร์ด',kind:'cream',color:'#F6C431',hi:'#FFF1A8',w:20,sweet:1},
+  {id:'pandan',name:'สังขยาใบเตย',kind:'cream',color:'#7DB544',hi:'#D9F2AE',w:20,sweet:1},
+  {id:'taro',name:'ครีมเผือก',kind:'cream',color:'#A983CB',hi:'#EADCF4',w:20,sweet:1},
+  {id:'choco',name:'ช็อกโกแลต',kind:'cream',color:'#5B3421',hi:'#B07E60',w:14,sweet:1},
   {id:'foithong',name:'ฝอยทอง',kind:'fiber',color:'#F3B320',sweet:1},
-  {id:'floss',name:'หมูหยอง',kind:'fiber',color:'#C57B3B',savory:1},
-  {id:'sausage',name:'ไส้กรอก',kind:'piece',gap:34,color:'#C0444A',savory:1},
+  {id:'sausage',name:'ไส้กรอก',kind:'piece',gap:70,color:'#C8452E',savory:1},
+  {id:'pork',name:'หมูสับผัด',kind:'crumb',color:'#B07F4F',savory:1},
+  {id:'hen',name:'ไข่ไก่ ตอกแล้วคน',kind:'hen',color:'#F7A21B',savory:1},
   {id:'egg',name:'ไข่นกกระทา',kind:'piece',gap:58,color:'#F5A623',savory:1},
-  {id:'corn',name:'ข้าวโพด',kind:'piece',gap:22,color:'#F6C437',savory:1},
+  {id:'floss',name:'หมูหยอง',kind:'fiber',color:'#C57B3B',savory:1},
+  {id:'chili',name:'ซอสพริก',kind:'cream',color:'#D3321C',hi:'#FF9A7A',w:7,savory:1},
 ];
 const FD={}; FILLS.forEach(f=>FD[f.id]=f);
+const scatterKind=k=>k==='fiber'||k==='crumb';
 
 function creamPath(c,pts,ox,oy){
   c.beginPath(); c.moveTo(pts[0]+ox,pts[1]+oy);
@@ -301,39 +314,51 @@ function drawCream(c,type,pts){
   creamPath(c,pts,-w*0.17,-w*0.2); c.strokeStyle=f.hi; c.globalAlpha=.6; c.lineWidth=w*0.3; c.stroke();
   c.restore();
 }
-const PAL={foithong:['#F7B81E','#F2A413','#FFCB3D','#E89A0C','#FFD45A'],floss:['#C9823F','#B56E31','#D99A57','#A85F28','#E0AE6C']};
-function makeFiber(type,x,y,sp){
-  const a=Math.random()*TAU, d=Math.sqrt(Math.random())*sp, pal=PAL[type];
+const PAL={foithong:['#F7B81E','#F2A413','#FFCB3D','#E89A0C','#FFD45A'],floss:['#C9823F','#B56E31','#D99A57','#A85F28','#E0AE6C'],pork:['#B88A5C','#A0703F','#C9A06E','#8C5E35','#D2AE80']};
+function makeScatter(type,x,y,sp){
+  const a=Math.random()*TAU, d=Math.sqrt(Math.random())*sp, pal=PAL[type], col=pal[(Math.random()*pal.length)|0];
+  const X=x+Math.cos(a)*d, Y=y+Math.sin(a)*d;
+  if(type==='pork') return {crumb:1,x:X,y:Y,r:3.4+Math.random()*3.6,col,seed:(Math.random()*1e9)|0};
   const fo=type==='foithong';
-  return {x:x+Math.cos(a)*d,y:y+Math.sin(a)*d,a:Math.random()*TAU,
-    len:fo?20+Math.random()*26:6+Math.random()*11, w:fo?1.1+Math.random()*0.8:1.8+Math.random()*1.3,
-    curl:(Math.random()-0.5)*(fo?0.9:1.7), col:pal[(Math.random()*pal.length)|0]};
+  return {x:X,y:Y,a:Math.random()*TAU,len:fo?20+Math.random()*26:6+Math.random()*11,w:fo?1.1+Math.random()*0.8:1.8+Math.random()*1.3,curl:(Math.random()-0.5)*(fo?0.9:1.7),col};
 }
 function fiberPath(c,f,ox,oy){
   let x=f.x,y=f.y,a=f.a; const st=f.len/5; c.beginPath(); c.moveTo(x+ox,y+oy);
   for(let k=0;k<5;k++){a+=f.curl;x+=Math.cos(a)*st;y+=Math.sin(a)*st;c.lineTo(x+ox,y+oy)}
 }
-function drawFiber(c,f){
+function crumbPath(c,f,ox,oy){
+  const r=rng(f.seed); c.beginPath();
+  for(let k=0;k<6;k++){const a=k/6*TAU,d=f.r*(0.7+r()*0.5);const x=f.x+Math.cos(a)*d+ox,y=f.y+Math.sin(a)*d+oy;k?c.lineTo(x,y):c.moveTo(x,y)}
+  c.closePath();
+}
+function drawScatter(c,f){
+  if(f.crumb){
+    crumbPath(c,f,1.2,1.8); c.fillStyle='rgba(70,35,5,.25)'; c.fill();
+    crumbPath(c,f,0,0); c.fillStyle=f.col; c.fill();
+    c.fillStyle='rgba(255,240,210,.35)'; circle(c,f.x-f.r*0.3,f.y-f.r*0.3,f.r*0.3); c.fill();
+    return;
+  }
   c.lineCap='round'; c.lineJoin='round';
   fiberPath(c,f,1,1.6); c.strokeStyle='rgba(80,40,0,.2)'; c.lineWidth=f.w+0.6; c.stroke();
   fiberPath(c,f,0,0); c.strokeStyle=f.col; c.lineWidth=f.w; c.stroke();
 }
 function makePiece(type,x,y){
-  const p={type,x,y,seed:(Math.random()*1e9)|0,rot:Math.random()*TAU,cook:0};
-  if(type==='corn'){p.k=[];const n=4+(Math.random()*3|0);for(let i=0;i<n;i++){const a=Math.random()*TAU,d=Math.random()*17;p.k.push({dx:Math.cos(a)*d,dy:Math.sin(a)*d,r:Math.random()*TAU})}}
-  return p;
+  return {type,x,y,seed:(Math.random()*1e9)|0,rot:type==='sausage'?(Math.random()-0.5)*0.22:Math.random()*TAU,cook:0};
+}
+function drawSausage(c,L,W){
+  c.fillStyle='rgba(70,20,0,.25)'; rr(c,-W+3,-L+5,2*W,2*L,W); c.fill();
+  const g=c.createLinearGradient(-W,0,W,0); g.addColorStop(0,'#8E2414'); g.addColorStop(.3,'#E8774E'); g.addColorStop(.6,'#C8452E'); g.addColorStop(1,'#8A2312');
+  c.fillStyle=g; rr(c,-W,-L,2*W,2*L,W); c.fill();
+  c.fillStyle='rgba(255,225,200,.45)'; rr(c,-W*0.5,-L+8,W*0.36,2*L-16,W*0.18); c.fill();
+  c.strokeStyle='rgba(110,25,10,.45)'; c.lineWidth=1.4;
+  c.beginPath(); c.moveTo(-W*0.5,-L+W*0.55); c.quadraticCurveTo(0,-L+W*0.85,W*0.5,-L+W*0.55); c.stroke();
+  c.beginPath(); c.moveTo(-W*0.5,L-W*0.55); c.quadraticCurveTo(0,L-W*0.85,W*0.5,L-W*0.55); c.stroke();
 }
 function drawPiece(c,p){
   const r=rng(p.seed);
   c.save(); c.translate(p.x,p.y);
-  if(p.type==='sausage'){
-    const R=17; c.rotate(p.rot);
-    c.fillStyle='rgba(60,20,0,.22)'; circle(c,2.5,3.5,R); c.fill();
-    c.fillStyle='#9E2630'; circle(c,0,0,R); c.fill();
-    c.fillStyle='#DC7A71'; circle(c,0,0,R*0.8); c.fill();
-    for(let i=0;i<8;i++){const a=r()*TAU,d=r()*R*0.62;c.fillStyle=r()<.5?'#F4B6AC':'#B9484C';circle(c,Math.cos(a)*d,Math.sin(a)*d,1+r()*1.5);c.fill()}
-    c.strokeStyle='rgba(255,255,255,.35)'; c.lineWidth=2.5; c.beginPath(); c.arc(0,0,R*0.88,3.5,4.6); c.stroke();
-  } else if(p.type==='egg'){
+  if(p.type==='sausage'){ c.rotate(p.rot); drawSausage(c,56,12); }
+  else if(p.type==='egg'){
     const ck=Math.min(1,p.cook), pts=[], n=12;
     for(let i=0;i<n;i++){const a=i/n*TAU+p.rot;const d=25+r()*8;pts.push(Math.cos(a)*d,Math.sin(a)*d)}
     const blob=()=>{c.beginPath();for(let i=0;i<n;i++){const x0=pts[i*2],y0=pts[i*2+1],x1=pts[((i+1)%n)*2],y1=pts[((i+1)%n)*2+1];const mx=(x0+x1)/2,my=(y0+y1)/2;if(i===0)c.moveTo((pts[(n-1)*2]+x0)/2,(pts[(n-1)*2+1]+y0)/2);c.quadraticCurveTo(x0,y0,mx,my)}c.closePath()};
@@ -344,37 +369,32 @@ function drawPiece(c,p){
     c.fillStyle='rgba(120,60,0,.2)'; circle(c,yx+1.5,yy+2,11); c.fill();
     c.fillStyle=p.cook>1.4?'#F6BE52':'#F59A12'; circle(c,yx,yy,10.5); c.fill();
     c.fillStyle='rgba(255,255,255,.65)'; c.beginPath(); c.ellipse(yx-3.5,yy-4,3.6,2.2,-0.6,0,TAU); c.fill();
-  } else if(p.type==='corn'){
-    for(const k of p.k){
-      c.save(); c.translate(k.dx,k.dy); c.rotate(k.r);
-      c.fillStyle='rgba(90,50,0,.25)'; rr(c,-5.5,-5,13,14,5); c.fill();
-      c.fillStyle='#F2BB2C'; rr(c,-7,-7.5,14,15,5.5); c.fill();
-      c.fillStyle='#FFE27F'; rr(c,-4.8,-6,7.5,6,3); c.fill();
-      c.restore();
-    }
   }
   c.restore();
 }
 function drawIcon(cnv,f){
   const c=cnv.getContext('2d'); c.setTransform(cnv.width/100,0,0,cnv.width/100,0,0);
-  if(f.kind==='cream'){ drawCream(c,f.id,[20,72,30,40,50,58,68,74,80,34]); }
-  else if(f.kind==='fiber'){ for(let i=0;i<(f.id==='foithong'?18:34);i++) drawFiber(c,makeFiber(f.id,50,50,22)); }
-  else { const p=makePiece(f.id,0,0); p.cook=1; c.translate(50,50); c.scale(f.id==='corn'?2.1:f.id==='egg'?1.35:2,f.id==='corn'?2.1:f.id==='egg'?1.35:2); drawPiece(c,p); }
+  if(f.kind==='cream'){ drawCream(c,f.id,f.id==='chili'?[18,62,32,40,48,62,64,40,82,58]:[20,72,30,40,50,58,68,74,80,34]); }
+  else if(scatterKind(f.kind)){ const n=f.id==='foithong'?18:f.id==='pork'?26:34; for(let i=0;i<n;i++) drawScatter(c,makeScatter(f.id,50,50,f.id==='pork'?26:22)); }
+  else if(f.id==='hen'){ c.fillStyle='#FFFCF2'; c.beginPath(); c.ellipse(50,52,38,28,0.3,0,TAU); c.fill(); c.strokeStyle='#F7A21B'; c.lineWidth=7; c.lineCap='round'; c.beginPath(); c.moveTo(24,60); c.bezierCurveTo(40,34,56,72,76,42); c.stroke(); c.fillStyle='#F59A12'; circle(c,52,50,11); c.fill(); c.fillStyle='rgba(255,255,255,.6)'; circle(c,48,46,3.5); c.fill(); }
+  else if(f.id==='sausage'){ c.translate(50,50); c.rotate(0.6); drawSausage(c,36,10); }
+  else { const p=makePiece(f.id,0,0); p.cook=1; c.translate(50,50); c.scale(1.35,1.35); drawPiece(c,p); }
 }
 
 /* ---------------- state ---------------- */
 const STEPS=[
-  {name:'เช็ดเนย',hint:'ลากก้อนเนยถูให้ทั่วกระทะ เนยช่วยให้แป้งไม่ติด สุกสม่ำเสมอ และหอม',next:'ต่อไป: หยอดแป้ง'},
-  {name:'หยอดแป้ง',hint:'กดค้างบนกระทะเพื่อเทแป้งจากกระบวย ปล่อยเมื่อพอดีตามแถบสีเขียว',next:'ต่อไป: ละเลง'},
-  {name:'ละเลงแป้ง',hint:'ลากก้นกระบวยวนเป็นก้นหอยจากกลางออกไปหาขอบ ให้แผ่นบางและกลม รีบละเลงก่อนแป้งเซ็ตตัว!',next:'ต่อไป: ใส่ไส้'},
-  {name:'ใส่ไส้',hint:'เลือกไส้แล้วบีบ โรย หรือแตะวาง ใส่ได้ไม่อั้น แต่แป้งยังสุกต่อเรื่อยๆ ลดไฟได้นะ',next:'ต่อไป: ม้วน'},
-  {name:'ม้วน',hint:'จับไม้พายที่ขอบซ้ายของแผ่น แล้วลากไปทางขวาช้าๆ ม้วนช้าจะแน่นสวย',next:'เสิร์ฟ!'},
-  {name:'เสิร์ฟ',hint:'ใส่ซองกระดาษ พร้อมเสิร์ฟ!',next:''},
+  {name:'เช็ดเนย',hint:'ลากก้อนเนยถูให้ทั่วกระทะ เนยช่วยให้แป้งไม่ติด สุกสม่ำเสมอ และหอม',next:'ต่อไป: โรยลาย'},
+  {name:'โรยลาย',hint:'บีบเส้นแป้งจากขวดเป็นลายตาข่ายหรือลายวน ลายนี้จะเกรียมเป็นเส้นสวยอยู่รอบตัวขนมเมื่อม้วนเสร็จ (ข้ามได้)',next:'ต่อไป: หยอดแป้ง'},
+  {name:'หยอดแป้ง',hint:'กดค้างบนกระทะ แป้งจะไหลลงตรงหัวลูกศร ปล่อยเมื่อปริมาณถึงแถบสีเขียว',next:'ต่อไป: ละเลง'},
+  {name:'ละเลงแป้ง',hint:'ลากก้นกระบวยดันแป้งออกไปให้บางทั่วแผ่น ทรงไหนก็ได้ จะกลม รี หรือทรงอิสระก็ได้ ขอแค่บางเสมอกันและไม่เป็นรู รีบละเลงก่อนแป้งเซ็ตตัว!',next:'ต่อไป: ใส่ไส้'},
+  {name:'ใส่ไส้',hint:'เลือกไส้หวานหรือไส้เค็ม ไข่ไก่: แตะเพื่อตอก แล้วลากบนไข่เพื่อคนให้ทั่วแผ่น ไส้กรอกวางเป็นแท่งตามแนวตั้ง แล้วโรยหมูสับรอบๆ',next:'ต่อไป: ม้วน'},
+  {name:'ม้วน',hint:'ปัดนิ้วจากขอบแผ่นเข้าหาไส้ ทิศไหน มุมไหนก็ได้ เพื่อพับขอบและกำหนดทิศม้วน จากนั้นปัดตามลูกศรทีละครั้ง แต่ละครั้งม้วนพลิกไป 1 รอบ ปัดเบี้ยวหรือแรงเกินม้วนจะหลวม',next:'เสิร์ฟ!'},
+  {name:'เสิร์ฟ',hint:'จัดใส่จาน พร้อมเสิร์ฟ!',next:''},
 ];
 const HEATS=[0,0.5,1,1.8];
-const S={step:-1,heat:2,pouring:false,rubbing:false,carry:0,poured:0,hasBatter:false,actions:[],cur:null,curLast:null,
-  tool:'custard',roll:null,tube:null,stats:null,serveT:0,resultShown:false,rawMass:0,sumT:0,sumTC:0,steamAcc:0,
-  muted:store.get('tokyo.muted',false),buDirty:true,meterT:0};
+const S={step:-1,heat:2,pouring:false,rubbing:false,carry:0,poured:0,hasBatter:false,hasPat:false,actions:[],cur:null,curLast:null,
+  tool:'custard',roll:null,art:null,stats:null,serveT:0,resultShown:false,rawMass:0,sumT:0,sumTC:0,steamAcc:0,
+  muted:store.get('tokyo.muted',false),buDirty:true,paDirty:true,meterT:0,hasHen:false,egDirty:true,cracks:[],ecW:0,ecY:0};
 const P={x:500,y:500,down:false,inside:false};
 
 /* ---------------- audio ---------------- */
@@ -483,6 +503,83 @@ function rubSeg(x0,y0,x1,y1){
   }
   S.buDirty=true;
 }
+function laceSeg(x0,y0,x1,y1){
+  const a=toCell(x0,y0), b=toCell(x1,y1), L=Math.hypot(b.x-a.x,b.y-a.y), n=Math.max(1,Math.ceil(L/0.7)), R=2.1;
+  for(let k=0;k<=n;k++){
+    const px=a.x+(b.x-a.x)*k/n, py=a.y+(b.y-a.y)*k/n;
+    for(let y=Math.max(0,Math.floor(py-R));y<=Math.min(N-1,Math.ceil(py+R));y++)
+      for(let x=Math.max(0,Math.floor(px-R));x<=Math.min(N-1,Math.ceil(px+R));x++){
+        const i=y*N+x; if(!inG[i]) continue; const d=Math.hypot(x+0.5-px,y+0.5-py); if(d>R) continue;
+        const v=0.5*(1-d/R*0.85); if(v>pat[i]){ if(pat[i]<0.02) patCk[i]=0; pat[i]=v; }
+      }
+  }
+  S.hasPat=true; S.paDirty=true;
+}
+function crackEgg(x,y){
+  const c=toCell(x,y), R=28;
+  for(let yy=Math.max(1,Math.floor(c.y-R));yy<=Math.min(N-2,Math.ceil(c.y+R));yy++)
+    for(let xx=Math.max(1,Math.floor(c.x-R));xx<=Math.min(N-2,Math.ceil(c.x+R));xx++){
+      const i=yy*N+xx; if(!inG[i]) continue; const d2=(xx+0.5-c.x)**2+(yy+0.5-c.y)**2;
+      const w=1.6*Math.exp(-d2/(2*9*9)), yk=3.0*Math.exp(-d2/(2*4.5*4.5));
+      const old=eggW[i]+eggY[i]; if(old<0.02) eggCk[i]=0; else eggCk[i]*=old/(old+w+yk);
+      eggW[i]+=w; eggY[i]+=yk;
+    }
+  S.hasHen=true; S.egDirty=true; S.cracks.push({x,y,t:0}); blip(240,0.08,0.14,'square');
+}
+function eggAt(x,y){const c=toCell(x,y);if(c.x<0||c.y<0||c.x>=N||c.y>=N)return 0;const i=(c.y|0)*N+(c.x|0);return eggW[i]+eggY[i]}
+const mvI=new Int32Array(900), mvJ=new Int32Array(900), mvF=new Float32Array(900);
+function stirAt(px,py,ux,uy){
+  // the spoon scoops egg from under it and pushes it ahead, like spreading batter
+  const R=8, FL=0.05, ro=(R+3)*(R+3); let cnt=0, ws=0;
+  for(let y=Math.max(2,Math.floor(py-R-4));y<=Math.min(N-3,Math.ceil(py+R+4));y++)
+    for(let x=Math.max(2,Math.floor(px-R-4));x<=Math.min(N-3,Math.ceil(px+R+4));x++){
+      const i=y*N+x; if(!inG[i]) continue; const ex=x+0.5-px, ey=y+0.5-py, d2=ex*ex+ey*ey;
+      if(d2<=R*R){const t=eggW[i]+eggY[i]; if(t>FL){const mob=clamp(1-eggCk[i]/1.1,0,1); if(mob>0){const f=(t-FL)/t*mob, w=eggW[i]*f*0.45, yk=eggY[i]*f*0.3; eggW[i]-=w; eggY[i]-=yk; S.ecW+=w; S.ecY+=yk}}}
+      else if(d2<=ro&&cnt<600){const d=Math.sqrt(d2), dot=(ex*ux+ey*uy)/d; if(dot>0.2){dIdx[cnt]=i;dW[cnt]=dot-0.2;ws+=dot-0.2;cnt++}}
+    }
+  if(cnt>0&&S.ecW+S.ecY>0.001){const fw=S.ecW*0.32, fy=S.ecY*0.32;
+    for(let k=0;k<cnt;k++){const j=dIdx[k],q=dW[k]/ws,w=fw*q,yk=fy*q,old=eggW[j]+eggY[j];eggCk[j]=old>0.01?eggCk[j]*old/(old+w+yk):0;eggW[j]+=w;eggY[j]+=yk}
+    S.ecW-=fw; S.ecY-=fy;}
+  const ci=Math.round(py)*N+Math.round(px);
+  for(const o of [0,1,-1,N,-N]){const i=ci+o;if(i<0||i>=NN)continue;const tot=eggW[i]+eggY[i];if(tot<0.01)continue;const m=(eggY[i]-tot*0.5)*0.02;eggY[i]-=m;eggW[i]+=m}
+  S.egDirty=true;
+}
+function dropEggCarry(x,y){
+  if(S.ecW+S.ecY<0.01){S.ecW=S.ecY=0;return}
+  const c=toCell(x,y), list=[];
+  for(let yy=Math.max(2,Math.floor(c.y-12));yy<=Math.min(N-3,Math.ceil(c.y+12));yy++)for(let xx=Math.max(2,Math.floor(c.x-12));xx<=Math.min(N-3,Math.ceil(c.x+12));xx++){
+    const i=yy*N+xx,d=Math.hypot(xx+0.5-c.x,yy+0.5-c.y); if(inG[i]&&d>=7&&d<=11) list.push(i)}
+  if(!list.length) return;
+  for(const i of list){const w=S.ecW/list.length,yk=S.ecY/list.length,old=eggW[i]+eggY[i];eggCk[i]=old>0.01?eggCk[i]*old/(old+w+yk):0;eggW[i]+=w;eggY[i]+=yk}
+  S.ecW=S.ecY=0; S.egDirty=true;
+}
+function stirSeg(x0,y0,x1,y1){
+  const a=toCell(x0,y0), b=toCell(x1,y1), dx=b.x-a.x, dy=b.y-a.y, L=Math.hypot(dx,dy);
+  if(L<0.05) return; const ux=dx/L, uy=dy/L, n=Math.ceil(L);
+  for(let k=1;k<=n;k++) stirAt(a.x+dx*k/n,a.y+dy*k/n,ux,uy);
+}
+function eggFlow(){
+  tmp.fill(0); eggTmp.fill(0);
+  for(let y=1;y<N-1;y++)for(let x=1;x<N-1;x++){const i=y*N+x,t=eggW[i]+eggY[i];if(t<0.35||eggCk[i]>0.6)continue;
+    const mob=0.05*(1-eggCk[i]/0.6), yr=eggY[i]/t, fw=1-yr*0.85, fy=yr*0.15;
+    for(let k=0;k<8;k++){const j=i+NB[k];if(!inG[j])continue;const d=(t-eggW[j]-eggY[j])*NBW[k]-0.02;
+      if(d>0){const m=d*mob*NBW[k];tmp[i]-=m*fw;tmp[j]+=m*fw;eggTmp[i]-=m*fy;eggTmp[j]+=m*fy}}}
+  for(let i=0;i<NN;i++){const a=tmp[i],b=eggTmp[i];if(!a&&!b)continue;const old=eggW[i]+eggY[i],add=Math.max(0,a)+Math.max(0,b);
+    if(add>0)eggCk[i]=old>0.01?eggCk[i]*old/(old+add):0;eggW[i]=Math.max(0,eggW[i]+a);eggY[i]=Math.max(0,eggY[i]+b)}
+}
+function eggCook(dt,H){if(H<=0)return;const k=dt*H*0.05;for(let i=0;i<NN;i++){const t=eggW[i]+eggY[i];if(t>0.02)eggCk[i]+=k*heatMap[i]/(0.25+t*0.5)}}
+function renderEgg(){
+  const d=egImg.data;
+  for(let i=0;i<NN;i++){const o=i<<2,w=eggW[i],y=eggY[i],t=w+y;if(t<0.025){d[o+3]=0;continue}
+    const ck=Math.min(1.6,eggCk[i]), yr=Math.pow(y/t,0.6), c1=Math.min(1,ck);
+    let r=252,g=250,b=240; if(ck>1.2){const k=(ck-1.2)/0.4;r-=30*k;g-=55*k;b-=90*k}
+    r+=(248-r)*yr; g+=(138+50*c1-g)*yr; b+=(8+40*c1-b)*yr;
+    const gx=(eggW[i+1]+eggY[i+1])-(eggW[i-1]+eggY[i-1]), gy=(eggW[i+N]+eggY[i+N])-(eggW[i-N]+eggY[i-N]);
+    const sp=(1-c1)*clamp((gx+gy)*120,0,60);
+    const a=clamp(t/0.06,0,1)*(yr>0.35?1:(0.62+0.36*c1));
+    d[o]=r+sp;d[o+1]=g+sp;d[o+2]=b+sp;d[o+3]=a*255}
+  egctx.putImageData(egImg,0,0); S.egDirty=false;
+}
 function cookUpdate(dt,H){
   let raw=0,sT=0,sTC=0;
   const k=dt*H*0.014;
@@ -494,6 +591,7 @@ function cookUpdate(dt,H){
   }
   S.rawMass=raw; S.sumT=sT; S.sumTC=sTC;
 }
+function patUpdate(dt,H){ if(H<=0) return; const k=dt*H*0.035; for(let i=0;i<NN;i++) if(pat[i]>0.02) patCk[i]+=k*heatMap[i]; S.paDirty=true; }
 function renderBatter(){
   const d=baImg.data;
   for(let i=0;i<NN;i++){
@@ -506,7 +604,7 @@ function renderBatter(){
     const k=(c>=3?300:(c*100)|0)*3;
     const gx=batter[i+1]-batter[i-1], gy=batter[i+N]-batter[i-N];
     let g=(gx+gy)*0.7; g=g<-0.28?-0.28:g>0.28?0.28:g; let sh=1+g;
-    if(pore[i]>0.974&&ck>0.32&&t<1) sh*=0.8;
+    if(pore[i]>0.974&&ck>0.32&&t<1) sh*=0.85;
     const wet=ck<0.55?1-ck/0.55:0;
     let sp=wet*((gx+gy)*260); sp=(sp<0?0:sp>70?70:sp)+wet*8;
     d[o]=LUT[k]*sh+sp; d[o+1]=LUT[k+1]*sh+sp; d[o+2]=LUT[k+2]*sh+sp; d[o+3]=a*255;
@@ -519,6 +617,13 @@ function renderButter(){
     const l=0.8+0.2*lace[i];
     d[o]=215*l;d[o+1]=165*l;d[o+2]=80*l;d[o+3]=Math.min(1,b)*(0.38+0.14*lace[i])*255}
   buctx.putImageData(buImg,0,0); S.buDirty=false;
+}
+function renderPattern(){
+  const d=paImg.data;
+  for(let i=0;i<NN;i++){const o=i<<2,p=pat[i];if(p<0.02){d[o+3]=0;continue}
+    const k=(Math.min(3,patCk[i]*1.1+0.15)*100|0)*3, gx=pat[i+1]-pat[i-1], gy=pat[i+N]-pat[i-N], sh=1+clamp((gx+gy)*0.9,-0.25,0.25);
+    d[o]=LUT[k]*sh;d[o+1]=LUT[k+1]*sh;d[o+2]=LUT[k+2]*sh;d[o+3]=clamp(p/0.22,0,1)*255}
+  pactx.putImageData(paImg,0,0); S.paDirty=false;
 }
 
 /* ---------------- background ---------------- */
@@ -558,7 +663,7 @@ function resize(){
   const dpr=Math.min(2.5,window.devicePixelRatio||1);
   cv.width=cv.height=Math.round(size*dpr); SC=cv.width/1000;
   bgC=mk(cv.width,cv.height); let c=bgC.getContext('2d'); c.setTransform(SC,0,0,SC,0,0); drawTable(c); drawGriddle(c);
-  serveBg=mk(cv.width,cv.height); c=serveBg.getContext('2d'); c.setTransform(SC,0,0,SC,0,0); drawTable(c);
+  serveBg=mk(cv.width,cv.height); c=serveBg.getContext('2d'); c.setTransform(SC,0,0,SC,0,0); drawTable(c); drawPlate(c);
 }
 
 /* ---------------- tools drawing ---------------- */
@@ -571,7 +676,19 @@ function drawButterTool(c,x,y){
   c.fillStyle='rgba(255,255,255,.6)'; rr(c,-34,-22,40,10,5); c.fill();
   c.fillStyle='#f4efe6'; rr(c,-46,2,92,30,8); c.fill();
   c.fillStyle='#3d7fc1'; c.fillRect(-46,10,92,3); c.fillRect(-46,17,92,1.5);
-  c.fillStyle='#c0392b'; c.font='600 11px Mitr,sans-serif'; c.textAlign='center'; c.fillText('BUTTER',0,29);
+  c.fillStyle='#c0392b'; c.font='600 12px Mitr,sans-serif'; c.textAlign='center'; c.fillText('เนยสด',0,29);
+  c.restore();
+}
+function drawBottle(c,x,y){
+  c.save(); c.translate(x,y); c.rotate(0.38);
+  c.fillStyle='rgba(0,0,0,.2)'; c.beginPath(); c.moveTo(6,4); c.lineTo(-4,-26); c.lineTo(18,-26); c.closePath(); c.fill(); rr(c,-18,-150,56,124,16); c.fill();
+  c.fillStyle='#f3f1ec'; c.beginPath(); c.moveTo(0,0); c.lineTo(-9,-30); c.lineTo(9,-30); c.closePath(); c.fill();
+  c.fillStyle='#e0412b'; rr(c,-16,-44,32,16,5); c.fill();
+  const g=c.createLinearGradient(-26,0,26,0); g.addColorStop(0,'rgba(255,255,255,.55)'); g.addColorStop(.35,'rgba(255,255,255,.9)'); g.addColorStop(1,'rgba(220,220,220,.6)');
+  c.fillStyle=g; rr(c,-26,-160,52,118,16); c.fill();
+  c.fillStyle='#F8DE8A'; rr(c,-22,-120,44,74,12); c.fill();
+  c.fillStyle='rgba(255,255,255,.5)'; rr(c,-18,-150,8,96,4); c.fill();
+  c.fillStyle='#c0392b'; c.font='600 13px Mitr,sans-serif'; c.textAlign='center'; c.fillText('แป้ง',2,-80);
   c.restore();
 }
 function drawLadleTop(c,x,y,alpha){
@@ -588,7 +705,7 @@ function drawPourTool(c,x,y,pouring,time){
   const bx=x-70, by=y-120;
   c.save(); c.lineCap='round';
   if(pouring){
-    c.strokeStyle='#F4EAD2'; c.lineWidth=10;
+    c.strokeStyle='#F8E7B6'; c.lineWidth=10;
     c.beginPath(); c.moveTo(bx+46,by+22); c.quadraticCurveTo(bx+60+Math.sin(time*18)*3,by+70,x,y); c.stroke();
     c.strokeStyle='rgba(255,255,255,.6)'; c.lineWidth=3;
     c.beginPath(); c.moveTo(bx+44,by+22); c.quadraticCurveTo(bx+57+Math.sin(time*18)*3,by+70,x-2,y); c.stroke();
@@ -600,9 +717,27 @@ function drawPourTool(c,x,y,pouring,time){
   const g=c.createRadialGradient(-20,-20,4,0,0,62); g.addColorStop(0,'#fff'); g.addColorStop(.4,'#d4d8de'); g.addColorStop(1,'#646a72');
   c.fillStyle='rgba(0,0,0,.2)'; c.beginPath(); c.ellipse(10,14,60,48,0,0,TAU); c.fill();
   c.fillStyle=g; c.beginPath(); c.ellipse(0,0,60,48,0,0,TAU); c.fill();
-  c.fillStyle='#F3E6C6'; c.beginPath(); c.ellipse(pouring?10:0,0,pouring?36:46,pouring?28:36,0,0,TAU); c.fill();
+  c.fillStyle='#F8E7B6'; c.beginPath(); c.ellipse(pouring?10:0,0,pouring?36:46,pouring?28:36,0,0,TAU); c.fill();
   c.fillStyle='rgba(255,255,255,.45)'; c.beginPath(); c.ellipse(-10,-10,14,8,-0.5,0,TAU); c.fill();
   c.restore();
+}
+function drawTarget(c,x,y,label){
+  const X0=x, Y0=y;
+  const b=(Math.sin(clock*6)+1)*6, ux=0.7071, uy=-0.7071, Z=1.5;
+  c.save(); c.translate(x,y); c.scale(Z,Z); x=0; y=0;
+  const tx=x+ux*(30+b), ty=y+uy*(30+b);
+  c.lineWidth=3; c.setLineDash([8,7]); c.strokeStyle='rgba(30,15,5,.45)'; circle(c,x+1.5,y+2,24); c.stroke();
+  c.strokeStyle='rgba(255,246,222,.95)'; circle(c,x,y,24); c.stroke(); c.setLineDash([]);
+  c.fillStyle='rgba(255,246,222,.95)'; circle(c,x,y,4); c.fill();
+  c.lineCap='round';
+  const ex=tx+ux*78, ey=ty+uy*78;
+  c.strokeStyle='rgba(30,15,5,.55)'; c.lineWidth=14; line(c,tx+ux*14,ty+uy*14,ex,ey);
+  c.strokeStyle='#ff8a3d'; c.lineWidth=8; line(c,tx+ux*14,ty+uy*14,ex,ey);
+  const hx=-uy, hy=ux;
+  c.beginPath(); c.moveTo(tx,ty); c.lineTo(tx+ux*26+hx*16,ty+uy*26+hy*16); c.lineTo(tx+ux*26-hx*16,ty+uy*26-hy*16); c.closePath();
+  c.lineWidth=4; c.lineJoin='round'; c.strokeStyle='rgba(30,15,5,.55)'; c.stroke(); c.fillStyle='#ff8a3d'; c.fill();
+  c.restore();
+  if(label){ const lx=X0+(ex+10)*Z, ly=Y0+(ey-22)*Z; hintText(c,label,clamp(lx,170,830),clamp(ly,40,960),30); }
 }
 function drawBag(c,x,y,f){
   c.save(); c.translate(x,y); c.rotate(0.55);
@@ -613,16 +748,16 @@ function drawBag(c,x,y,f){
   c.fillStyle='#b8bec6'; c.beginPath(); c.moveTo(-5,-2); c.lineTo(5,-2); c.lineTo(9,-20); c.lineTo(-9,-20); c.closePath(); c.fill();
   c.restore();
 }
-function drawSpatula(c,x,y0,y1){
-  const ym=(y0+y1)/2;
+function drawSpatula(c,x,y0,y1,dir){
+  const ym=(y0+y1)/2; dir=dir||1;
   c.save(); c.lineCap='round';
   c.fillStyle='rgba(0,0,0,.25)'; rr(c,x-4+8,y0+10,16,y1-y0,4); c.fill();
-  c.strokeStyle='rgba(0,0,0,.25)'; c.lineWidth=24; line(c,x+20,ym+10,x+150,ym+110);
+  c.strokeStyle='rgba(0,0,0,.25)'; c.lineWidth=24; line(c,x+dir*20+6,ym+10,x+dir*150+6,ym+110);
   const g=c.createLinearGradient(x-8,0,x+10,0); g.addColorStop(0,'#6f757d'); g.addColorStop(.45,'#eef0f2'); g.addColorStop(1,'#949aa2');
   c.fillStyle=g; rr(c,x-6,y0,16,y1-y0,4); c.fill(); c.strokeStyle='rgba(60,64,70,.6)'; c.lineWidth=1.5; c.stroke();
-  c.strokeStyle='#8b5a2b'; c.lineWidth=22; line(c,x+12,ym,x+140,ym+96);
-  c.strokeStyle='rgba(255,220,170,.35)'; c.lineWidth=6; line(c,x+12,ym-6,x+136,ym+88);
-  c.fillStyle='#c9ced4'; circle(c,x+22,ym+8,4); c.fill();
+  c.strokeStyle='#8b5a2b'; c.lineWidth=22; line(c,x+dir*12,ym,x+dir*140,ym+96);
+  c.strokeStyle='rgba(255,220,170,.35)'; c.lineWidth=6; line(c,x+dir*12,ym-6,x+dir*136,ym+88);
+  c.fillStyle='#c9ced4'; circle(c,x+dir*22,ym+8,4); c.fill();
   c.restore();
 }
 
@@ -632,92 +767,158 @@ function redrawFillLayer(){
   flctx.setTransform(1,0,0,1,0,0); flctx.clearRect(0,0,fillLayer.width,fillLayer.height); flctx.setTransform(FLS,0,0,FLS,0,0);
   for(const a of S.actions){
     if(a.kind==='cream') drawCream(flctx,a.type,a.items[0].pts);
-    else if(a.kind==='fiber') for(const f of a.items) drawFiber(flctx,f);
+    else if(scatterKind(a.kind)) for(const f of a.items) drawScatter(flctx,f);
     else if(a.type!=='egg') for(const p of a.items) drawPiece(flctx,p);
   }
 }
 function setupRoll(){
-  // fill coverage grid
   const fc=mk(N,N), fx=fc.getContext('2d');
   fx.drawImage(fillLayer,G0*FLS,G0*FLS,N*CELL*FLS,N*CELL*FLS,0,0,N,N);
   fx.setTransform(1/CELL,0,0,1/CELL,-G0/CELL,-G0/CELL); drawEggs(fx);
-  const fd=fx.getImageData(0,0,N,N).data; for(let i=0;i<NN;i++) fillAmt[i]=fd[i*4+3]/255;
+  const fd=fx.getImageData(0,0,N,N).data; for(let i=0;i<NN;i++){ fillAmt[i]=fd[i*4+3]/255; const e=eggW[i]+eggY[i]; if(e>0.03) fillAmt[i]=Math.max(fillAmt[i],Math.min(1,e*1.5)); }
   const W=fillLayer.width;
   const flat=mk(W,W), f=flat.getContext('2d'); f.setTransform(FLS,0,0,FLS,0,0);
+  if(S.hasHen) f.drawImage(egC,G0,G0,N*CELL,N*CELL);
   f.drawImage(fillLayer,0,0,1000,1000); drawEggs(f);
   f.globalCompositeOperation='destination-in'; f.drawImage(baC,G0,G0,N*CELL,N*CELL);
   f.globalCompositeOperation='destination-over'; f.drawImage(baC,G0,G0,N*CELL,N*CELL);
-  const spill=mk(W,W), s=spill.getContext('2d'); s.setTransform(FLS,0,0,FLS,0,0);
-  s.drawImage(fillLayer,0,0,1000,1000); drawEggs(s);
-  s.globalCompositeOperation='destination-out'; s.drawImage(baC,G0,G0,N*CELL,N*CELL);
-  let xmin=N,xmax=-1,ymin=N,ymax=-1;
-  const rowCum=new Float32Array(NN), rowT=new Float32Array(NN), rowTC=new Float32Array(NN), rowFill=new Float32Array(N);
-  for(let y=0;y<N;y++){let a=0,b=0,cc=0;for(let x=0;x<N;x++){const i=y*N+x,t=batter[i];
-    if(t>0.02){a+=t+fillAmt[i]*0.6;b+=t;cc+=t*cook[i];rowFill[y]+=fillAmt[i];if(x<xmin)xmin=x;if(x>xmax)xmax=x;if(y<ymin)ymin=y;if(y>ymax)ymax=y}
-    rowCum[i]=a;rowT[i]=b;rowTC[i]=cc}}
-  S.roll={flat,spill,rowCum,rowT,rowTC,rowFill,xminL:G0+xmin*CELL,xmaxL:G0+(xmax+1)*CELL,y0L:G0+ymin*CELL,y1L:G0+(ymax+1)*CELL,
-    X:G0+xmin*CELL,rad:new Float32Array(N),raw:new Float32Array(N),ck:new Float32Array(N),loose:0,lw:0,ld:0,lt:0,dragging:false,done:false,tearFrac:0,ooze:null};
-  updateProfile();
+  const spill=mk(W,W), sp=spill.getContext('2d'); sp.setTransform(FLS,0,0,FLS,0,0);
+  if(S.hasHen) sp.drawImage(egC,G0,G0,N*CELL,N*CELL);
+  sp.drawImage(fillLayer,0,0,1000,1000); drawEggs(sp);
+  sp.globalCompositeOperation='destination-out'; sp.drawImage(baC,G0,G0,N*CELL,N*CELL);
+  // underside of the sheet (griddle side): browner, with the drizzled lattice
+  const U=mk(N,N),ux=U.getContext('2d'),uim=ux.createImageData(N,N),ud=uim.data;
+  for(let i=0;i<NN;i++){const t=batter[i],o=i*4;if(t<0.004)continue;let a=(t*(0.4+1.2*lace[i])-0.03)/0.06;a=a<0?0:a>1?1:a*a*(3-2*a);if(a<=0)continue;
+    const k=(Math.min(3,cook[i]*(0.9+0.2*spot[i])+0.75)*100|0)*3;let r=LUT[k],g=LUT[k+1],b=LUT[k+2];const pv=clamp((pat[i]-0.1)/0.2,0,1);
+    r+=(251-r)*pv;g+=(224-g)*pv;b+=(138-b)*pv;ud[o]=r;ud[o+1]=g;ud[o+2]=b;ud[o+3]=a*255}
+  ux.putImageData(uim,0,0);
+  S.roll={flat,spill,under:U,alpha:null,phase:'aim',slips:0,flips:0,loose:0,lw:0,ld:0,done:false,tearFrac:0,dom:dominantFill(),anim:null,g0:null,gc:null,foldCover:true};
 }
-function updateProfile(){
-  const R=S.roll, col=clamp(Math.floor((R.X-G0)/CELL),0,N-1), k=8.6*(1+0.5*R.loose);
-  for(let r=0;r<N;r++){const i=r*N+col,m=R.rowCum[i];R.raw[r]=m>0.04?6+Math.pow(m,0.4)*k:0;const tt=R.rowT[i];R.ck[r]=tt>0?R.rowTC[i]/tt:0}
-  const a=R.raw, b=R.rad;
-  for(let pass=0;pass<2;pass++){const src=pass?b.slice():a;for(let r=0;r<N;r++){const p=src[Math.max(0,r-1)],q=src[Math.min(N-1,r+1)];b[r]=(p+2*src[r]+q)/4}}
-}
-function drawTube(c){
-  const R=S.roll, X=R.X, rad=R.rad;
-  let mr=0; for(let r=0;r<N;r++) if(rad[r]>mr) mr=rad[r];
-  const cx=X-mr;
-  c.fillStyle='rgba(40,20,5,.28)';
-  for(let r=0;r<N;r++){const w=2*rad[r];if(w>1)c.fillRect(cx-rad[r]+7,G0+r*CELL+9,w,CELL+0.8)}
-  for(let r=0;r<N;r++){
-    const w=2*rad[r]; if(w<=1) continue;
-    const y=G0+r*CELL, x0=cx-rad[r], rgb=cookRGB(R.ck[r]+0.45), tx=0.92+0.16*lace[r*N+90];
-    c.fillStyle=`rgb(${rgb[0]*tx|0},${rgb[1]*tx|0},${rgb[2]*tx|0})`; c.fillRect(x0,y,w,CELL+0.8);
-    if(R.raw[r]>0&&R.ck[r]<0.45&&lace[r*N+40]>0.45){c.fillStyle='rgba(248,238,205,.6)';c.fillRect(x0+w*0.25,y,w*0.3,CELL+0.8)}
-    c.drawImage(shadeStrip,x0,y,w,CELL+0.8);
+// Resample the sheet so the chosen rolling direction becomes +x; all roll maths runs in that frame.
+function orientRoll(a){
+  const R=S.roll; R.alpha=a;
+  const ca=Math.cos(a), sa=Math.sin(a);
+  const bR=new Float32Array(NN), cR=new Float32Array(NN), fR=new Float32Array(NN), pR=new Float32Array(NN);
+  for(let y=0;y<N;y++)for(let x=0;x<N;x++){
+    const lx=G0+(x+0.5)*CELL-GC, ly=G0+(y+0.5)*CELL-GC, wx=GC+ca*lx-sa*ly, wy=GC+sa*lx+ca*ly;
+    const cx=Math.floor((wx-G0)/CELL), cy=Math.floor((wy-G0)/CELL); if(cx<0||cy<0||cx>=N||cy>=N) continue;
+    const j=cy*N+cx, i=y*N+x; bR[i]=batter[j]; cR[i]=cook[j]; fR[i]=fillAmt[j]; pR[i]=pat[j];
   }
-  c.fillStyle='rgba(110,60,20,.22)';
-  for(let r=0;r<N;r++){if(rad[r]>1)c.fillRect(cx+rad[r]*0.55,G0+r*CELL,2.2,CELL+0.8)}
-  const O=R.ooze;
-  if(R.done&&O&&O.size>0){
-    for(const [r,dir] of [[O.rTop,-1],[O.rBot,1]]){
-      const x=cx, y=G0+r*CELL+(dir>0?CELL:0)+dir*O.size*0.35;
-      c.fillStyle='rgba(60,30,5,.2)'; c.beginPath(); c.ellipse(x+3,y+4,O.size,O.size*0.75,0,0,TAU); c.fill();
-      c.fillStyle=O.color; c.beginPath(); c.ellipse(x,y,O.size,O.size*0.75,0,0,TAU); c.fill();
-      c.fillStyle='rgba(255,255,255,.4)'; c.beginPath(); c.ellipse(x-O.size*0.3,y-O.size*0.25,O.size*0.35,O.size*0.2,-0.5,0,TAU); c.fill();
+  let xmin=N,xmax=-1,ymin=N,ymax=-1;
+  const rowCum=new Float32Array(NN), rowT=new Float32Array(NN), rowTC=new Float32Array(NN), rowEdge=new Float32Array(N); let fl=1e9;
+  for(let y=0;y<N;y++){let a2=0,b=0,cc=0,e=-1;for(let x=0;x<N;x++){const i=y*N+x,t=bR[i];
+    if(t>0.02){a2+=t+fR[i]*0.6;b+=t;cc+=t*cR[i];e=x;if(x<xmin)xmin=x;if(x>xmax)xmax=x;if(y<ymin)ymin=y;if(y>ymax)ymax=y;if(fR[i]>0.3){const xl=G0+x*CELL;if(xl<fl)fl=xl}}
+    rowCum[i]=a2;rowT[i]=b;rowTC[i]=cc}
+    rowEdge[y]=e<0?-1e9:G0+(e+1)*CELL}
+  Object.assign(R,{bR,cR,fR,pR,rowCum,rowT,rowTC,rowEdge,fillLeft:fl<1e9?fl:null,
+    xminL:G0+xmin*CELL,xmaxL:G0+(xmax+1)*CELL,y0L:G0+ymin*CELL,y1L:G0+(ymax+1)*CELL,X:G0+xmin*CELL,foldX:G0+xmin*CELL});
+}
+function rollToWorld(x,y){const R=S.roll,ca=Math.cos(R.alpha),sa=Math.sin(R.alpha),lx=x-GC,ly=y-GC;return{x:GC+ca*lx-sa*ly,y:GC+sa*lx+ca*ly}}
+function worldDraw(c,img,x,y,w,h){const R=S.roll;c.save();c.translate(GC,GC);c.rotate(-R.alpha);c.translate(-GC,-GC);c.drawImage(img,x,y,w,h);c.restore()}
+function tubeGeo(X){
+  const R=S.roll, col=clamp(Math.floor((X-G0)/CELL),0,N-1);
+  let rTop=-1,rBot=-1,sm=0,n=0,tc=0,tt=0;
+  for(let r=0;r<N;r++){const i=r*N+col,m=R.rowCum[i];if(m>0.04){if(rTop<0)rTop=r;rBot=r;sm+=m;n++;tc+=R.rowTC[i];tt+=R.rowT[i]}}
+  const rad=n?9+Math.pow(sm/n,0.45)*9.5*(1+0.45*R.loose):0;
+  return {rTop,rBot,rad,ck:tt?tc/tt:0};
+}
+function patternAt(xL,row){const R=S.roll,col=Math.floor((xL-G0)/CELL);if(!R||!R.bR||col<0||col>=N||row<0||row>=N)return 0;const i=row*N+col;return R.bR[i]>0.02?R.pR[i]:0}
+const TH0=1.05;
+function drawTubeTop(c){
+  const R=S.roll, g=tubeGeo(R.X); if(g.rTop<0) return;
+  const rad=g.rad, cx=R.X-rad, y0=G0+g.rTop*CELL-rad*0.12, y1=G0+(g.rBot+1)*CELL+rad*0.12, h=y1-y0, cr=Math.min(rad*0.5,h/2);
+  const outer=cookRGB(g.ck+0.75), inner=cookRGB(Math.max(0.5,g.ck*0.85));
+  c.fillStyle='rgba(40,20,5,.3)'; rr(c,cx-rad+7,y0+9,2*rad,h,cr); c.fill();
+  c.save(); rr(c,cx-rad,y0,2*rad,h,cr); c.clip();
+  c.fillStyle=rgbs(outer); c.fillRect(cx-rad,y0,2*rad,h);
+  {
+    const circ=TAU*rad*2.2, nT=22;
+    for(let r=g.rTop;r<=g.rBot;r++){const y=G0+r*CELL, e=R.rowEdge[r];
+      for(let j=0;j<nT;j++){const th=-Math.PI/2+(j+0.5)/nT*Math.PI, du=((TH0-th)%TAU+TAU)%TAU;
+        let x=R.X-du/TAU*circ, under=false; if(x>e){x-=circ;under=true}
+        const sx=cx+rad*Math.sin(th), w=rad*Math.PI/nT*Math.cos(th)+1.4;
+        if(under){c.fillStyle='rgba(110,45,5,.22)';c.fillRect(sx-w/2,y,w,CELL+0.6)}
+        if(S.hasPat&&patternAt(x,r)>=0.12){c.fillStyle=under?'#E9C46E':'#FBE08A';c.fillRect(sx-w/2,y,w,CELL+0.6)}
+      }
+      const te=TH0-Math.max(0,R.X-e)/circ*TAU, tw=((te+Math.PI)%TAU+TAU)%TAU-Math.PI;
+      if(tw>-Math.PI/2&&tw<Math.PI/2){c.fillStyle='rgba(110,50,10,.5)';c.fillRect(cx+rad*Math.sin(tw)-1.2,y,2.4,CELL+0.6)}
     }
   }
+  if(g.ck<0.45){c.fillStyle='rgba(250,240,205,.55)';for(let r=g.rTop;r<=g.rBot;r+=3){if(lace[r*N+40]>0.5)c.fillRect(cx-rad*0.4,G0+r*CELL,rad*0.5,CELL*2)}}
+  c.drawImage(shadeStrip,cx-rad,y0,2*rad,h);
+  c.restore();
+  // open ends: crepe layers with filling peeking out
+  for(const yy of [y0+rad*0.16,y1-rad*0.16]){
+    c.fillStyle=rgbs(inner,0.95); c.beginPath(); c.ellipse(cx,yy,rad*0.86,rad*0.22,0,0,TAU); c.fill();
+    c.fillStyle=R.dom?R.dom.color:'rgba(90,50,15,.55)'; c.beginPath(); c.ellipse(cx,yy,rad*0.55,rad*0.14,0,0,TAU); c.fill();
+  }
 }
-function rollDown(p){
-  const R=S.roll; if(!R||R.done) return;
-  if(p.x<R.X+110&&p.x>R.X-160){R.dragging=true;R.lt=performance.now();}
-  else toast('จับไม้พายที่ขอบซ้ายของแผ่นก่อนนะ');
+function rollGestureStart(p){const R=S.roll;if(!R||R.done||R.anim)return;R.g0={x:p.x,y:p.y,t:performance.now()};R.gc={x:p.x,y:p.y}}
+function rollGestureMove(p){const R=S.roll;if(R&&R.g0)R.gc={x:p.x,y:p.y}}
+function rollGestureEnd(){
+  const R=S.roll; if(!R||!R.g0) return; const g0=R.g0, g1=R.gc; R.g0=null;
+  const dx=g1.x-g0.x, dy=g1.y-g0.y, L=Math.hypot(dx,dy), dt=Math.max(0.03,(performance.now()-g0.t)/1000), sp=L/dt;
+  if(R.phase==='aim'){
+    if(L<50){toast('ปัดนิ้วยาวขึ้นอีกนิด จากขอบแผ่นเข้าหาไส้');return}
+    orientRoll(Math.atan2(dy,dx));
+    const w=clamp(L*0.45,30,(R.xmaxL-R.xminL)*0.4);
+    R.foldX=R.xminL+w; R.foldCover=R.fillLeft==null||R.xminL+2*w>=R.fillLeft;
+    R.phase='folding'; R.anim={kind:'fold',t:0,dur:0.5,p:0}; blip(300,0.1,0.1,'triangle'); renderPanel(); return;
+  }
+  if(R.phase!=='roll'||L<40) return;
+  const ca=Math.cos(R.alpha), sa=Math.sin(R.alpha), along=dx*ca+dy*sa, side=-dx*sa+dy*ca;
+  if(along<=0||Math.abs(side)>along*1.4){R.slips++;toast('ปัดไปทางเดียวกับลูกศรนะ');blip(170,0.12,0.1);return}
+  const dev=Math.atan2(Math.abs(side),along), g=tubeGeo(R.X);
+  let adv=clamp(TAU*g.rad*0.75,70,190); if(R.xmaxL-R.X<adv*1.35) adv=R.xmaxL-R.X;
+  const lz=clamp((sp-1800)/1800,0,1)*0.6+clamp(dev/0.8,0,1)*0.6;
+  R.lw+=lz*adv; R.ld+=adv; R.loose=R.lw/Math.max(1,R.ld); R.flips++;
+  R.anim={kind:'flip',t:0,dur:0.4,from:R.X,to:R.X+adv,p:0}; blip(360+R.flips*45,0.1,0.11,'triangle');
+  if(dev>0.45) toast('ปัดเบี้ยวไปนิด ม้วนหลวมลง'); else if(sp>2600) toast('ปัดแรงไป ม้วนหลวมลง');
 }
-function rollMove(x){
-  const R=S.roll; if(!R||!R.dragging||R.done) return;
-  const now=performance.now(), nx=Math.min(R.xmaxL,Math.max(R.X,x)), dx=nx-R.X;
-  if(dx>0){
-    const sp=dx/(Math.max(8,now-R.lt)/1000);
-    R.lw+=clamp((sp-700)/1600,0,1)*dx; R.ld+=dx; R.loose=R.lw/Math.max(1,R.ld);
-    R.X=nx; R.lt=now; updateProfile();
-    if(R.X>=R.xmaxL-12) finishRoll();
-  } else R.lt=now;
+function rollAnim(dt){
+  const R=S.roll; if(!R||!R.anim) return; const A=R.anim; A.t+=dt;
+  const p=clamp(A.t/A.dur,0,1), e=p<0.5?2*p*p:1-Math.pow(-2*p+2,2)/2; A.p=e;
+  if(A.kind==='fold'){ if(p>=1){R.anim=null;R.phase='roll';R.X=R.foldX;renderPanel();toast(R.foldCover?'พับขอบคลุมไส้แล้ว! ปัดตามลูกศรเพื่อม้วน':'ขอบยังไม่คลุมไส้ แต่ม้วนต่อได้')} }
+  else { R.X=A.from+(A.to-A.from)*e; if(p>=1){R.anim=null;if(R.X>=R.xmaxL-1)finishRoll()} }
+}
+function drawArrow(c,x0,y0,x1,y1,col,w){
+  const a=Math.atan2(y1-y0,x1-x0), hl=w*3.2;
+  c.save(); c.lineCap='round'; c.lineJoin='round';
+  for(const [lw,cl] of [[w+5,'rgba(30,15,5,.5)'],[w,col]]){
+    c.strokeStyle=cl; c.lineWidth=lw; c.beginPath(); c.moveTo(x0,y0); c.lineTo(x1-Math.cos(a)*hl*0.6,y1-Math.sin(a)*hl*0.6); c.stroke();
+    c.fillStyle=cl; c.beginPath(); c.moveTo(x1+Math.cos(a)*(lw-w)*0.6,y1+Math.sin(a)*(lw-w)*0.6);
+    c.lineTo(x1-Math.cos(a)*hl+Math.cos(a+Math.PI/2)*hl*0.6,y1-Math.sin(a)*hl+Math.sin(a+Math.PI/2)*hl*0.6);
+    c.lineTo(x1-Math.cos(a)*hl-Math.cos(a+Math.PI/2)*hl*0.6,y1-Math.sin(a)*hl-Math.sin(a+Math.PI/2)*hl*0.6); c.closePath(); c.fill();
+  }
+  c.restore();
+}
+function drawShells(c){
+  for(const k of S.cracks){const a=1-k.t/0.6,s=k.t*90;c.globalAlpha=Math.max(0,a);c.fillStyle='#F3E6D0';c.strokeStyle='#C9A77A';c.lineWidth=2;
+    for(const dir of [-1,1]){c.beginPath();c.ellipse(k.x+dir*(18+s),k.y-30-s*0.6,15,20,dir*0.6,dir>0?-Math.PI/2:Math.PI/2,dir>0?Math.PI/2:Math.PI*1.5);c.closePath();c.fill();c.stroke()}}
+  c.globalAlpha=1;
+}
+function drawFlap(c){
+  // the strip [xmin, foldX] swings over the fold line: top side while lifting, underside once past upright
+  const R=S.roll, fx=R.foldX, w=fx-R.xminL, e=R.anim?R.anim.p:1, s=-Math.cos(Math.PI*e), lift=1-Math.abs(s);
+  if(w<1) return;
+  c.save(); c.beginPath();
+  if(s<0) c.rect(fx+w*s,-1000,-w*s,3000); else c.rect(fx,-1000,w*s+2,3000);
+  c.clip();
+  c.shadowColor='rgba(40,20,5,.32)'; c.shadowBlur=10+24*lift; c.shadowOffsetX=4; c.shadowOffsetY=6+18*lift;
+  c.translate(fx,0); c.scale(-s,1); c.translate(-fx,0);
+  if(s<0) worldDraw(c,R.flat,0,0,1000,1000); else worldDraw(c,R.under,G0,G0,N*CELL,N*CELL);
+  c.restore();
+  const col=clamp(Math.floor((fx-G0)/CELL),0,N-1);
+  for(let r=0;r<N;r++){if(R.bR[r*N+col]>0.02){const y=G0+r*CELL;c.fillStyle='rgba(255,236,170,.8)';c.fillRect(fx-1.5,y,3.5,CELL+0.5);c.fillStyle='rgba(90,40,5,.22)';c.fillRect(fx+2,y,5,CELL+0.5)}}
 }
 function finishRoll(){
-  const R=S.roll; R.done=true; R.dragging=false; R.X=R.xmaxL; updateProfile();
-  let tm=0,tt=0; for(let r=0;r<N;r++){const m=R.rowCum[r*N+N-1];if(m>0){tt+=m;if(R.ck[r]<0.45)tm+=m}}
+  const R=S.roll; R.done=true; R.dragging=false; R.X=R.xmaxL;
+  let tm=0,tt=0; for(let r=0;r<N;r++){const i=r*N+N-1,m=R.rowCum[i];if(m>0){tt+=m;const ck=R.rowT[i]?R.rowTC[i]/R.rowT[i]:0;if(ck<0.45)tm+=m}}
   R.tearFrac=tt?tm/tt:0;
+  R.geo=tubeGeo(R.X);
   S.stats=computeStats();
-  // ooze
-  let rTop=-1,rBot=-1; for(let r=0;r<N;r++) if(R.rad[r]>4){if(rTop<0)rTop=r;rBot=r}
-  const cov=S.stats.cov;
-  if(rTop>=0&&cov>0.02){
-    const size=5+clamp((cov-0.25)/0.45,0,1)*22;
-    R.ooze={rTop,rBot,size,color:dominantColor()};
-  }
-  captureTube(); renderPanel(); chime();
+  S.art=buildArt();
+  renderPanel(); chime();
   toast(R.tearFrac>0.3?'แป้งยังไม่สุกดี ม้วนแล้วขาดนิดหน่อย…':'ม้วนเสร็จแล้ว! กด "เสิร์ฟ" ได้เลย');
 }
 function fillMass(){
@@ -725,25 +926,123 @@ function fillMass(){
   for(const a of S.actions){
     let v=0;
     if(a.kind==='cream'){const p=a.items[0].pts;let L=4;for(let k=2;k<p.length;k+=2)L+=Math.hypot(p[k]-p[k-2],p[k+1]-p[k-1]);v=L/10}
-    else if(a.type==='corn') v=a.items.reduce((s,p)=>s+p.k.length,0);
+    else if(a.kind==='hen') v=a.cracks;
     else v=a.items.length;
     m[a.type]=(m[a.type]||0)+v;
   }
   return m;
 }
-function dominantColor(){
-  const m=fillMass(), W={custard:18,pandan:18,taro:18,choco:12,foithong:1.2,floss:1,sausage:9,egg:20,corn:1};
-  let best=null,bv=0; for(const k in m){const v=m[k]*W[k];if(v>bv){bv=v;best=k}}
-  return best?FD[best].color:'#F0B43C';
+const MW={hen:60,custard:20,pandan:20,taro:20,choco:14,chili:4,foithong:1.2,floss:1,pork:2.4,sausage:120,egg:25};
+function dominantFill(){
+  const m=fillMass(); let best=null,bv=0; for(const k in m){const v=m[k]*MW[k];if(v>bv){bv=v;best=k}}
+  return best?FD[best]:null;
 }
-function captureTube(){
-  const R=S.roll; let r0=-1,r1=-1,maxR=0;
-  for(let r=0;r<N;r++) if(R.rad[r]>0.5){if(r0<0)r0=r;r1=r;if(R.rad[r]>maxR)maxR=R.rad[r]}
-  if(r0<0){S.tube=null;return}
-  const bx=R.X-2*maxR-40, by=G0+r0*CELL-50, bw=2*maxR+80, bh=(r1-r0+1)*CELL+100, TS=2;
-  const cnv=mk(Math.ceil(bw*TS),Math.ceil(bh*TS)), x=cnv.getContext('2d');
-  x.setTransform(TS,0,0,TS,-bx*TS,-by*TS); drawTube(x);
-  S.tube={cv:cnv,bx,by,bw,bh,cx:R.X-maxR,cy:G0+(r0+r1+1)/2*CELL,Lt:(r1-r0+1)*CELL,maxR};
+
+/* ---------------- finished roll illustration (3/4 view) ---------------- */
+function drawFilling(c,ri,m){
+  const r0=rng(99), has=k=>(m[k]||0)>0;
+  const creams=['custard','pandan','taro','choco'].filter(has);
+  const any=Object.keys(m).some(k=>m[k]>0&&k!=='chili');
+  c.save(); circle(c,0,0,ri); c.clip();
+  if(!any){
+    const g=c.createRadialGradient(0,ri*0.2,0,0,0,ri); g.addColorStop(0,'#4a2a0c'); g.addColorStop(0.65,'#a8742e'); g.addColorStop(1,'#efc46a');
+    c.fillStyle=g; circle(c,0,0,ri); c.fill(); c.restore(); return;
+  }
+  const base=creams.length?FD[creams[0]].color:has('hen')?'#F8D37A':has('pork')?'#A87A4C':has('floss')?'#C57B3B':has('foithong')?'#F3B320':'#E7BE68';
+  c.fillStyle=base; circle(c,0,0,ri); c.fill();
+  creams.forEach((t,k)=>{
+    const f=FD[t], ang=k/creams.length*TAU+0.6, d=creams.length>1?ri*0.42:0, cx=Math.cos(ang)*d, cy=Math.sin(ang)*d;
+    for(let i=0;i<10;i++){const x=cx+(r0()-.5)*ri*0.8,y=cy+(r0()-.5)*ri*0.8,rad=ri*(0.2+r0()*0.18);
+      c.fillStyle=f.color; circle(c,x,y,rad); c.fill();
+      c.fillStyle=f.hi; c.globalAlpha=.55; circle(c,x-rad*0.3,y-rad*0.3,rad*0.45); c.fill(); c.globalAlpha=1;
+      c.fillStyle='rgba(0,0,0,.08)'; circle(c,x+rad*0.25,y+rad*0.3,rad*0.5); c.fill();}
+  });
+  if(has('hen')){for(let i=0;i<16;i++){const a=r0()*TAU,d=Math.sqrt(r0())*ri*0.85,x=Math.cos(a)*d,y=Math.sin(a)*d,rad=ri*(0.14+r0()*0.16);
+      c.fillStyle=r0()<0.55?'#F6A623':'#FFF8E6';c.beginPath();c.ellipse(x,y,rad,rad*0.7,r0()*3,0,TAU);c.fill()}
+    c.strokeStyle='#F7B43A';c.lineWidth=ri*0.12;circle(c,0,0,ri*0.92);c.stroke()}
+  if(has('pork')) for(let i=0;i<80;i++){const a=r0()*TAU,d=Math.sqrt(r0())*ri,rad=ri*(0.05+r0()*0.06);
+    c.fillStyle=PAL.pork[(r0()*5)|0]; circle(c,Math.cos(a)*d,Math.sin(a)*d,rad); c.fill();
+    c.fillStyle='rgba(255,240,210,.3)'; circle(c,Math.cos(a)*d-rad*0.3,Math.sin(a)*d-rad*0.3,rad*0.35); c.fill();}
+  if(has('floss')){c.lineCap='round';for(let i=0;i<70;i++){const a=r0()*TAU,d=Math.sqrt(r0())*ri,x=Math.cos(a)*d,y=Math.sin(a)*d,b=r0()*TAU;
+    c.strokeStyle=PAL.floss[(r0()*5)|0]; c.lineWidth=ri*0.035; c.beginPath(); c.moveTo(x,y); c.quadraticCurveTo(x+Math.cos(b)*ri*0.1,y+Math.sin(b)*ri*0.1,x+Math.cos(b+1)*ri*0.18,y+Math.sin(b+1)*ri*0.18); c.stroke();}}
+  if(has('foithong')){c.lineCap='round';for(let i=0;i<45;i++){const a=r0()*TAU,d=Math.sqrt(r0())*ri,x=Math.cos(a)*d,y=Math.sin(a)*d,b=r0()*TAU;
+    c.strokeStyle=PAL.foithong[(r0()*5)|0]; c.lineWidth=ri*0.022; c.beginPath(); c.moveTo(x,y); c.bezierCurveTo(x+ri*0.2*Math.cos(b),y+ri*0.2*Math.sin(b),x-ri*0.15,y+ri*0.25,x+ri*0.3*Math.cos(b+2),y+ri*0.3*Math.sin(b+2)); c.stroke();}}
+  const ns=Math.min(2,Math.round(m.sausage||0));
+  const sPos=ns===1?[[ri*0.12,-ri*0.08,ri*0.5]]:ns===2?[[-ri*0.32,-ri*0.12,ri*0.38],[ri*0.34,ri*0.14,ri*0.38]]:[];
+  for(const [x,y,rad] of sPos){
+    c.fillStyle='rgba(60,15,0,.3)'; circle(c,x+rad*0.08,y+rad*0.12,rad); c.fill();
+    c.fillStyle='#A92F1C'; circle(c,x,y,rad); c.fill();
+    const g=c.createRadialGradient(x-rad*0.3,y-rad*0.3,rad*0.1,x,y,rad*0.9); g.addColorStop(0,'#F0906A'); g.addColorStop(1,'#C8452E');
+    c.fillStyle=g; circle(c,x,y,rad*0.88); c.fill();
+    c.fillStyle='rgba(255,210,190,.35)'; for(let i=0;i<7;i++){const a=r0()*TAU,d=r0()*rad*0.6;circle(c,x+Math.cos(a)*d,y+Math.sin(a)*d,rad*0.05);c.fill()}
+    c.strokeStyle='rgba(255,230,210,.5)'; c.lineWidth=rad*0.08; c.beginPath(); c.arc(x,y,rad*0.72,3.6,4.6); c.stroke();
+  }
+  if(has('egg')){const x=-ri*0.38,y=ri*0.38;
+    c.fillStyle='#FFFCF2'; c.beginPath(); c.ellipse(x,y,ri*0.34,ri*0.28,0.4,0,TAU); c.fill();
+    c.fillStyle='#F6B13A'; circle(c,x+ri*0.03,y,ri*0.15); c.fill();
+    c.fillStyle='rgba(255,255,255,.6)'; circle(c,x-ri*0.03,y-ri*0.05,ri*0.05); c.fill();}
+  if(has('chili')){c.lineCap='round';c.strokeStyle='#C92A16';c.lineWidth=ri*0.09;c.beginPath();c.moveTo(-ri,ri*0.1);
+    for(let x=-ri;x<=ri;x+=ri*0.1)c.lineTo(x,ri*0.05+Math.sin(x/ri*7)*ri*0.12);c.stroke();
+    c.strokeStyle='rgba(255,170,140,.6)';c.lineWidth=ri*0.025;c.stroke();}
+  const g=c.createRadialGradient(0,ri*0.15,ri*0.5,0,0,ri); g.addColorStop(0,'rgba(60,30,5,0)'); g.addColorStop(1,'rgba(60,30,5,.45)');
+  c.fillStyle=g; circle(c,0,0,ri); c.fill();
+  c.restore();
+}
+function buildArt(){
+  const R=S.roll, g=R.geo; if(!g||g.rTop<0) return null;
+  const A=mk(1200,1200), c=A.getContext('2d'); c.setTransform(1.2,0,0,1.2,0,0);
+  const span=(g.rBot-g.rTop+1)*CELL, L=clamp(span*0.68,290,450), r=Math.min(L/2.9,clamp(g.rad*1.75,56,108));
+  const rN=r*1.08, rF=r*0.8, rad=s=>rN+(rF-rN)*s;
+  const phi=-0.42, ax=Math.cos(phi), ay=Math.sin(phi), px=-ay, py=ax, rot=Math.atan2(py,px), e=0.62;
+  const C={x:515,y:470}, F={x:C.x+ax*L/2,y:C.y+ay*L/2}, Nn={x:C.x-ax*L/2,y:C.y-ay*L/2};
+  const outer=cookRGB(g.ck+0.75), inner=cookRGB(Math.max(0.55,g.ck*0.8));
+  const body=()=>{c.beginPath();c.moveTo(F.x-px*rF,F.y-py*rF);c.lineTo(Nn.x-px*rN,Nn.y-py*rN);c.lineTo(Nn.x+px*rN,Nn.y+py*rN);c.lineTo(F.x+px*rF,F.y+py*rF);c.ellipse(F.x,F.y,rF,rF*e,rot,0,Math.PI,true);c.closePath()};
+  c.save(); c.shadowColor='rgba(70,35,8,.4)'; c.shadowBlur=28; c.shadowOffsetX=10; c.shadowOffsetY=22; body(); c.fillStyle=rgbs(outer,0.8); c.fill();
+  c.beginPath(); c.ellipse(Nn.x,Nn.y,rN,rN*e,rot,0,TAU); c.fill(); c.restore();
+  const gr=c.createLinearGradient(C.x-px*r,C.y-py*r,C.x+px*r,C.y+py*r);
+  gr.addColorStop(0,rgbs(outer,0.7)); gr.addColorStop(0.2,rgbs(outer,1.05,24)); gr.addColorStop(0.38,rgbs(outer,1.0,4)); gr.addColorStop(0.8,rgbs(outer,0.86)); gr.addColorStop(1,rgbs(outer,0.6));
+  body(); c.fillStyle=gr; c.fill();
+  c.save(); body(); c.clip();
+  const rr0=rng(31);
+  for(let i=0;i<150;i++){const s=rr0(), o=(rr0()*2-1)*rad(s), x=Nn.x+ax*L*s+px*o, y=Nn.y+ay*L*s+py*o;
+    c.fillStyle=rr0()<0.6?'rgba(150,70,10,.1)':'rgba(255,230,160,.1)'; c.beginPath(); c.ellipse(x,y,3+rr0()*9,2+rr0()*5,phi,0,TAU); c.fill();}
+  // outer wrap sampled from the real pancake: where the sheet ends you see the layer under it
+  const nS=230, nT=64, circ=TAU*g.rad*2.2, step=L/nS, seam=[];
+  for(let i=0;i<nS;i++){
+    const s=i/(nS-1), row=Math.round(g.rTop+s*(g.rBot-g.rTop)), bx=Nn.x+ax*L*s, by=Nn.y+ay*L*s, rs=rad(s), edge=R.rowEdge[row];
+    for(let j=0;j<nT;j++){
+      const th=-Math.PI/2+(j+0.5)/nT*Math.PI, du=((TH0-th)%TAU+TAU)%TAU;
+      let x=R.X-du/TAU*circ, under=false; if(x>edge){x-=circ;under=true}
+      const pv=S.hasPat?patternAt(x,row):0; if(!under&&pv<0.12) continue;
+      const o=rs*Math.sin(th), sz=Math.max(1.9,Math.max(step,rs*Math.PI/nT*Math.cos(th))*0.72), X=bx+px*o, Y=by+py*o;
+      if(under){c.fillStyle='rgba(120,50,5,.2)';circle(c,X,Y,sz);c.fill()}
+      if(pv>=0.12){c.fillStyle='rgba(150,75,10,.32)';circle(c,X+1.2,Y+1.8,sz*0.85);c.fill();c.fillStyle=under?'#EDC86C':'#FCE59A';circle(c,X,Y,sz*0.85);c.fill()}
+    }
+    const te=TH0-Math.max(0,R.X-edge)/circ*TAU, tw=((te+Math.PI)%TAU+TAU)%TAU-Math.PI;
+    seam.push(tw>-Math.PI/2+0.05&&tw<Math.PI/2-0.05?{x:bx+px*rs*Math.sin(tw),y:by+py*rs*Math.sin(tw)}:null);
+  }
+  for(const [w,col,ox,oy] of [[4.5,'rgba(110,45,5,.42)',1.5,2.5],[2,'rgba(255,236,170,.8)',0,0]]){
+    c.strokeStyle=col; c.lineWidth=w; c.lineJoin='round'; c.lineCap='round'; c.beginPath(); let on=false;
+    for(const p of seam){if(!p){on=false;continue}on?c.lineTo(p.x+ox,p.y+oy):c.moveTo(p.x+ox,p.y+oy);on=true}
+    c.stroke();
+  }
+  if(R.tearFrac>0.3){c.strokeStyle='rgba(250,240,205,.75)';c.lineWidth=5;for(let i=0;i<5;i++){const s=0.15+i*0.17,x=Nn.x+ax*L*s,y=Nn.y+ay*L*s,rs=rad(s);c.beginPath();c.moveTo(x-px*rs*0.6,y-py*rs*0.6);c.lineTo(x+px*rs*0.1+ax*8,y+py*rs*0.1+ay*8);c.lineTo(x+px*rs*0.5,y+py*rs*0.5);c.stroke()}}
+  c.restore();
+  // open end: one thin crepe sheet wrapped around the filling
+  const m=fillMass(), cov=S.stats?S.stats.cov:0, anyFill=Object.keys(m).some(k=>m[k]>0);
+  c.save(); c.translate(Nn.x,Nn.y); c.rotate(rot); c.scale(1,e);
+  c.fillStyle=rgbs(outer,0.8); circle(c,0,0,rN); c.fill();
+  c.fillStyle=rgbs(inner,1.04,8); circle(c,0,0,rN*0.955); c.fill();
+  c.lineCap='round'; c.strokeStyle=rgbs(outer,0.84); c.lineWidth=rN*0.03;
+  c.beginPath(); for(let t=0;t<=1.001;t+=0.02){const rho=rN*0.925-rN*0.07*t,a=0.9+t*TAU;const x=Math.cos(a)*rho,y=Math.sin(a)*rho;t?c.lineTo(x,y):c.moveTo(x,y)} c.stroke();
+  c.fillStyle=rgbs(outer,0.9); circle(c,Math.cos(0.9)*rN*0.925,Math.sin(0.9)*rN*0.925,rN*0.03); c.fill();
+  const ri=anyFill?rN*0.84:rN*0.86;
+  drawFilling(c,ri,m);
+  if(anyFill&&cov>0.35){const d=dominantFill();if(d){const n=3+Math.round(cov*6);for(let i=0;i<n;i++){const a=Math.PI*0.5+(i/(n-1)-0.5)*1.6,x=Math.cos(a)*ri*0.8,y=Math.sin(a)*ri*0.8+ri*0.15,rd=ri*(0.22+0.1*Math.sin(i*2.3));
+    c.fillStyle=d.color; circle(c,x,y,rd); c.fill(); if(d.hi){c.fillStyle=d.hi;c.globalAlpha=.5;circle(c,x-rd*0.3,y-rd*0.3,rd*0.4);c.fill();c.globalAlpha=1}}}}
+  c.strokeStyle=rgbs(outer,0.6); c.lineWidth=rN*0.025; circle(c,0,0,rN*0.99); c.stroke();
+  c.restore();
+  return A;
 }
 
 /* ---------------- scoring ---------------- */
@@ -756,24 +1055,28 @@ const TITLES=[
   {id:'overflow',name:'ไส้ทะลักจักรวาล',desc:'ไส้เยอะจนม้วนแทบไม่มิด',t:s=>s.cov>0.6},
   {id:'tear',name:'ม้วนขาดใจ',desc:'แป้งขาดระหว่างม้วน',t:s=>s.tearFrac>0.3},
   {id:'burnt',name:'ไหม้ใจ',desc:'มีรอยไหม้ให้จดจำ',t:s=>s.burnt>0.18},
-  {id:'abstract',name:'ศิลปะนามธรรม',desc:'รูปทรงอิสระ ไม่ยึดติดความกลม',t:s=>s.roundness<0.72},
+  {id:'abstract',name:'ศิลปะนามธรรม',desc:'ละเลงทรงอิสระสุดๆ',t:s=>s.roundness<0.72&&s.total>=60},
+  {id:'oval',name:'ทรงรีแบบรถเข็น',desc:'แผ่นรีๆ แบบแม่ค้าละเลงจริง',t:s=>s.roundness>=0.72&&s.roundness<0.88&&s.meanR>=190},
   {id:'lace',name:'ผ้าลูกไม้ฉลุ',desc:'รูพรุนทั่วแผ่น',t:s=>s.holeFrac>0.18},
   {id:'pancake',name:'หนานุ่มสไตล์แพนเค้ก',desc:'แป้งหนาเกินโตเกียวไปนิด',t:s=>s.m>0.9},
-  {id:'compass',name:'กลมดิกเหมือนวงเวียน',desc:'กลมจนเรขาคณิตอาย',t:s=>s.roundness>0.955&&s.meanR>=200},
+  {id:'street',name:'สูตรรถเข็นหน้าโรงเรียน',desc:'ไส้กรอก หมูสับ และไข่ ครบสูตรไส้เค็ม',t:s=>(s.counts.sausage||0)>0&&(s.counts.pork||0)>0&&((s.counts.egg||0)>0||(s.counts.hen||0)>0)},
+  {id:'henegg',name:'ไข่ไก่คนจนลาย',desc:'ตอกไข่ไก่แล้วคนให้ทั่วแผ่น',t:s=>(s.counts.hen||0)>=1},
+  {id:'lattice',name:'ลายตาข่ายมือโปร',desc:'โรยเส้นแป้งเป็นลายสวยรอบตัวขนม',t:s=>s.lattice>0.08},
   {id:'paper',name:'บางเฉียบเหมือนกระดาษ',desc:'บางและเรียบเนียนทั้งแผ่น',t:s=>s.m<0.3&&s.holeFrac<0.06&&s.cv<0.5},
   {id:'golden',name:'เหลืองทองอร่าม',desc:'สุกกำลังดีเกือบทั้งแผ่น',t:s=>s.good>0.8},
   {id:'plain',name:'โตเกียวเปลือย',desc:'ไม่ใส่ไส้ เน้นแป้งล้วนๆ',t:s=>s.cov<0.01},
   {id:'buffet',name:'บุฟเฟ่ต์ไส้',desc:'ใส่ไส้ตั้งแต่ 5 อย่างขึ้นไป',t:s=>s.types.length>=5},
   {id:'egglove',name:'ไข่นกกระทาคลั่งรัก',desc:'ไข่นกกระทาตั้งแต่ 4 ฟอง',t:s=>(s.counts.egg||0)>=4},
-  {id:'sausage',name:'ไส้กรอกล้นรถเข็น',desc:'ไส้กรอกตั้งแต่ 10 แว่น',t:s=>(s.counts.sausage||0)>=10},
+  {id:'sausage',name:'ไส้กรอกล้นรถเข็น',desc:'ไส้กรอกตั้งแต่ 3 แท่ง',t:s=>(s.counts.sausage||0)>=3},
+  {id:'pork',name:'หมูสับแน่นๆ',desc:'หมูสับผัดจัดเต็ม',t:s=>(s.counts.pork||0)>=120},
+  {id:'chili',name:'เผ็ดซี๊ดซ๊าด',desc:'ราดซอสพริกแบบไทยแท้',t:s=>(s.counts.chili||0)>=25},
   {id:'sweetsalty',name:'หวานมันเค็มครบรส',desc:'ใส่ทั้งไส้หวานและไส้เค็ม',t:s=>s.sweet&&s.savory},
   {id:'pandan',name:'สังขยาใบเตยแท้',desc:'สังขยาใบเตยล้วน',t:s=>s.only==='pandan'},
-  {id:'custard',name:'คลาสสิกสังขยา',desc:'สังขยาล้วนแบบดั้งเดิม',t:s=>s.only==='custard'},
+  {id:'custard',name:'ครีมคัสตาร์ดคลาสสิก',desc:'ไส้ครีมล้วนแบบดั้งเดิม',t:s=>s.only==='custard'},
   {id:'taro',name:'คนรักเผือก',desc:'ครีมเผือกล้วน',t:s=>s.only==='taro'},
   {id:'choco',name:'โกโก้ครองใจ',desc:'ช็อกโกแลตล้วน',t:s=>s.only==='choco'},
   {id:'gold',name:'ทองทั้งแผ่น',desc:'ฝอยทองจัดเต็ม',t:s=>(s.counts.foithong||0)>=150},
   {id:'floss',name:'หมูหยองฟูฟ่อง',desc:'หมูหยองจัดเต็ม',t:s=>(s.counts.floss||0)>=200},
-  {id:'corn',name:'ข้าวโพดหวานกรุบ',desc:'ข้าวโพดตั้งแต่ 30 เม็ด',t:s=>(s.counts.corn||0)>=30},
   {id:'tight',name:'ม้วนแน่นเปรี๊ยะ',desc:'ม้วนช้าๆ แน่นทุกรอบ',t:s=>s.loose<0.08&&s.tearFrac<0.05},
   {id:'loose',name:'ม้วนหลวมชิลๆ',desc:'ม้วนเร็วไปนิด หลวมโพรก',t:s=>s.loose>0.5},
   {id:'nobutter',name:'ลืมเนย',desc:'ไม่ได้เช็ดเนยกระทะ',t:s=>s.butterCov<0.15},
@@ -783,12 +1086,12 @@ const TITLES=[
   {id:'kid',name:'หนูน้อยหัดทำขนม',desc:'ลองอีกสักแผ่นนะ',t:()=>true},
 ];
 function computeStats(){
-  let A=0,sT=0,sT2=0,sx=0,sy=0,raw=0,good=0,brown=0,burnt=0,bc=0,fin=0,fout=0;
+  let A=0,sT=0,sT2=0,sx=0,sy=0,raw=0,good=0,brown=0,burnt=0,bc=0,fin=0,fout=0,pc=0;
   for(let y=0;y<N;y++)for(let x=0;x<N;x++){const i=y*N+x,t=batter[i],f=fillAmt[i];
-    if(t>0.03){A++;sT+=t;sT2+=t*t;sx+=x;sy+=y;const c=cook[i];if(c<0.55)raw++;else if(c<1.6)good++;else if(c<2.2)brown++;else burnt++;if(butter[i]>0.15)bc++;fin+=f}else fout+=f}
+    if(t>0.03){A++;sT+=t;sT2+=t*t;sx+=x;sy+=y;const c=cook[i];if(c<0.55)raw++;else if(c<1.6)good++;else if(c<2.2)brown++;else burnt++;if(butter[i]>0.15)bc++;if(pat[i]>0.12)pc++;fin+=f}else fout+=f}
   const R=S.roll, counts=fillMass(), types=Object.keys(counts).filter(k=>counts[k]>0);
   const s={A,counts,types,loose:R?R.loose:0,tearFrac:R?R.tearFrac:0,sweet:types.some(t=>FD[t].sweet),savory:types.some(t=>FD[t].savory),only:types.length===1?types[0]:null};
-  if(A<20){Object.assign(s,{m:0,cv:0,roundness:0,meanR:0,holeFrac:0,raw:1,good:0,brown:0,burnt:0,butterCov:0,cov:0,spill:0,sc:{round:0,thin:0,cook:0,fill:0,roll:0},total:0});return s}
+  if(A<20){Object.assign(s,{m:0,cv:0,roundness:0,meanR:0,holeFrac:0,raw:1,good:0,brown:0,burnt:0,butterCov:0,cov:0,spill:0,lattice:0,sc:{round:0,thin:0,cook:0,fill:0,roll:0},total:0});return s}
   const cx=sx/A+0.5, cy=sy/A+0.5, m=sT/A, cv=Math.sqrt(Math.max(0,sT2/A-m*m))/m;
   const rays=[]; for(let k=0;k<72;k++){const a=k/72*TAU,ca=Math.cos(a),sa=Math.sin(a);let last=0,gap=0;
     for(let d=0;d<GRC+6;d+=0.5){const xi=Math.floor(cx+ca*d),yi=Math.floor(cy+sa*d);if(xi<0||yi<0||xi>=N||yi>=N)break;
@@ -796,65 +1099,50 @@ function computeStats(){
     rays.push(last)}
   const mean=rays.reduce((a,b)=>a+b,0)/72, sd=Math.sqrt(rays.reduce((a,b)=>a+(b-mean)*(b-mean),0)/72);
   const roundness=mean>0?clamp(1-sd/mean,0,1):0;
-  let tot=0,emp=0; const HR=mean*0.8;
-  for(let y=Math.max(0,Math.floor(cy-HR));y<=Math.min(N-1,Math.ceil(cy+HR));y++)for(let x=Math.max(0,Math.floor(cx-HR));x<=Math.min(N-1,Math.ceil(cx+HR));x++){
-    if(Math.hypot(x+0.5-cx,y+0.5-cy)<=HR){tot++;if(batter[y*N+x]<=0.03)emp++}}
-  Object.assign(s,{m,cv,roundness,meanR:mean*CELL,holeFrac:tot?emp/tot:0,raw:raw/A,good:good/A,brown:brown/A,burnt:burnt/A,butterCov:bc/A,cov:fin/A,spill:fout/(fin+fout+1e-6)});
+  let emp=0; const has=(x,y)=>x>=0&&y>=0&&x<N&&y<N&&batter[y*N+x]>0.03;
+  const hit=(x,y,dx,dy)=>{for(let k=1;k<=30;k++){if(has(x+dx*k,y+dy*k))return true}return false};
+  for(let y=1;y<N-1;y++)for(let x=1;x<N-1;x++){if(has(x,y)||!inG[y*N+x])continue;if(hit(x,y,1,0)&&hit(x,y,-1,0)&&hit(x,y,0,1)&&hit(x,y,0,-1))emp++}
+  const effR=Math.sqrt(A/Math.PI)*CELL;
+  Object.assign(s,{m,cv,roundness,meanR:effR,holeFrac:emp/(A+emp),raw:raw/A,good:good/A,brown:brown/A,burnt:burnt/A,butterCov:bc/A,cov:fin/A,spill:fout/(fin+fout+1e-6),lattice:pc/A});
   const sc={};
-  let rp=clamp((roundness-0.8)/0.17,0,1); if(s.meanR<200) rp*=clamp(0.3+0.7*(s.meanR-100)/100,0.3,1); else if(s.meanR>390) rp*=0.8; sc.round=20*rp;
+  const R0=s.meanR; let rp=R0<190?clamp((R0-90)/100,0,1):R0>390?clamp(1-(R0-390)/120,0.6,1):1; sc.round=20*rp;
   const thinP=clamp(1-(m-0.4)/0.7,0,1), evenP=clamp(1-(cv-0.35)/0.9,0,1), holeP=clamp(1-s.holeFrac*2.5,0,1);
   sc.thin=20*(0.5*thinP+0.5*evenP)*holeP;
   let ck=clamp(s.good+0.5*s.brown+0.15*s.raw-0.6*s.burnt,0,1); if(s.butterCov<0.3) ck*=0.85; sc.cook=20*ck;
   const cov=s.cov, ap=cov<0.005?0.25:cov<0.08?0.35+0.65*cov/0.08:cov<=0.42?1:Math.max(0.3,1-(cov-0.42)*1.4);
   sc.fill=20*ap*(1-Math.min(0.6,s.spill*1.5));
-  sc.roll=20*(1-0.6*s.loose)*(1-0.55*s.tearFrac);
+  sc.roll=20*(1-0.6*s.loose)*(1-0.55*s.tearFrac)*(R&&R.foldCover===false?0.85:1)*(1-Math.min(0.3,(R?R.slips:0)*0.08));
   s.sc=sc; s.total=Math.round(sc.round+sc.thin+sc.cook+sc.fill+sc.roll);
   return s;
 }
 
 /* ---------------- serve scene ---------------- */
 const easeOutBack=t=>{const c1=1.4,c3=c1+1;return 1+c3*Math.pow(t-1,3)+c1*Math.pow(t-1,2)};
-const easeOut=t=>1-Math.pow(1-t,3);
-function drawSleeve(c,T){
-  const L=T.Lt, mr=T.maxR, yTop=-L*0.03, yBot=L/2+18, hw=mr*1.5, hb=mr*1.32, n=8;
-  const path=(ox,oy)=>{c.beginPath();c.moveTo(-hw+ox,yTop+oy);for(let i=0;i<n;i++){const x0=-hw+2*hw*i/n,x1=-hw+2*hw*(i+1)/n;c.lineTo((x0+x1)/2+ox,yTop-8+oy);c.lineTo(x1+ox,yTop+oy)}
-    c.lineTo(hb+ox,yBot-12+oy);c.quadraticCurveTo(hb+ox,yBot+oy,hb-12+ox,yBot+oy);c.lineTo(-hb+12+ox,yBot+oy);c.quadraticCurveTo(-hb+ox,yBot+oy,-hb+ox,yBot-12+oy);c.closePath()};
-  c.fillStyle='rgba(50,25,5,.22)'; path(7,9); c.fill();
-  const g=c.createLinearGradient(-hw,0,hw,0); g.addColorStop(0,'#a97a43'); g.addColorStop(.32,'#e6c792'); g.addColorStop(.6,'#d6ae72'); g.addColorStop(1,'#9c6f3c');
-  c.fillStyle=g; path(0,0); c.fill();
-  c.save(); path(0,0); c.clip();
-  c.fillStyle='rgba(120,80,40,.18)'; c.fillRect(-hw,yTop+16,2*hw,2);
-  c.fillStyle='#c0392b'; c.fillRect(-hw,yTop+26,2*hw,4); c.fillRect(-hw,yTop+34,2*hw,1.6);
-  c.translate(0,(yTop+40+yBot)/2); c.rotate(-Math.PI/2);
-  c.font='600 24px Mitr,sans-serif'; c.textAlign='center'; c.textBaseline='middle'; c.fillStyle='#b8322a';
-  c.fillText('ขนมโตเกียว',0,0);
-  c.restore();
+function drawPlate(c){
+  c.save(); c.shadowColor='rgba(40,20,5,.4)'; c.shadowBlur=36; c.shadowOffsetY=18; c.fillStyle='#f3efe8'; c.beginPath(); c.ellipse(500,560,450,310,0,0,TAU); c.fill(); c.restore();
+  let g=c.createLinearGradient(0,250,0,870); g.addColorStop(0,'#ffffff'); g.addColorStop(1,'#e2dcd2');
+  c.fillStyle=g; c.beginPath(); c.ellipse(500,560,450,310,0,0,TAU); c.fill();
+  g=c.createLinearGradient(0,330,0,790); g.addColorStop(0,'#ebe6de'); g.addColorStop(.4,'#fbfaf7'); g.addColorStop(1,'#f4f1eb');
+  c.fillStyle=g; c.beginPath(); c.ellipse(500,570,350,235,0,0,TAU); c.fill();
+  c.strokeStyle='rgba(0,0,0,.06)'; c.lineWidth=2; c.stroke();
+  c.strokeStyle='#4f86c2'; c.lineWidth=3.5; c.beginPath(); c.ellipse(500,560,422,290,0,0,TAU); c.stroke();
+  c.lineWidth=1.5; c.beginPath(); c.ellipse(500,560,408,280,0,0,TAU); c.stroke();
 }
 function star(c,x,y,r){c.beginPath();for(let i=0;i<8;i++){const a=i/8*TAU,d=i%2?r*0.28:r;c.lineTo(x+Math.cos(a)*d,y+Math.sin(a)*d)}c.closePath();c.fill()}
 function drawServeContent(c,t){
-  c.save(); c.shadowColor='rgba(40,20,5,.4)'; c.shadowBlur=34; c.shadowOffsetY=16; c.fillStyle='#f3efe8'; circle(c,500,510,388); c.fill(); c.restore();
-  let g=c.createRadialGradient(440,450,20,500,510,388); g.addColorStop(0,'#ffffff'); g.addColorStop(1,'#e4ded4');
-  c.fillStyle=g; circle(c,500,510,388); c.fill();
-  g=c.createRadialGradient(470,480,10,500,510,300); g.addColorStop(0,'#fdfcfa'); g.addColorStop(1,'#eee9e1');
-  c.fillStyle=g; circle(c,500,510,300); c.fill(); c.strokeStyle='rgba(0,0,0,.06)'; c.lineWidth=2; c.stroke();
-  c.strokeStyle='#4f86c2'; c.lineWidth=3.5; circle(c,500,510,364); c.stroke(); c.lineWidth=1.5; circle(c,500,510,350); c.stroke();
-  c.fillStyle='#4f86c2'; for(let i=0;i<40;i++){const a=i/40*TAU;circle(c,500+Math.cos(a)*357,510+Math.sin(a)*357,2.4);c.fill()}
-  const T=S.tube; if(!T) return;
-  const e1=easeOutBack(clamp(t/0.7,0,1)), e2=easeOut(clamp((t-0.75)/0.55,0,1)), k=clamp(680/T.Lt,0.8,1.35);
-  c.save(); c.translate(500,500-(1-e1)*700); c.rotate(-0.62); c.scale(k,k);
-  c.drawImage(T.cv,T.bx-T.cx,T.by-T.cy,T.bw,T.bh);
-  if(e2>0){c.save();c.globalAlpha=Math.min(1,e2*1.6);c.translate(0,(1-e2)*420);drawSleeve(c,T);c.restore()}
-  c.restore();
-  if(t>1.3){c.fillStyle='#fff6c8';const pos=[[250,250],[770,300],[300,760],[740,720],[520,180],[180,520]];
-    pos.forEach((p,i)=>{c.globalAlpha=clamp(0.5+0.5*Math.sin(t*4+i*1.7),0,1)*clamp((t-1.3)*3,0,1);star(c,p[0],p[1],10+(i%3)*5)});c.globalAlpha=1}
+  if(!S.art) return;
+  const e1=easeOutBack(clamp(t/0.7,0,1));
+  c.drawImage(S.art,0,60-(1-e1)*700,1000,1000);
+  if(t>1.1){c.fillStyle='#fff6c8';const pos=[[230,300],[790,280],[260,800],[770,780],[520,170],[150,560]];
+    pos.forEach((p,i)=>{c.globalAlpha=clamp(0.5+0.5*Math.sin(t*4+i*1.7),0,1)*clamp((t-1.1)*3,0,1);star(c,p[0],p[1],10+(i%3)*5)});c.globalAlpha=1}
 }
-function makeThumb(){const c=mk(360,360),x=c.getContext('2d');x.setTransform(.36,0,0,.36,0,0);drawTable(x);drawServeContent(x,1.29);try{return c.toDataURL('image/jpeg',0.82)}catch(e){return ''}}
+function makeThumb(){const c=mk(400,400),x=c.getContext('2d');x.setTransform(.4,0,0,.4,0,0);drawTable(x);drawPlate(x);drawServeContent(x,1.29);try{return c.toDataURL('image/jpeg',0.84)}catch(e){return ''}}
 
 /* ---------------- frame ---------------- */
 const steam=[];
 function updSteam(dt){
   const H=HEATS[S.heat];
-  if(S.step>=1&&S.step<=3&&S.hasBatter&&H>0){
+  if(S.step>=POUR&&S.step<=FILL&&S.hasBatter&&H>0){
     S.steamAcc+=dt*Math.min(24,S.rawMass*0.01*H+2*H);
     while(S.steamAcc>1&&steam.length<90){S.steamAcc--;for(let tr=0;tr<8;tr++){const i=(Math.random()*NN)|0;if(batter[i]>0.05){
       steam.push({x:G0+(i%N)*CELL,y:G0+((i/N)|0)*CELL,vx:(Math.random()-0.5)*16,vy:-30-Math.random()*40,life:0,max:1.5+Math.random()*1.3,s:26+Math.random()*30});break}}}
@@ -869,78 +1157,123 @@ function frame(now){
 }
 function update(dt){
   const st=S.step, H=HEATS[S.heat];
-  if(st>=1&&st<=3){
-    if(S.pouring&&st===1&&P.down) pour(dt);
-    if(S.hasBatter){ const it=st===1?3:1; for(let k=0;k<it;k++) flow(); cookUpdate(dt,H); renderBatter(); }
+  if(st>=LACE&&st<=FILL){
+    if(S.hasPat) patUpdate(dt,H);
+    if(S.pouring&&st===POUR&&P.down) pour(dt);
+    if(S.hasBatter){ const it=st===POUR?3:1; for(let k=0;k<it;k++) flow(); cookUpdate(dt,H); renderBatter(); }
+    if(S.hasHen){ eggFlow(); eggCook(dt,H); S.egDirty=true; }
     for(const a of S.actions) if(a.type==='egg') for(const p of a.items) p.cook+=dt*H*0.07;
     if(S.cur&&S.cur.type==='egg') for(const p of S.cur.items) p.cook+=dt*H*0.07;
   }
   if(S.buDirty) renderButter();
+  if(S.paDirty) renderPattern();
+  if(S.egDirty) renderEgg();
+  for(let i=S.cracks.length-1;i>=0;i--){S.cracks[i].t+=dt;if(S.cracks[i].t>0.6)S.cracks.splice(i,1)}
   updSteam(dt);
   let sz=0;
-  if(st===0&&S.rubbing) sz=0.05*H;
-  else if(st>=1&&st<=3&&S.hasBatter) sz=Math.min(0.32,0.04+S.rawMass/3200*0.28)*Math.min(1.3,H);
+  if(st===BUT&&S.rubbing) sz=0.05*H;
+  else if(st===LACE&&P.down) sz=0.08*H;
+  else if(st>=POUR&&st<=FILL&&S.hasBatter) sz=Math.min(0.32,0.04+S.rawMass/3200*0.28)*Math.min(1.3,H);
   setSizzle(S.muted?0:sz);
-  if(st===5){S.serveT+=dt;if(S.serveT>1.9&&!S.resultShown)showResult()}
+  if(st===ROLL) rollAnim(dt);
+  if(st===SERVE){S.serveT+=dt;if(S.serveT>1.9&&!S.resultShown)showResult()}
   S.meterT-=dt; if(S.meterT<=0){S.meterT=0.1;updateMeters()}
 }
 function draw(){
   const c=ctx;
   c.setTransform(1,0,0,1,0,0);
-  if(S.step===5){c.drawImage(serveBg,0,0);c.setTransform(SC,0,0,SC,0,0);drawServeContent(c,S.serveT);return}
+  if(S.step===SERVE){c.drawImage(serveBg,0,0);c.setTransform(SC,0,0,SC,0,0);drawServeContent(c,S.serveT);return}
   c.drawImage(bgC,0,0); c.setTransform(SC,0,0,SC,0,0);
   const H=HEATS[S.heat];
-  if(H>0&&S.step<4){
+  if(H>0&&S.step<ROLL){
     const fl=0.85+0.15*Math.sin(clock*7)*Math.sin(clock*3.1);
     const g=c.createRadialGradient(GC,GC,470,GC,GC,530); g.addColorStop(0,`rgba(255,120,30,${0.32*H*fl})`); g.addColorStop(1,'rgba(255,90,20,0)');
     c.fillStyle=g; c.beginPath(); c.arc(GC,GC,530,0,TAU); c.arc(GC,GC,476,0,TAU,true); c.fill('evenodd');
   }
   c.imageSmoothingEnabled=true; c.imageSmoothingQuality='high';
   c.globalCompositeOperation='screen'; c.drawImage(buC,G0,G0,N*CELL,N*CELL); c.globalCompositeOperation='source-over';
-  if(S.step===4&&S.roll){
+  if(S.step===ROLL&&S.roll){
     const R=S.roll;
     c.drawImage(R.spill,0,0,1000,1000);
-    c.save(); c.beginPath(); c.rect(R.X,0,1000-R.X,1000); c.clip(); c.drawImage(R.flat,0,0,1000,1000); c.restore();
-    drawTube(c);
+    if(R.alpha==null) c.drawImage(R.flat,0,0,1000,1000);
+    else{
+      const cut=R.phase==='folding'?R.foldX:R.X;
+      c.save(); c.translate(GC,GC); c.rotate(R.alpha); c.translate(-GC,-GC);
+      c.save(); c.beginPath(); c.rect(cut,-1000,3000,3000); c.clip(); worldDraw(c,R.flat,0,0,1000,1000); c.restore();
+      if(R.phase==='folding') drawFlap(c); else drawTubeTop(c);
+      c.restore();
+    }
   }else{
+    if(S.hasPat) c.drawImage(paC,G0,G0,N*CELL,N*CELL);
     if(S.hasBatter) c.drawImage(baC,G0,G0,N*CELL,N*CELL);
+    if(S.hasPat&&S.hasBatter){c.globalAlpha=.3;c.drawImage(paC,G0,G0,N*CELL,N*CELL);c.globalAlpha=1}
+    if(S.hasHen) c.drawImage(egC,G0,G0,N*CELL,N*CELL);
     c.drawImage(fillLayer,0,0,1000,1000);
     drawEggs(c);
+    drawShells(c);
     if(S.cur&&S.cur.kind==='cream') drawCream(c,S.cur.type,S.cur.items[0].pts);
   }
   for(const p of steam){c.globalAlpha=0.17*Math.sin(Math.PI*p.life/p.max);c.drawImage(steamSprite,p.x-p.s/2,p.y-p.s/2,p.s,p.s)} c.globalAlpha=1;
   drawHints(c); drawTool(c);
 }
-function hintText(c,txt,x,y){
-  c.font='500 30px Mitr,sans-serif'; c.textAlign='center'; c.textBaseline='middle';
-  c.lineWidth=6; c.strokeStyle='rgba(30,15,5,.55)'; c.strokeText(txt,x,y); c.fillStyle='#fff8ea'; c.fillText(txt,x,y);
+function hintText(c,txt,x,y,size){
+  c.font=`500 ${size||30}px Mitr,sans-serif`; c.textAlign='center'; c.textBaseline='middle';
+  c.lineWidth=6; c.lineJoin='round'; c.strokeStyle='rgba(30,15,5,.6)'; c.strokeText(txt,x,y); c.fillStyle='#fff8ea'; c.fillText(txt,x,y);
 }
 function drawHints(c){
   const pulse=0.5+0.5*Math.sin(clock*4);
-  if(S.step===0&&butterCov()<0.04&&!P.down){hintText(c,'ถูเนยให้ทั่วกระทะ',GC,GC)}
-  if(S.step===1&&S.poured===0){c.strokeStyle=`rgba(255,240,200,${0.35+0.4*pulse})`;c.lineWidth=4;c.setLineDash([12,10]);circle(c,GC,GC,60+pulse*12);c.stroke();c.setLineDash([]);hintText(c,'กดค้างเพื่อเทแป้ง',GC,GC+120)}
-  if(S.step===2&&!S.spreadStarted){hintText(c,'วนกระบวยจากกลางออกไปขอบ',GC,GC+250)}
-  if(S.step===4&&S.roll&&!S.roll.done&&!S.roll.dragging){
-    const R=S.roll, y=(R.y0L+R.y1L)/2, x=R.X+60+pulse*30;
-    c.fillStyle='rgba(255,248,234,.92)'; c.beginPath(); c.moveTo(x+40,y); c.lineTo(x,y-26); c.lineTo(x,y-10); c.lineTo(x-50,y-10); c.lineTo(x-50,y+10); c.lineTo(x,y+10); c.lineTo(x,y+26); c.closePath(); c.fill();
-    if(R.X<=R.xminL+1) hintText(c,'ลากไม้พายไปทางขวา',GC,Math.min(930,R.y1L+50));
+  if(S.step===BUT&&butterCov()<0.04&&!P.down) hintText(c,'ถูเนยให้ทั่วกระทะ',GC,GC);
+  if(S.step===LACE&&!S.hasPat&&!P.down) hintText(c,'ลากเพื่อบีบเส้นแป้งเป็นลาย',GC,GC);
+  if(S.step===POUR&&!(P.inside||P.down)) drawTarget(c,GC,GC,S.poured<300?'แตะค้างเพื่อเทแป้ง':null);
+  if(S.step===SPREAD&&!S.spreadStarted) hintText(c,'ลากกระบวยดันแป้งให้บาง ทรงไหนก็ได้',GC,GC+250);
+  if(S.step===ROLL&&S.roll&&!S.roll.done){
+    const R=S.roll;
+    if(R.g0){
+      const dx=R.gc.x-R.g0.x, dy=R.gc.y-R.g0.y, L=Math.hypot(dx,dy);
+      if(L>8){
+        let col='#ff8a3d';
+        if(R.phase==='roll'){const ca=Math.cos(R.alpha),sa=Math.sin(R.alpha),along=dx*ca+dy*sa,side=-dx*sa+dy*ca;col=along>0&&Math.atan2(Math.abs(side),along)<0.45?'#7bd36a':'#ff8a3d'}
+        drawArrow(c,R.g0.x,R.g0.y,R.gc.x,R.gc.y,col,8);
+        if(R.phase==='aim'){const deg=((Math.round(Math.atan2(-dy,dx)*180/Math.PI)%360)+360)%360;hintText(c,`ทิศม้วน ${deg}°`,clamp(R.gc.x,140,860),clamp(R.gc.y-46,40,960),26)}
+      }
+    } else if(!R.anim){
+      if(R.phase==='aim'){
+        const a=clock*0.6, cx=GC+Math.cos(a)*250, cy=GC+Math.sin(a)*250;
+        drawArrow(c,cx,cy,cx+(GC-cx)*0.4,cy+(GC-cy)*0.4,'rgba(255,248,234,.9)',7);
+        hintText(c,'ปัดจากขอบแผ่นเข้าหาไส้ ทิศไหนก็ได้',GC,930,26);
+      } else if(R.phase==='roll'){
+        const g=tubeGeo(R.X), mid=(g.rTop+g.rBot+1)/2*CELL+G0, b=pulse*24;
+        const p0=rollToWorld(R.X+30+b,mid), p1=rollToWorld(R.X+170+b,mid);
+        drawArrow(c,p0.x,p0.y,p1.x,p1.y,'rgba(255,248,234,.92)',9);
+        const left=Math.max(1,Math.ceil((R.xmaxL-R.X)/clamp(TAU*g.rad*0.75,70,190)));
+        hintText(c,`ปัดตามลูกศรเพื่อพลิกม้วน · อีกราว ${left} ครั้ง`,GC,930,26);
+      }
+    }
   }
 }
 function butterCov(){let n=0;for(const i of innerIdx) if(butter[i]>0.15) n++;return n/innerIdx.length}
 function drawTool(c){
   const st=S.step;
-  if(st===4&&S.roll&&!S.roll.done){
-    const R=S.roll; let x=R.X; if(!R.dragging&&P.inside&&!P.down) x=clamp(P.x,R.xminL-60,R.xmaxL);
-    drawSpatula(c,R.dragging?R.X+8:x,R.y0L-40,R.y1L+40); return;
-  }
+  if(st===ROLL) return;
   if(!(P.inside||P.down)) return;
-  if(st===0) drawButterTool(c,P.x,P.y);
-  else if(st===1) drawPourTool(c,P.x,P.y,S.pouring&&P.down&&onGriddle(P.x,P.y),clock);
-  else if(st===2) drawLadleTop(c,P.x,P.y,0.92);
-  else if(st===3){
+  if(st===BUT) drawButterTool(c,P.x,P.y);
+  else if(st===LACE) drawBottle(c,P.x,P.y);
+  else if(st===POUR){
+    const pouring=S.pouring&&P.down&&onGriddle(P.x,P.y);
+    drawTarget(c,P.x,P.y,S.poured<300?'แป้งลงตรงนี้':null);
+    drawPourTool(c,P.x,P.y,pouring,clock);
+  }
+  else if(st===SPREAD) drawLadleTop(c,P.x,P.y,0.92);
+  else if(st===FILL){
     const f=FD[S.tool];
     if(f.kind==='cream') drawBag(c,P.x,P.y,f);
-    else if(f.kind==='fiber'){c.strokeStyle='rgba(255,250,235,.8)';c.lineWidth=2;c.setLineDash([6,6]);circle(c,P.x,P.y,26);c.stroke();c.setLineDash([])}
+    else if(scatterKind(f.kind)){c.strokeStyle='rgba(255,250,235,.8)';c.lineWidth=2;c.setLineDash([6,6]);circle(c,P.x,P.y,26);c.stroke();c.setLineDash([])}
+    else if(f.kind==='hen'){
+      if(eggAt(P.x,P.y)>0.15){c.strokeStyle='rgba(255,250,235,.85)';c.lineWidth=2.5;c.setLineDash([6,6]);circle(c,P.x,P.y,32);c.stroke();c.setLineDash([]);if(!P.down)hintText(c,'ลากเพื่อคนไข่',P.x,P.y-52,22)}
+      else{c.save();c.fillStyle='rgba(0,0,0,.2)';c.beginPath();c.ellipse(P.x+5,P.y-24,22,28,0.3,0,TAU);c.fill();
+        const g=c.createRadialGradient(P.x-8,P.y-40,3,P.x,P.y-30,30);g.addColorStop(0,'#FFF8EE');g.addColorStop(1,'#DDBB90');
+        c.fillStyle=g;c.beginPath();c.ellipse(P.x,P.y-30,22,28,0.3,0,TAU);c.fill();c.restore()}
+    }
     else if(!P.down){c.globalAlpha=.6;const p=S.ghost&&S.ghost.type===f.id?S.ghost:(S.ghost=makePiece(f.id,0,0));p.x=P.x;p.y=P.y;p.cook=f.id==='egg'?0:1;drawPiece(c,p);c.globalAlpha=1}
   }
 }
@@ -948,34 +1281,37 @@ function drawTool(c){
 /* ---------------- input ---------------- */
 function toL(e){const r=cv.getBoundingClientRect();return{x:(e.clientX-r.left)/r.width*1000,y:(e.clientY-r.top)/r.height*1000}}
 cv.addEventListener('pointerdown',e=>{
-  if(S.step<0||S.step>4) return;
+  if(S.step<0||S.step>ROLL) return;
   e.preventDefault(); initAudio(); try{cv.setPointerCapture(e.pointerId)}catch(_){}
   const p=toL(e); P.down=true; P.inside=true; P.x=p.x; P.y=p.y;
   switch(S.step){
-    case 0: S.rubbing=true; rubSeg(p.x,p.y,p.x,p.y); break;
-    case 1: S.pouring=true; break;
-    case 3: fillDown(p); break;
-    case 4: rollDown(p); break;
+    case BUT: S.rubbing=true; rubSeg(p.x,p.y,p.x,p.y); break;
+    case LACE: laceSeg(p.x,p.y,p.x,p.y); break;
+    case POUR: S.pouring=true; break;
+    case FILL: fillDown(p); break;
+    case ROLL: rollGestureStart(p); break;
   }
 });
 cv.addEventListener('pointermove',e=>{
   const p=toL(e), lx=P.x, ly=P.y; P.inside=true; P.x=p.x; P.y=p.y;
   if(!P.down) return;
   switch(S.step){
-    case 0: rubSeg(lx,ly,p.x,p.y); break;
-    case 2: if(S.hasBatter){spreadSeg(lx,ly,p.x,p.y);S.spreadStarted=true} break;
-    case 3: fillMove(p.x,p.y); break;
-    case 4: rollMove(p.x); break;
+    case BUT: rubSeg(lx,ly,p.x,p.y); break;
+    case LACE: laceSeg(lx,ly,p.x,p.y); break;
+    case SPREAD: if(S.hasBatter){spreadSeg(lx,ly,p.x,p.y);S.spreadStarted=true} break;
+    case FILL: fillMove(p.x,p.y); break;
+    case ROLL: rollGestureMove(p); break;
   }
 });
 function pUp(e){
   if(!P.down) return; P.down=false;
   switch(S.step){
-    case 0: S.rubbing=false; break;
-    case 1: S.pouring=false; break;
-    case 2: dropCarry(P.x,P.y); break;
-    case 3: fillUp(); break;
-    case 4: if(S.roll){S.roll.dragging=false;if(!S.roll.done&&S.roll.X>=S.roll.xmaxL-50)finishRoll()} break;
+    case BUT: S.rubbing=false; break;
+    case LACE: renderPanel(); break;
+    case POUR: S.pouring=false; break;
+    case SPREAD: dropCarry(P.x,P.y); break;
+    case FILL: fillUp(); break;
+    case ROLL: rollGestureEnd(); break;
   }
   if(e.pointerType!=='mouse') P.inside=false;
 }
@@ -984,24 +1320,32 @@ cv.addEventListener('pointerleave',()=>{if(!P.down)P.inside=false});
 
 function fillDown(p){
   if(!onGriddle(p.x,p.y)) return;
-  const f=FD[S.tool]; S.cur={type:f.id,kind:f.kind,items:[]}; S.curLast={x:p.x,y:p.y};
+  const f=FD[S.tool]; S.curLast={x:p.x,y:p.y};
+  if(f.kind==='hen'){
+    S.cur={type:'hen',kind:'hen',items:[],cracks:0,snapW:eggW.slice(),snapY:eggY.slice(),snapC:eggCk.slice()};
+    if(eggAt(p.x,p.y)<0.15){crackEgg(p.x,p.y);S.cur.cracks++;S.cur.items.push(1)}
+    return;
+  }
+  S.cur={type:f.id,kind:f.kind,items:[]};
   if(f.kind==='cream') S.cur.items.push({pts:[p.x,p.y]});
-  else if(f.kind==='fiber') spawnFibers(p.x,p.y,5);
+  else if(scatterKind(f.kind)) spawnScatter(p.x,p.y,5);
   else placePiece(p.x,p.y);
 }
 function fillMove(x,y){
   const c=S.cur; if(!c||!onGriddle(x,y)) return;
   const f=FD[c.type], d=Math.hypot(x-S.curLast.x,y-S.curLast.y);
+  if(f.kind==='hen'){stirSeg(S.curLast.x,S.curLast.y,x,y);S.curLast={x,y};c.items.push(0);return}
   if(f.kind==='cream'){if(d>=3){c.items[0].pts.push(x,y);S.curLast={x,y}}}
-  else if(f.kind==='fiber'){if(d>=5){spawnFibers(x,y,Math.ceil(d/6)+1);S.curLast={x,y}}}
+  else if(scatterKind(f.kind)){if(d>=5){spawnScatter(x,y,Math.ceil(d/6)+1);S.curLast={x,y}}}
   else if(d>=f.gap){placePiece(x,y);S.curLast={x,y}}
 }
 function fillUp(){
   const c=S.cur; if(!c) return; S.cur=null;
+  if(c.kind==='hen') dropEggCarry(S.curLast.x,S.curLast.y);
   if(c.kind==='cream'){drawCream(flctx,c.type,c.items[0].pts);blip(220,0.12,0.06)}
   if(c.items.length) S.actions.push(c);
 }
-function spawnFibers(x,y,n){for(let i=0;i<n;i++){const f=makeFiber(S.cur.type,x,y,26);S.cur.items.push(f);drawFiber(flctx,f)}}
+function spawnScatter(x,y,n){for(let i=0;i<n;i++){const f=makeScatter(S.cur.type,x,y,S.cur.type==='pork'?28:26);S.cur.items.push(f);drawScatter(flctx,f)}}
 function placePiece(x,y){
   const p=makePiece(S.cur.type,x,y); S.cur.items.push(p);
   if(p.type!=='egg') drawPiece(flctx,p);
@@ -1011,72 +1355,84 @@ function placePiece(x,y){
 /* ---------------- UI ---------------- */
 function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show');clearTimeout(toast.h);toast.h=setTimeout(()=>t.classList.remove('show'),2200)}
 function buildSteps(){$('#steps').innerHTML=STEPS.map((s,i)=>`<div class="pill" data-i="${i}"><b>${i+1}</b><span> ${s.name}</span></div>`).join('')}
+function buildFillTools(){
+  const ta=$('#toolArea');
+  for(const [label,list] of [['ไส้หวาน',FILLS.filter(f=>f.sweet)],['ไส้เค็ม',FILLS.filter(f=>f.savory)]]){
+    const grp=document.createElement('div'); grp.className='fgroup';
+    const lb=document.createElement('div'); lb.className='glbl'; lb.textContent=label;
+    const wrap=document.createElement('div'); wrap.className='fills';
+    list.forEach(f=>{const b=document.createElement('button');b.className='fillbtn'+(S.tool===f.id?' on':'');b.dataset.id=f.id;
+      const ic=mk(88,88);drawIcon(ic,f);const sp=document.createElement('span');sp.textContent=f.name;b.append(ic,sp);
+      b.onclick=()=>{S.tool=f.id;S.ghost=null;ta.querySelectorAll('.fillbtn').forEach(x=>x.classList.toggle('on',x.dataset.id===f.id))};wrap.append(b)});
+    grp.append(lb,wrap); ta.append(grp);
+  }
+  const row=document.createElement('div'); row.className='row';
+  const u=document.createElement('button'); u.className='ghost'; u.textContent='↶ ย้อนไส้ล่าสุด'; u.onclick=()=>{if(S.actions.length){const a=S.actions.pop();if(a.snapW){eggW.set(a.snapW);eggY.set(a.snapY);eggCk.set(a.snapC);S.egDirty=true;S.hasHen=eggW.some(v=>v>0.02)}redrawFillLayer()}};
+  const cl=document.createElement('button'); cl.className='ghost'; cl.textContent='ล้างไส้ทั้งหมด'; cl.onclick=()=>{S.actions=[];eggW.fill(0);eggY.fill(0);eggCk.fill(0);S.hasHen=false;S.egDirty=true;redrawFillLayer()};
+  row.append(u,cl); ta.append(row);
+}
 function renderPanel(){
   const st=S.step, s=STEPS[Math.max(0,st)];
   document.querySelectorAll('.pill').forEach(p=>{const i=+p.dataset.i;p.classList.toggle('on',i===st);p.classList.toggle('done',i<st)});
-  $('#stepNo').textContent=`ขั้นที่ ${Math.max(0,st)+1} / 6`;
+  $('#stepNo').textContent=`ขั้นที่ ${Math.max(0,st)+1} / ${STEPS.length}`;
   $('#stepName').textContent=s.name; $('#stepHint').textContent=s.hint;
-  $('#heatBox').classList.toggle('hidden',!(st>=0&&st<=3));
-  $('#mButter').classList.toggle('hidden',st!==0);
-  $('#mBatter').classList.toggle('hidden',st!==1&&st!==2);
-  $('#mCook').classList.toggle('hidden',!(st>=1&&st<=4));
-  $('#mRoll').classList.toggle('hidden',st!==4);
+  $('#heatBox').classList.toggle('hidden',!(st>=BUT&&st<=FILL));
+  $('#mButter').classList.toggle('hidden',st!==BUT);
+  $('#mBatter').classList.toggle('hidden',st!==POUR&&st!==SPREAD);
+  $('#mCook').classList.toggle('hidden',!(st>=POUR&&st<=ROLL));
+  $('#mRoll').classList.toggle('hidden',st!==ROLL);
   document.querySelectorAll('#heatSeg button').forEach(b=>b.classList.toggle('on',+b.dataset.h===S.heat));
   const ta=$('#toolArea'); ta.replaceChildren();
-  if(st===3){
-    const wrap=document.createElement('div'); wrap.className='fills';
-    FILLS.forEach(f=>{const b=document.createElement('button');b.className='fillbtn'+(S.tool===f.id?' on':'');b.dataset.id=f.id;
-      const ic=mk(88,88);drawIcon(ic,f);const sp=document.createElement('span');sp.textContent=f.name;b.append(ic,sp);
-      b.onclick=()=>{S.tool=f.id;S.ghost=null;wrap.querySelectorAll('.fillbtn').forEach(x=>x.classList.toggle('on',x.dataset.id===f.id))};wrap.append(b)});
+  if(st===FILL) buildFillTools();
+  if(st===LACE){
     const row=document.createElement('div'); row.className='row';
-    const u=document.createElement('button'); u.className='ghost'; u.textContent='↶ ย้อนไส้ล่าสุด'; u.onclick=()=>{if(S.actions.length){S.actions.pop();redrawFillLayer()}};
-    const cl=document.createElement('button'); cl.className='ghost'; cl.textContent='ล้างไส้ทั้งหมด'; cl.onclick=()=>{S.actions=[];redrawFillLayer()};
-    row.append(u,cl); ta.append(wrap,row);
+    const cl=document.createElement('button'); cl.className='ghost'; cl.textContent='ล้างลาย'; cl.onclick=()=>{pat.fill(0);patCk.fill(0);S.hasPat=false;S.paDirty=true;renderPanel()};
+    row.append(cl); ta.append(row);
   }
-  const nb=$('#nextBtn'); nb.classList.toggle('hidden',st===5||st<0); nb.textContent=s.next+(st<4?' →':'');
-  nb.disabled=(st===1&&S.poured<500)||(st===4&&!(S.roll&&S.roll.done));
-  cv.style.cursor=(st>=0&&st<=4)?'none':'default';
+  const nb=$('#nextBtn'); nb.classList.toggle('hidden',st===SERVE||st<0);
+  nb.textContent=st===LACE&&!S.hasPat?'ข้ามไปหยอดแป้ง →':s.next+(st<ROLL?' →':'');
+  nb.disabled=(st===POUR&&S.poured<500)||(st===ROLL&&!(S.roll&&S.roll.done));
+  cv.style.cursor=(st>=BUT&&st<=ROLL)?'none':'default';
 }
 function updateMeters(){
   const st=S.step;
-  if(st===0){const v=butterCov();$('#vButter').textContent=Math.round(v*100)+'%';$('#fButter').style.width=Math.min(100,v*100)+'%'}
-  if(st===1||st===2){const ml=S.poured/80;$('#vBatter').textContent=Math.round(ml)+' ml';$('#fBatter').style.width=Math.min(100,S.poured/7200*100)+'%';
-    if(st===1){const nb=$('#nextBtn');nb.disabled=S.poured<500}}
-  if(st>=1&&st<=4){
+  if(st===BUT){const v=butterCov();$('#vButter').textContent=Math.round(v*100)+'%';$('#fButter').style.width=Math.min(100,v*100)+'%'}
+  if(st===POUR||st===SPREAD){const ml=S.poured/80;$('#vBatter').textContent=Math.round(ml)+' ml';$('#fBatter').style.width=Math.min(100,S.poured/7200*100)+'%';
+    if(st===POUR){$('#nextBtn').disabled=S.poured<500}}
+  if(st>=POUR&&st<=ROLL){
     if(S.sumT>1){const a=S.sumTC/S.sumT;$('#kCook').style.left=clamp(a/3,0,1)*100+'%';
       $('#vCook').textContent=a<0.3?'ยังดิบ':a<0.6?'เริ่มเซ็ตตัว':a<1.0?'เริ่มสุก':a<1.6?'เหลืองทอง กำลังดี!':a<2.2?'เริ่มเกรียม':'ไหม้แล้ว!'}
     else{$('#vCook').textContent='–';$('#kCook').style.left='0%'}
   }
-  if(st===4&&S.roll){const R=S.roll,v=(R.X-R.xminL)/Math.max(1,R.xmaxL-R.xminL);$('#vRoll').textContent=Math.round(v*100)+'%';$('#fRoll').style.width=v*100+'%'}
+  if(st===ROLL&&S.roll&&S.roll.xminL!=null){const R=S.roll,v=(R.X-R.xminL)/Math.max(1,R.xmaxL-R.xminL);$('#vRoll').textContent=Math.round(v*100)+'%';$('#fRoll').style.width=v*100+'%'}
 }
 $('#zBatter').style.left=(2600/7200*100)+'%'; $('#zBatter').style.width=((4300-2600)/7200*100)+'%';
 document.querySelectorAll('#heatSeg button').forEach(b=>b.onclick=()=>{S.heat=+b.dataset.h;renderPanel();initAudio()});
 
 function goNext(){
   const st=S.step;
-  if(st===1&&S.poured<500) return;
-  if(st===2) dropCarry(P.x,P.y);
-  if(st===3){
+  if(st===POUR&&S.poured<500) return;
+  if(st===SPREAD) dropCarry(P.x,P.y);
+  if(st===FILL){
     if(S.sumT<15){toast('ยังไม่มีแป้งพอจะม้วนเลย ลองเริ่มใหม่นะ');return}
     if(S.cur) fillUp();
-    setupRoll(); S.step=4; renderPanel(); return;
+    setupRoll(); S.step=ROLL; renderPanel(); return;
   }
-  if(st===4){ if(!S.roll||!S.roll.done) return; S.step=5; S.serveT=0; S.resultShown=false; renderPanel(); blip(520,0.15,0.1,'triangle'); return; }
+  if(st===ROLL){ if(!S.roll||!S.roll.done) return; S.step=SERVE; S.serveT=0; S.resultShown=false; renderPanel(); blip(520,0.15,0.1,'triangle'); return; }
   S.step=st+1;
-  if(S.step===3) S.tool=S.tool||'custard';
   renderPanel();
 }
 $('#nextBtn').onclick=goNext;
 
 function reset(){
-  batter.fill(0); cook.fill(0); butter.fill(0); fillAmt.fill(0);
-  Object.assign(S,{pouring:false,rubbing:false,carry:0,poured:0,hasBatter:false,actions:[],cur:null,roll:null,tube:null,stats:null,serveT:0,resultShown:false,rawMass:0,sumT:0,sumTC:0,spreadStarted:false,toldFull:false,buDirty:true});
+  batter.fill(0); cook.fill(0); butter.fill(0); fillAmt.fill(0); pat.fill(0); patCk.fill(0); eggW.fill(0); eggY.fill(0); eggCk.fill(0);
+  Object.assign(S,{pouring:false,rubbing:false,carry:0,poured:0,hasBatter:false,hasPat:false,actions:[],cur:null,roll:null,art:null,stats:null,serveT:0,resultShown:false,rawMass:0,sumT:0,sumTC:0,spreadStarted:false,toldFull:false,buDirty:true,paDirty:true,hasHen:false,egDirty:true,cracks:[],ecW:0,ecY:0});
   steam.length=0; redrawFillLayer(); renderBatter();
 }
-function startGame(){ reset(); S.step=0; S.heat=2; hideAll(); renderPanel(); initAudio(); }
+function startGame(){ reset(); S.step=BUT; S.heat=2; hideAll(); renderPanel(); initAudio(); }
 function hideAll(){document.querySelectorAll('.overlay').forEach(o=>o.classList.remove('show'))}
 $('#startBtn').onclick=startGame;
-$('#restartBtn').onclick=()=>{ if(S.step<0) return startGame(); startGame(); toast('เริ่มแผ่นใหม่'); };
+$('#restartBtn').onclick=()=>{ startGame(); toast('เริ่มแผ่นใหม่'); };
 $('#againBtn').onclick=startGame;
 $('#muteBtn').onclick=()=>{S.muted=!S.muted;store.set('tokyo.muted',S.muted);renderMute();initAudio()};
 
@@ -1095,7 +1451,7 @@ function showResult(){
   if(s.total>store.get('tokyo.best',0)) store.set('tokyo.best',s.total);
   $('#resImg').src=img; $('#resStars').textContent=stars(starCount(s.total)); $('#resTotal').textContent=s.total;
   $('#resTitle').textContent=main.name; $('#resDesc').textContent=main.desc;
-  const L=[['ความกลม','round'],['บางสม่ำเสมอ','thin'],['ความสุก','cook'],['ไส้','fill'],['การม้วน','roll']];
+  const L=[['ขนาดแผ่น','round'],['บางสม่ำเสมอ','thin'],['ความสุก','cook'],['ไส้','fill'],['การม้วน','roll']];
   $('#resBars').innerHTML=L.map(([n,k])=>`<div class="sbar"><span>${n}</span><div class="bar"><i style="width:${s.sc[k]/20*100}%"></i></div><span>${Math.round(s.sc[k])}/20</span></div>`).join('');
   $('#resBadges').innerHTML=matched.filter(t=>t!==main).slice(0,8).map(t=>`<span class="badge${fresh.includes(t.id)?' new':''}" title="${t.desc}">${fresh.includes(t.id)?'ใหม่! ':''}${t.name}</span>`).join('')
     +(fresh.includes(main.id)?'<span class="badge new">ปลดล็อกฉายาใหม่!</span>':'');
@@ -1122,11 +1478,12 @@ function titleStat(){const un=store.get('tokyo.titles',[]);$('#titleStat').textC
 function makeDemo(){
   for(let y=0;y<N;y++)for(let x=0;x<N;x++){const i=y*N+x;if(!inG[i])continue;const dx=x+0.5-N/2,dy=y+0.5-N/2,d=Math.hypot(dx,dy),a=Math.atan2(dy,dx);
     const R=66+2.5*Math.sin(5*a)+3*lace[i]; butter[i]=d<90?0.7:0;
-    if(d<R){batter[i]=0.22+0.1*lace[i]+(d>R-3?-0.12:0);cook[i]=1.05+0.55*(spot[i]-0.5)+(d>R-5?0.6:0)}}
+    if(d<R){batter[i]=0.22+0.1*lace[i]+(d>R-3?-0.12:0);cook[i]=0.95+0.4*(spot[i]-0.5)+(d>R-5?0.5:0)}}
   S.hasBatter=true; renderBatter(); S.buDirty=true;
-  S.actions=[{type:'custard',kind:'cream',items:[{pts:[440,340,470,400,445,470,475,540,450,610,470,660]}]},
-    {type:'pandan',kind:'cream',items:[{pts:[540,350,520,420,548,490,522,560,546,640]}]}];
-  const fib={type:'foithong',kind:'fiber',items:[]}; for(let i=0;i<40;i++) fib.items.push(makeFiber('foithong',500,500,120)); S.actions.push(fib);
+  S.actions=[{type:'sausage',kind:'piece',items:[makePiece('sausage',470,500),makePiece('sausage',535,500)]}];
+  S.actions[0].items.forEach(p=>p.rot=0.05);
+  const pork={type:'pork',kind:'crumb',items:[]}; for(let i=0;i<90;i++) pork.items.push(makeScatter('pork',500,500,95)); S.actions.push(pork);
+  S.actions.push({type:'chili',kind:'cream',items:[{pts:[440,380,470,420,520,400,560,440,520,500,470,560,530,620,560,600]}]});
   redrawFillLayer();
 }
 
