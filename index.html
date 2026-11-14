@@ -392,7 +392,7 @@ const STEPS=[
   {name:'หยอดแป้ง',hint:'กดค้างบนกระทะ แป้งจะไหลลงตรงหัวลูกศร ปล่อยเมื่อปริมาณถึงแถบสีเขียว',next:'ต่อไป: ละเลง'},
   {name:'ละเลงแป้ง',hint:'ลากก้นกระบวยดันแป้งออกไปให้บางทั่วแผ่น ทรงไหนก็ได้ จะกลม รี หรือทรงอิสระก็ได้ ขอแค่บางเสมอกันและไม่เป็นรู รีบละเลงก่อนแป้งเซ็ตตัว!',next:'ต่อไป: ใส่ไส้'},
   {name:'ใส่ไส้',hint:'เลือกไส้หวานหรือไส้เค็ม ไข่ไก่: แตะเพื่อตอก แล้วลากบนไข่เพื่อคนให้ทั่วแผ่น ไส้กรอกวางเป็นแท่งตามแนวตั้ง แล้วโรยหมูสับรอบๆ',next:'ต่อไป: ม้วน'},
-  {name:'พับม้วน',hint:'ปัดนิ้วจากขอบแผ่นเข้าหาไส้ ทิศไหน มุมไหนก็ได้ เพื่อพับขอบและกำหนดทิศ จากนั้นปัดตามลูกศรทีละครั้ง แต่ละครั้งพลิกพับไป 1 ทบ แผ่นจะแบนซ้อนกันเป็นชั้น ปัดเบี้ยวหรือแรงเกินจะพับหลวม',next:'เสิร์ฟ!'},
+  {name:'ม้วน',hint:'ลากไม้พายดันไปตามแผ่นแป้ง ทิศไหนก็ได้ แป้งตรงที่ไม้พายผ่านจะม้วนตัวขึ้นมาข้างหน้า ปล่อยนิ้วเมื่อพอใจจะได้ 1 ม้วน ทำหลายม้วนก็ได้ ดันช้าๆ ม้วนจะแน่น',next:'เสิร์ฟ!'},
   {name:'เสิร์ฟ',hint:'จัดใส่จาน พร้อมเสิร์ฟ!',next:''},
 ];
 const HEATS=[0,0.5,1,1.8];
@@ -775,11 +775,14 @@ function redrawFillLayer(){
     else if(a.type!=='egg') for(const p of a.items) drawPiece(flctx,p);
   }
 }
+const K=48, MINM=120;
 function setupRoll(){
   const fc=mk(N,N), fx=fc.getContext('2d');
+  if(S.hasHen) fx.drawImage(egC,0,0,N,N);
   fx.drawImage(fillLayer,G0*FLS,G0*FLS,N*CELL*FLS,N*CELL*FLS,0,0,N,N);
   fx.setTransform(1/CELL,0,0,1/CELL,-G0/CELL,-G0/CELL); drawEggs(fx);
-  const fd=fx.getImageData(0,0,N,N).data; for(let i=0;i<NN;i++){ fillAmt[i]=fd[i*4+3]/255; const e=eggW[i]+eggY[i]; if(e>0.03) fillAmt[i]=Math.max(fillAmt[i],Math.min(1,e*1.5)); }
+  const fd=fx.getImageData(0,0,N,N).data, fcol=new Uint8Array(NN*3); let total=0;
+  for(let i=0;i<NN;i++){fillAmt[i]=fd[i*4+3]/255;fcol[i*3]=fd[i*4];fcol[i*3+1]=fd[i*4+1];fcol[i*3+2]=fd[i*4+2];if(batter[i]>0.02)total+=batter[i]+fillAmt[i]*0.6}
   const W=fillLayer.width;
   const flat=mk(W,W), f=flat.getContext('2d'); f.setTransform(FLS,0,0,FLS,0,0);
   if(S.hasHen) f.drawImage(egC,G0,G0,N*CELL,N*CELL);
@@ -790,96 +793,116 @@ function setupRoll(){
   if(S.hasHen) sp.drawImage(egC,G0,G0,N*CELL,N*CELL);
   sp.drawImage(fillLayer,0,0,1000,1000); drawEggs(sp);
   sp.globalCompositeOperation='destination-out'; sp.drawImage(baC,G0,G0,N*CELL,N*CELL);
-  // underside of the sheet (griddle side): browner, with the drizzled lattice
-  const U=mk(N,N),ux=U.getContext('2d'),uim=ux.createImageData(N,N),ud=uim.data;
-  for(let i=0;i<NN;i++){const t=batter[i],o=i*4;if(t<0.004)continue;let a=(t*(0.4+1.2*lace[i])-0.03)/0.06;a=a<0?0:a>1?1:a*a*(3-2*a);if(a<=0)continue;
-    const k=(Math.min(3,cook[i]*(0.9+0.2*spot[i])+0.75)*100|0)*3;let r=LUT[k],g=LUT[k+1],b=LUT[k+2];const pv=clamp((pat[i]-0.1)/0.2,0,1);
-    r+=(251-r)*pv;g+=(224-g)*pv;b+=(138-b)*pv;ud[o]=r;ud[o+1]=g;ud[o+2]=b;ud[o+3]=a*255}
-  ux.putImageData(uim,0,0);
-  S.roll={flat,spill,under:U,alpha:null,phase:'aim',slips:0,flips:0,loose:0,lw:0,ld:0,done:false,tearFrac:0,dom:dominantFill(),anim:null,g0:null,gc:null,foldCover:true};
+  const work=mk(W,W), goneC=mk(N,N), gctx=goneC.getContext('2d');
+  S.roll={flat,spill,work,wctx:work.getContext('2d'),gone:new Uint8Array(NN),goneC,gctx,gimg:gctx.createImageData(N,N),goneDirty:true,fcol,
+    totalMass:total,massRolled:0,rawRolled:0,rolls:[],cur:null,blade:320,loose:0,lw:0,ld:0,done:false,tearFrac:0,pushing:false,p:null,d:null,lt:0};
 }
-// Resample the sheet so the chosen rolling direction becomes +x; all roll maths runs in that frame.
-function orientRoll(a){
-  const R=S.roll; R.alpha=a;
-  const ca=Math.cos(a), sa=Math.sin(a);
-  const bR=new Float32Array(NN), cR=new Float32Array(NN), fR=new Float32Array(NN), pR=new Float32Array(NN);
-  for(let y=0;y<N;y++)for(let x=0;x<N;x++){
-    const lx=G0+(x+0.5)*CELL-GC, ly=G0+(y+0.5)*CELL-GC, wx=GC+ca*lx-sa*ly, wy=GC+sa*lx+ca*ly;
-    const cx=Math.floor((wx-G0)/CELL), cy=Math.floor((wy-G0)/CELL); if(cx<0||cy<0||cx>=N||cy>=N) continue;
-    const j=cy*N+cx, i=y*N+x; bR[i]=batter[j]; cR[i]=cook[j]; fR[i]=fillAmt[j]; pR[i]=pat[j];
+function newRoll(){return{bins:new Float32Array(K),W:S.roll.blade,mass:0,tw:0,tc:0,pat:0,fm:0,fr:0,fg:0,fb:0,raw:0,F:null,dir:null}}
+function rollRadii(r){
+  const out=new Float32Array(K);
+  for(let k=0;k<K;k++){const m=r.bins[k];out[k]=m>0.3?3+Math.pow(m,0.42)*6.5*(1+0.4*S.roll.loose):0}
+  for(let pass=0;pass<3;pass++){const src=out.slice();for(let k=0;k<K;k++){if(src[k]<=0)continue;const a=src[Math.max(0,k-1)]||src[k],b=src[Math.min(K-1,k+1)]||src[k];out[k]=(a+2*src[k]+b)/4}}
+  return out;
+}
+function rollFillColor(r){return r.fm>2?`rgb(${r.fr/r.fm|0},${r.fg/r.fm|0},${r.fb/r.fm|0})`:null}
+// sheet under the blade's swept band joins the roll in front of it
+function collect(p0,p1,d){
+  const R=S.roll, cr=R.cur, W=cr.W, nx=-d.y, ny=d.x, L=Math.hypot(p1.x-p0.x,p1.y-p0.y);
+  const x0=Math.min(p0.x,p1.x)-W/2-4, x1=Math.max(p0.x,p1.x)+W/2+4, y0=Math.min(p0.y,p1.y)-W/2-4, y1=Math.max(p0.y,p1.y)+W/2+4;
+  for(let cy=Math.max(0,Math.floor((y0-G0)/CELL));cy<=Math.min(N-1,Math.ceil((y1-G0)/CELL));cy++)
+    for(let cx=Math.max(0,Math.floor((x0-G0)/CELL));cx<=Math.min(N-1,Math.ceil((x1-G0)/CELL));cx++){
+      const i=cy*N+cx; if(R.gone[i]) continue; const t=batter[i]; if(t<0.02) continue;
+      const wx=G0+(cx+0.5)*CELL, wy=G0+(cy+0.5)*CELL;
+      const u=(wx-p0.x)*d.x+(wy-p0.y)*d.y; if(u<-3||u>L+3) continue;
+      const v=(wx-p1.x)*nx+(wy-p1.y)*ny; if(Math.abs(v)>W/2) continue;
+      const m=t+fillAmt[i]*0.6, k=clamp(Math.floor((v+W/2)/W*K),0,K-1);
+      cr.bins[k]+=m; cr.mass+=m; cr.tw+=t; cr.tc+=t*cook[i]; if(pat[i]>0.12) cr.pat++;
+      const fa=fillAmt[i]; if(fa>0.2){cr.fm+=fa;cr.fr+=R.fcol[i*3]*fa;cr.fg+=R.fcol[i*3+1]*fa;cr.fb+=R.fcol[i*3+2]*fa}
+      if(cook[i]<0.45) cr.raw+=m;
+      R.gone[i]=1; R.goneDirty=true;
+    }
+}
+function pushDown(p){
+  const R=S.roll; if(!R||R.done) return;
+  if(!R.cur) R.cur=newRoll();
+  R.p={x:p.x,y:p.y}; R.lt=performance.now(); R.pushing=true; R.d=R.cur.dir||null;
+}
+function pushMove(p){
+  const R=S.roll; if(!R||!R.pushing) return;
+  const dx=p.x-R.p.x, dy=p.y-R.p.y, L=Math.hypot(dx,dy); if(L<3) return;
+  const now=performance.now(), dt=Math.max(0.008,(now-R.lt)/1000); R.lt=now;
+  const sd={x:dx/L,y:dy/L};
+  if(!R.d) R.d=sd; else {const nx=R.d.x*0.72+sd.x*0.28, ny=R.d.y*0.72+sd.y*0.28, nl=Math.hypot(nx,ny)||1; R.d={x:nx/nl,y:ny/nl}}
+  if(dx*R.d.x+dy*R.d.y<=0){R.p={x:p.x,y:p.y};return}
+  collect(R.p,{x:p.x,y:p.y},R.d);
+  const sp=L/dt; R.lw+=clamp((sp-650)/900,0,1)*L; R.ld+=L; R.loose=R.lw/Math.max(1,R.ld);
+  R.p={x:p.x,y:p.y}; R.cur.dir=R.d; R.cur.F={x:p.x+R.d.x*9,y:p.y+R.d.y*9};
+}
+function pushUp(){
+  const R=S.roll; if(!R||!R.pushing) return; R.pushing=false;
+  const c=R.cur; if(!c||!c.F) return;
+  if(c.mass<MINM){ if(c.mass>0) toast('ม้วนยังสั้นไป แตะแล้วดันต่ออีกนิด'); return; }
+  R.rolls.push(c); R.massRolled+=c.mass; R.rawRolled+=c.raw; R.cur=null;
+  blip(420+R.rolls.length*60,0.14,0.12,'triangle');
+  const left=1-R.massRolled/Math.max(1,R.totalMass);
+  toast(left<0.08?`ได้ ${R.rolls.length} ม้วน แป้งหมดกระทะแล้ว กดเสิร์ฟได้เลย`:`ได้ ${R.rolls.length} ม้วนแล้ว! ดันม้วนต่อ หรือกดเสิร์ฟ`);
+  renderPanel();
+}
+function renderGone(){
+  const R=S.roll, d=R.gimg.data; for(let i=0;i<NN;i++) d[i*4+3]=R.gone[i]?255:0; R.gctx.putImageData(R.gimg,0,0);
+  const w=R.wctx; w.setTransform(1,0,0,1,0,0); w.clearRect(0,0,R.work.width,R.work.height); w.setTransform(FLS,0,0,FLS,0,0);
+  w.globalCompositeOperation='source-over'; w.drawImage(R.flat,0,0,1000,1000);
+  w.globalCompositeOperation='destination-out'; w.imageSmoothingEnabled=true; w.drawImage(R.goneC,G0,G0,N*CELL,N*CELL);
+  w.globalCompositeOperation='source-over'; R.goneDirty=false;
+}
+// roll lying on the griddle right in front of the blade; its thickness follows how much sheet each part of the blade gathered
+function drawRollTop(c,r){
+  const rad=rollRadii(r), W=r.W, bw=W/K, outer=cookRGB((r.tw?r.tc/r.tw:1)+0.65), inner=cookRGB(Math.max(0.55,(r.tw?r.tc/r.tw:1)*0.85)), fcol=rollFillColor(r);
+  c.save(); c.translate(r.F.x,r.F.y); c.rotate(Math.atan2(r.dir.y,r.dir.x));
+  c.fillStyle='rgba(40,20,5,.28)'; for(let k=0;k<K;k++) if(rad[k]>0.5) c.fillRect(5,-W/2+k*bw+6,2*rad[k],bw+0.7);
+  for(let k=0;k<K;k++){ if(rad[k]<=0.5) continue; const v=-W/2+k*bw, d2=2*rad[k];
+    c.fillStyle=rgbs(outer,0.95+0.1*lace[(k*131)%NN]); c.fillRect(0,v,d2,bw+0.7);
+    if(r.pat>20&&k%6===0){c.fillStyle='rgba(252,226,140,.5)';c.fillRect(rad[k]*0.45,v,2,bw+0.7)}
+    if(r.raw>r.mass*0.3&&k%4===1){c.fillStyle='rgba(250,240,205,.55)';c.fillRect(rad[k]*0.9,v,rad[k]*0.6,bw+0.7)}
+    c.drawImage(shadeStrip,0,v,d2,bw+0.7); }
+  let k0=-1,k1=-1; for(let k=0;k<K;k++) if(rad[k]>0.5){if(k0<0)k0=k;k1=k}
+  if(k0>=0) for(const [k,v] of [[k0,-W/2+k0*bw],[k1,-W/2+(k1+1)*bw]]){
+    const rr2=rad[k], ry=Math.max(2,rr2*0.3);
+    c.fillStyle=rgbs(inner); c.beginPath(); c.ellipse(rr2,v,rr2*0.95,ry,0,0,TAU); c.fill();
+    c.strokeStyle=rgbs(outer,0.8); c.lineWidth=1.2; c.beginPath(); c.ellipse(rr2,v,rr2*0.68,ry*0.7,0,0,TAU); c.stroke();
+    if(fcol){c.fillStyle=fcol; c.beginPath(); c.ellipse(rr2,v,rr2*0.42,ry*0.45,0,0,TAU); c.fill()}
   }
-  let xmin=N,xmax=-1,ymin=N,ymax=-1;
-  const rowCum=new Float32Array(NN), rowT=new Float32Array(NN), rowTC=new Float32Array(NN), rowEdge=new Float32Array(N); let fl=1e9;
-  for(let y=0;y<N;y++){let a2=0,b=0,cc=0,e=-1;for(let x=0;x<N;x++){const i=y*N+x,t=bR[i];
-    if(t>0.02){a2+=t+fR[i]*0.6;b+=t;cc+=t*cR[i];e=x;if(x<xmin)xmin=x;if(x>xmax)xmax=x;if(y<ymin)ymin=y;if(y>ymax)ymax=y;if(fR[i]>0.3){const xl=G0+x*CELL;if(xl<fl)fl=xl}}
-    rowCum[i]=a2;rowT[i]=b;rowTC[i]=cc}
-    rowEdge[y]=e<0?-1e9:G0+(e+1)*CELL}
-  Object.assign(R,{bR,cR,fR,pR,rowCum,rowT,rowTC,rowEdge,fillLeft:fl<1e9?fl:null,
-    xminL:G0+xmin*CELL,xmaxL:G0+(xmax+1)*CELL,y0L:G0+ymin*CELL,y1L:G0+(ymax+1)*CELL,X:G0+xmin*CELL,foldX:G0+xmin*CELL});
-}
-function rollToWorld(x,y){const R=S.roll,ca=Math.cos(R.alpha),sa=Math.sin(R.alpha),lx=x-GC,ly=y-GC;return{x:GC+ca*lx-sa*ly,y:GC+sa*lx+ca*ly}}
-function worldDraw(c,img,x,y,w,h){const R=S.roll;c.save();c.translate(GC,GC);c.rotate(-R.alpha);c.translate(-GC,-GC);c.drawImage(img,x,y,w,h);c.restore()}
-function tubeGeo(X){
-  const R=S.roll, col=clamp(Math.floor((X-G0)/CELL),0,N-1);
-  let rTop=-1,rBot=-1,sm=0,n=0,tc=0,tt=0;
-  for(let r=0;r<N;r++){const i=r*N+col,m=R.rowCum[i];if(m>0.04){if(rTop<0)rTop=r;rBot=r;sm+=m;n++;tc+=R.rowTC[i];tt+=R.rowT[i]}}
-  const rad=n?9+Math.pow(sm/n,0.45)*9.5*(1+0.45*R.loose):0;
-  return {rTop,rBot,rad,ck:tt?tc/tt:0};
-}
-function patternAt(xL,row){const R=S.roll,col=Math.floor((xL-G0)/CELL);if(!R||!R.bR||col<0||col>=N||row<0||row>=N)return 0;const i=row*N+col;return R.bR[i]>0.02?R.pR[i]:0}
-const TH0=1.05;
-// A folded piece is a stack of strips of the real sheet. Each strip keeps its own outline and is
-// mirrored across every fold line it went over: x -> a*x + b in the roll frame (a = +1 top side up, -1 underside up).
-function layerDraw(c,L,flip){
-  const R=S.roll, d0=Math.min(L.a*L.x0+L.b,L.a*L.x1+L.b), d1=Math.max(L.a*L.x0+L.b,L.a*L.x1+L.b);
-  c.save(); c.beginPath(); c.rect(d0,-1000,d1-d0,3000); c.clip();
-  c.translate(L.b,0); c.scale(L.a,1);
-  if((L.a>0)!==!!flip) worldDraw(c,R.flat,0,0,1000,1000); else worldDraw(c,R.under,G0,G0,N*CELL,N*CELL);
   c.restore();
 }
-function drawStack(c,layers,flip){
-  for(const L of layers){ c.save(); c.shadowColor='rgba(40,20,5,.32)'; c.shadowBlur=6; c.shadowOffsetX=1.5; c.shadowOffsetY=3; layerDraw(c,L,flip); c.restore(); }
+function drawBlade(c,p,dir,W){
+  c.save(); c.translate(p.x,p.y); c.rotate(Math.atan2(dir.y,dir.x)); c.lineCap='round';
+  c.strokeStyle='rgba(0,0,0,.22)'; c.lineWidth=24; line(c,-10,14,-150,74);
+  c.fillStyle='rgba(0,0,0,.2)'; rr(c,-2,-W/2+2,12,W+8,3); c.fill();
+  const g=c.createLinearGradient(-6,0,8,0); g.addColorStop(0,'#7b8189'); g.addColorStop(.5,'#eef0f2'); g.addColorStop(1,'#959ba3');
+  c.fillStyle=g; rr(c,-6,-W/2-6,12,W+12,3); c.fill(); c.strokeStyle='rgba(60,64,70,.6)'; c.lineWidth=1.2; c.stroke();
+  c.strokeStyle='#29292c'; c.lineWidth=20; line(c,-12,6,-150,62);
+  c.strokeStyle='rgba(255,255,255,.2)'; c.lineWidth=5; line(c,-14,0,-146,54);
+  c.fillStyle='#c9ced4'; circle(c,-34,16,3.5); c.fill(); circle(c,-64,29,3.5); c.fill();
+  c.restore();
 }
-function rollGestureStart(p){const R=S.roll;if(!R||R.done||R.anim)return;R.g0={x:p.x,y:p.y,t:performance.now()};R.gc={x:p.x,y:p.y}}
-function rollGestureMove(p){const R=S.roll;if(R&&R.g0)R.gc={x:p.x,y:p.y}}
-function rollGestureEnd(){
-  const R=S.roll; if(!R||!R.g0) return; const g0=R.g0, g1=R.gc; R.g0=null;
-  const dx=g1.x-g0.x, dy=g1.y-g0.y, L=Math.hypot(dx,dy), dt=Math.max(0.03,(performance.now()-g0.t)/1000), sp=L/dt;
-  if(R.phase==='aim'){
-    if(L<50){toast('ปัดนิ้วยาวขึ้นอีกนิด จากขอบแผ่นเข้าหาไส้');return}
-    orientRoll(Math.atan2(dy,dx));
-    const w=clamp(L*0.45,45,(R.xmaxL-R.xminL)*0.4);
-    R.w=w; R.cut=R.xminL; R.E=R.xminL+w; R.stack=[];
-    R.foldCover=R.fillLeft==null||R.xminL+2*w>=R.fillLeft;
-    R.phase='roll'; R.anim={kind:'flip',t:0,dur:0.5,p:0,first:true}; blip(300,0.1,0.1,'triangle'); renderPanel(); return;
-  }
-  if(R.phase!=='roll'||L<40) return;
-  const ca=Math.cos(R.alpha), sa=Math.sin(R.alpha), along=dx*ca+dy*sa, side=-dx*sa+dy*ca;
-  if(along<=0||Math.abs(side)>along*1.4){R.slips++;toast('ปัดไปทางเดียวกับลูกศรนะ');blip(170,0.12,0.1);return}
-  if(R.anim) return;
-  const dev=Math.atan2(Math.abs(side),along), adv=R.E-R.cut;
-  const lz=clamp((sp-1800)/1800,0,1)*0.6+clamp(dev/0.8,0,1)*0.6;
-  R.lw+=lz*adv; R.ld+=adv; R.loose=R.lw/Math.max(1,R.ld); R.flips++;
-  R.anim={kind:'flip',t:0,dur:0.45,p:0}; blip(360+R.flips*45,0.1,0.11,'triangle');
-  if(dev>0.45) toast('ปัดเบี้ยวไปนิด ม้วนหลวมลง'); else if(sp>2600) toast('ปัดแรงไป ม้วนหลวมลง');
-}
-function rollAnim(dt){
-  const R=S.roll; if(!R||!R.anim) return; const A=R.anim; A.t+=dt;
-  const p=clamp(A.t/A.dur,0,1), e=p<0.5?2*p*p:1-Math.pow(-2*p+2,2)/2; A.p=e;
-  if(p<1) return;
-  // land the lifted part (sheet segment under the stack + the stack) on the other side of the fold line
-  const E=R.E, grp=[{x0:R.cut,x1:E,a:1,b:0},...R.stack];
-  R.stack=grp.reverse().map(L=>({x0:L.x0,x1:L.x1,a:-L.a,b:2*E-L.b}));
-  const nc=E; R.E=2*E-R.cut; R.cut=nc; R.X=Math.min(R.E,R.xmaxL); R.anim=null;
-  if(R.E>=R.xmaxL-6){finishRoll();return}
-  if(A.first){renderPanel();toast(R.foldCover?'พับขอบคลุมไส้แล้ว! ปัดตามลูกศรเพื่อพลิกพับต่อ':'ขอบยังไม่คลุมไส้ แต่พับต่อได้')}
+const ICON_POS=[[70,70],[160,38],[930,70],[840,38],[70,930],[930,930],[160,962],[840,962]];
+function drawRollIcon(c,r,i){
+  const pos=ICON_POS[i%ICON_POS.length], rad=rollRadii(r); let mr=0; for(const v of rad) if(v>mr) mr=v;
+  const R0=clamp(mr*0.9,16,36), outer=cookRGB((r.tw?r.tc/r.tw:1)+0.65), inner=cookRGB(Math.max(0.55,(r.tw?r.tc/r.tw:1)*0.85)), fcol=rollFillColor(r);
+  c.save(); c.translate(pos[0],pos[1]);
+  c.fillStyle='rgba(40,20,5,.3)'; circle(c,3,5,R0); c.fill();
+  c.fillStyle=rgbs(outer); circle(c,0,0,R0); c.fill(); c.fillStyle=rgbs(inner,1.04,6); circle(c,0,0,R0*0.9); c.fill();
+  c.strokeStyle=rgbs(outer,0.85); c.lineWidth=R0*0.07; c.beginPath();
+  for(let t=0;t<=1.001;t+=0.02){const a=t*TAU*2.4,rho=R0*0.85*(1-t*0.75);const x=Math.cos(a)*rho,y=Math.sin(a)*rho;t?c.lineTo(x,y):c.moveTo(x,y)} c.stroke();
+  if(fcol){c.fillStyle=fcol;circle(c,0,0,R0*0.28);c.fill()}
+  c.restore();
 }
 function drawArrow(c,x0,y0,x1,y1,col,w){
   const a=Math.atan2(y1-y0,x1-x0), hl=w*3.2;
   c.save(); c.lineCap='round'; c.lineJoin='round';
   for(const [lw,cl] of [[w+5,'rgba(30,15,5,.5)'],[w,col]]){
     c.strokeStyle=cl; c.lineWidth=lw; c.beginPath(); c.moveTo(x0,y0); c.lineTo(x1-Math.cos(a)*hl*0.6,y1-Math.sin(a)*hl*0.6); c.stroke();
-    c.fillStyle=cl; c.beginPath(); c.moveTo(x1+Math.cos(a)*(lw-w)*0.6,y1+Math.sin(a)*(lw-w)*0.6);
+    c.fillStyle=cl; c.beginPath(); c.moveTo(x1,y1);
     c.lineTo(x1-Math.cos(a)*hl+Math.cos(a+Math.PI/2)*hl*0.6,y1-Math.sin(a)*hl+Math.sin(a+Math.PI/2)*hl*0.6);
     c.lineTo(x1-Math.cos(a)*hl-Math.cos(a+Math.PI/2)*hl*0.6,y1-Math.sin(a)*hl-Math.sin(a+Math.PI/2)*hl*0.6); c.closePath(); c.fill();
   }
@@ -891,14 +914,10 @@ function drawShells(c){
   c.globalAlpha=1;
 }
 function finishRoll(){
-  const R=S.roll; R.done=true; R.dragging=false; R.X=R.xmaxL;
-  let tm=0,tt=0; for(let r=0;r<N;r++){const i=r*N+N-1,m=R.rowCum[i];if(m>0){tt+=m;const ck=R.rowT[i]?R.rowTC[i]/R.rowT[i]:0;if(ck<0.45)tm+=m}}
-  R.tearFrac=tt?tm/tt:0;
-  R.geo=tubeGeo(R.X);
-  S.stats=computeStats();
-  S.art=buildArt();
-  renderPanel(); chime();
-  toast(R.tearFrac>0.3?'แป้งยังไม่สุกดี ม้วนแล้วขาดนิดหน่อย…':'ม้วนเสร็จแล้ว! กด "เสิร์ฟ" ได้เลย');
+  const R=S.roll;
+  if(R.cur&&R.cur.mass>=MINM){R.rolls.push(R.cur);R.massRolled+=R.cur.mass;R.rawRolled+=R.cur.raw}
+  R.cur=null; R.pushing=false; R.done=true; R.tearFrac=R.massRolled?R.rawRolled/R.massRolled:0;
+  S.stats=computeStats(); S.art=buildArt();
 }
 function fillMass(){
   const m={};
@@ -917,25 +936,44 @@ function dominantFill(){
   return best?FD[best]:null;
 }
 
-/* ---------------- finished roll illustration (3/4 view) ---------------- */
+/* ---------------- finished rolls on the plate (3/4 view) ---------------- */
 function buildArt(){
-  const R=S.roll; if(!R||!R.stack) return null;
-  const pad=30, x0=R.cut-pad, x1=R.E+pad, y0=R.y0L-pad, y1=R.y1L+pad, w=x1-x0, h=y1-y0, SC2=1.6;
-  const piece=mk(Math.ceil(w*SC2),Math.ceil(h*SC2)), pc=piece.getContext('2d');
-  pc.setTransform(SC2,0,0,SC2,-x0*SC2,-y0*SC2);
-  const layers=[{x0:R.cut,x1:Math.min(R.E,R.xmaxL),a:1,b:0},...R.stack];
-  for(const L of layers) layerDraw(pc,L,false);
-  // darker copy for the visible thickness of the stacked layers
-  const dark=mk(piece.width,piece.height), dc=dark.getContext('2d');
-  dc.drawImage(piece,0,0); dc.globalCompositeOperation='source-atop'; dc.fillStyle='rgba(120,60,15,.55)'; dc.fillRect(0,0,dark.width,dark.height);
+  const R=S.roll; if(!R||!R.rolls.length) return null;
   const A=mk(1200,1200), c=A.getContext('2d'); c.setTransform(1.2,0,0,1.2,0,0);
-  const k=clamp(540/h,0.8,1.5), th=Math.min(10,3+layers.length*1.2);
-  c.save(); c.translate(500,500); c.rotate(0.72); c.scale(k,k);
-  c.shadowColor='rgba(60,30,5,.4)'; c.shadowBlur=26; c.shadowOffsetX=14; c.shadowOffsetY=6;
-  c.drawImage(dark,-w/2+th*0.4,-h/2+th,w,h); c.shadowColor='transparent';
-  for(let i=th;i>0;i-=1) c.drawImage(dark,-w/2+i*0.4,-h/2+i,w,h);
-  c.drawImage(piece,-w/2,-h/2,w,h);
-  c.restore();
+  const rolls=R.rolls.slice(0,6), info=rolls.map(r=>{const rad=rollRadii(r);let k0=-1,k1=-1,mr=0;for(let k=0;k<K;k++)if(rad[k]>0.5){if(k0<0)k0=k;k1=k;if(rad[k]>mr)mr=rad[k]}return{r,rad,k0,k1,mr,len:(k1-k0+1)*r.W/K}});
+  let maxLen=0,maxR=0; for(const o of info){maxLen=Math.max(maxLen,o.len);maxR=Math.max(maxR,o.mr)}
+  const sc=clamp(Math.min(400/maxLen,(560/rolls.length)/(2.3*maxR)),0.7,1.8);
+  const phi=-0.42, ax=Math.cos(phi), ay=Math.sin(phi), px=-ay, py=ax, rot=Math.atan2(py,px), e=0.62;
+  const gap=2.25*maxR*sc;
+  info.forEach((o,j)=>{
+    const r=o.r, bw=r.W/K*sc, L=o.len*sc, off=(j-(rolls.length-1)/2)*gap, C={x:500+px*off,y:480+py*off};
+    const outer=cookRGB((r.tw?r.tc/r.tw:1)+0.7), inner=cookRGB(Math.max(0.55,(r.tw?r.tc/r.tw:1)*0.85)), fcol=rollFillColor(r);
+    const sl=[]; for(let k=o.k0;k<=o.k1;k++){const s=-L/2+(k-o.k0)*bw; sl.push({x:C.x+ax*(s+bw/2),y:C.y+ay*(s+bw/2),rk:Math.max(2,o.rad[k]*sc*1.1)})}
+    c.save(); c.shadowColor='rgba(70,35,8,.38)'; c.shadowBlur=22; c.shadowOffsetX=8; c.shadowOffsetY=16; c.lineCap='butt';
+    for(const q of sl){c.strokeStyle=rgbs(outer,0.8);c.lineWidth=2*q.rk;c.beginPath();c.moveTo(q.x-ax*bw*0.55,q.y-ay*bw*0.55);c.lineTo(q.x+ax*bw*0.55,q.y+ay*bw*0.55);c.stroke()}
+    c.restore();
+    c.lineCap='butt';
+    sl.forEach((q,i)=>{
+      const g=c.createLinearGradient(q.x-px*q.rk,q.y-py*q.rk,q.x+px*q.rk,q.y+py*q.rk);
+      g.addColorStop(0,rgbs(outer,0.66)); g.addColorStop(0.22,rgbs(outer,1.05,22)); g.addColorStop(0.42,rgbs(outer,1.0,4)); g.addColorStop(0.8,rgbs(outer,0.86)); g.addColorStop(1,rgbs(outer,0.58));
+      c.strokeStyle=g; c.lineWidth=2*q.rk; c.beginPath(); c.moveTo(q.x-ax*bw*0.56,q.y-ay*bw*0.56); c.lineTo(q.x+ax*bw*0.56,q.y+ay*bw*0.56); c.stroke();
+      if(r.pat>20&&i%6===0){c.strokeStyle='rgba(252,226,140,.45)';c.lineWidth=2;c.beginPath();c.moveTo(q.x-px*q.rk*0.8,q.y-py*q.rk*0.8);c.quadraticCurveTo(q.x+ax*4,q.y+ay*4,q.x+px*q.rk*0.5,q.y+py*q.rk*0.5);c.stroke()}
+      if(r.raw>r.mass*0.3&&i%5===2){c.strokeStyle='rgba(250,240,205,.7)';c.lineWidth=4;c.beginPath();c.moveTo(q.x-px*q.rk*0.5,q.y-py*q.rk*0.5);c.lineTo(q.x+px*q.rk*0.3+ax*6,q.y+py*q.rk*0.3+ay*6);c.stroke()}
+    });
+    const qe=sl[sl.length-1]; c.save(); c.translate(C.x+ax*L/2,C.y+ay*L/2); c.rotate(rot); c.scale(1,e);
+    c.fillStyle=rgbs(outer,0.9); circle(c,0,0,qe.rk); c.fill(); c.restore();
+    // open end facing the viewer: the spiral of the roll and its filling
+    const q0=sl[0], fr=Math.max(q0.rk,(sl[1]||q0).rk,(sl[2]||q0).rk,o.mr*sc*1.1*0.72);
+    c.save(); c.translate(C.x-ax*L/2,C.y-ay*L/2); c.rotate(rot); c.scale(1,e);
+    c.fillStyle=rgbs(outer,0.8); circle(c,0,0,fr); c.fill();
+    c.fillStyle=rgbs(inner,1.04,8); circle(c,0,0,fr*0.94); c.fill();
+    c.strokeStyle=rgbs(outer,0.82); c.lineWidth=fr*0.05; c.lineCap='round'; c.beginPath();
+    for(let t=0;t<=1.001;t+=0.01){const a=t*TAU*2.3,rho=fr*0.9*(1-t*0.62);const x=Math.cos(a)*rho,y=Math.sin(a)*rho;t?c.lineTo(x,y):c.moveTo(x,y)} c.stroke();
+    if(fcol){const rg=rng(7+j);c.fillStyle=fcol;circle(c,0,0,fr*0.32);c.fill();
+      for(let i=0;i<7;i++){const a=rg()*TAU,d=rg()*fr*0.25;c.fillStyle=i%2?'rgba(255,255,255,.25)':'rgba(0,0,0,.12)';circle(c,Math.cos(a)*d,Math.sin(a)*d,fr*(0.06+rg()*0.06));c.fill()}}
+    else {const g=c.createRadialGradient(0,0,0,0,0,fr*0.32);g.addColorStop(0,'#5a3510');g.addColorStop(1,rgbs(inner));c.fillStyle=g;circle(c,0,0,fr*0.32);c.fill()}
+    c.restore();
+  });
   return A;
 }
 
@@ -948,6 +986,7 @@ const TITLES=[
   {id:'giant',name:'โตเกียวยักษ์',desc:'ใหญ่เต็มกระทะ',t:s=>s.meanR>370},
   {id:'overflow',name:'ไส้ทะลักจักรวาล',desc:'ไส้เยอะจนม้วนแทบไม่มิด',t:s=>s.cov>0.6},
   {id:'tear',name:'ม้วนขาดใจ',desc:'แป้งขาดระหว่างม้วน',t:s=>s.tearFrac>0.3},
+  {id:'leftover',name:'เหลือติดกระทะ',desc:'ยังมีแป้งเหลือไม่ได้ม้วนอีกเยอะ',t:s=>s.rolledFrac<0.6},
   {id:'burnt',name:'ไหม้ใจ',desc:'มีรอยไหม้ให้จดจำ',t:s=>s.burnt>0.18},
   {id:'abstract',name:'ศิลปะนามธรรม',desc:'ละเลงทรงอิสระสุดๆ',t:s=>s.roundness<0.72&&s.total>=60},
   {id:'oval',name:'ทรงรีแบบรถเข็น',desc:'แผ่นรีๆ แบบแม่ค้าละเลงจริง',t:s=>s.roundness>=0.72&&s.roundness<0.88&&s.meanR>=190},
@@ -973,6 +1012,8 @@ const TITLES=[
   {id:'floss',name:'หมูหยองฟูฟ่อง',desc:'หมูหยองจัดเต็ม',t:s=>(s.counts.floss||0)>=200},
   {id:'tight',name:'ม้วนแน่นเปรี๊ยะ',desc:'ม้วนช้าๆ แน่นทุกรอบ',t:s=>s.loose<0.08&&s.tearFrac<0.05},
   {id:'loose',name:'ม้วนหลวมชิลๆ',desc:'ม้วนเร็วไปนิด หลวมโพรก',t:s=>s.loose>0.5},
+  {id:'multi',name:'ม้วนจิ๋วหลายชิ้น',desc:'ทำได้ตั้งแต่ 3 ม้วนขึ้นไป',t:s=>s.rolls>=3},
+  {id:'onepiece',name:'ม้วนเดียวจบ',desc:'ม้วนทั้งแผ่นในครั้งเดียว',t:s=>s.rolls===1&&s.rolledFrac>0.9},
   {id:'nobutter',name:'ลืมเนย',desc:'ไม่ได้เช็ดเนยกระทะ',t:s=>s.butterCov<0.15},
   {id:'leopard',name:'ลายเสือดาว',desc:'จุดน้ำตาลกระจายสวย',t:s=>s.brown>0.2&&s.brown<0.45&&s.burnt<0.08},
   {id:'pro',name:'แม่ค้าหน้าโรงเรียน',desc:'ฝีมือขายได้จริง',t:s=>s.total>=72},
@@ -1005,7 +1046,8 @@ function computeStats(){
   let ck=clamp(s.good+0.5*s.brown+0.15*s.raw-0.6*s.burnt,0,1); if(s.butterCov<0.3) ck*=0.85; sc.cook=20*ck;
   const cov=s.cov, ap=cov<0.005?0.25:cov<0.08?0.35+0.65*cov/0.08:cov<=0.42?1:Math.max(0.3,1-(cov-0.42)*1.4);
   sc.fill=20*ap*(1-Math.min(0.6,s.spill*1.5));
-  sc.roll=20*(1-0.6*s.loose)*(1-0.55*s.tearFrac)*(R&&R.foldCover===false?0.85:1)*(1-Math.min(0.3,(R?R.slips:0)*0.08));
+  const rf=R&&R.totalMass?clamp(R.massRolled/R.totalMass,0,1):0; s.rolledFrac=rf; s.rolls=R?R.rolls.length:0;
+  sc.roll=20*(1-0.6*s.loose)*(1-0.55*s.tearFrac)*Math.sqrt(rf);
   s.sc=sc; s.total=Math.round(sc.round+sc.thin+sc.cook+sc.fill+sc.roll);
   return s;
 }
@@ -1069,7 +1111,6 @@ function update(dt){
   else if(st===LACE&&P.down) sz=0.08*H;
   else if(st>=POUR&&st<=FILL&&S.hasBatter) sz=Math.min(0.32,0.04+S.rawMass/3200*0.28)*Math.min(1.3,H);
   setSizzle(S.muted?0:sz);
-  if(st===ROLL) rollAnim(dt);
   if(st===SERVE){S.serveT+=dt;if(S.serveT>1.9&&!S.resultShown)showResult()}
   S.meterT-=dt; if(S.meterT<=0){S.meterT=0.1;updateMeters()}
 }
@@ -1087,25 +1128,13 @@ function draw(){
   c.imageSmoothingEnabled=true; c.imageSmoothingQuality='high';
   c.globalCompositeOperation='screen'; c.drawImage(buC,G0,G0,N*CELL,N*CELL); c.globalCompositeOperation='source-over';
   if(S.step===ROLL&&S.roll){
-    const R=S.roll;
+    const R=S.roll; if(R.goneDirty) renderGone();
     c.drawImage(R.spill,0,0,1000,1000);
-    if(R.alpha==null) c.drawImage(R.flat,0,0,1000,1000);
-    else{
-      const A=R.anim, base=R.cut==null?R.xminL:(A?R.E:R.cut);
-      c.save(); c.translate(GC,GC); c.rotate(R.alpha); c.translate(-GC,-GC);
-      c.save(); c.beginPath(); c.rect(base,-1000,3000,3000); c.clip(); worldDraw(c,R.flat,0,0,1000,1000); c.restore();
-      if(R.stack){
-        if(!A) drawStack(c,R.stack,false);
-        else{
-          const sg=-Math.cos(Math.PI*A.p), lift=1-Math.abs(sg), grp=[{x0:R.cut,x1:R.E,a:1,b:0},...R.stack];
-          c.save(); c.translate(R.E,0); c.scale(-sg,1); c.translate(-R.E,0);
-          if(lift>0.02){c.globalAlpha=1;}
-          if(sg<0) drawStack(c,grp,false); else drawStack(c,grp.slice().reverse(),true);
-          c.restore();
-        }
-      }
-      c.restore();
-    }
+    c.drawImage(R.work,0,0,1000,1000);
+    R.rolls.forEach((r,i)=>drawRollIcon(c,r,i));
+    if(R.cur&&R.cur.F) drawRollTop(c,R.cur);
+    const bp=R.pushing?R.p:(P.inside&&!P.down?P:null);
+    if(bp) drawBlade(c,bp,R.pushing&&R.d?R.d:(R.cur&&R.cur.dir?R.cur.dir:{x:0,y:-1}),R.cur?R.cur.W:R.blade);
   }else{
     if(S.hasPat) c.drawImage(paC,G0,G0,N*CELL,N*CELL);
     if(S.hasBatter) c.drawImage(baC,G0,G0,N*CELL,N*CELL);
@@ -1129,28 +1158,16 @@ function drawHints(c){
   if(S.step===LACE&&!S.hasPat&&!P.down) hintText(c,'ลากเพื่อบีบเส้นแป้งเป็นลาย',GC,GC);
   if(S.step===POUR&&!(P.inside||P.down)) drawTarget(c,GC,GC,S.poured<300?'แตะค้างเพื่อเทแป้ง':null);
   if(S.step===SPREAD&&!S.spreadStarted) hintText(c,'ลากกระบวยดันแป้งให้บาง ทรงไหนก็ได้',GC,GC+250);
-  if(S.step===ROLL&&S.roll&&!S.roll.done){
+  if(S.step===ROLL&&S.roll&&!S.roll.done&&!S.roll.pushing){
     const R=S.roll;
-    if(R.g0){
-      const dx=R.gc.x-R.g0.x, dy=R.gc.y-R.g0.y, L=Math.hypot(dx,dy);
-      if(L>8){
-        let col='#ff8a3d';
-        if(R.phase==='roll'){const ca=Math.cos(R.alpha),sa=Math.sin(R.alpha),along=dx*ca+dy*sa,side=-dx*sa+dy*ca;col=along>0&&Math.atan2(Math.abs(side),along)<0.45?'#7bd36a':'#ff8a3d'}
-        drawArrow(c,R.g0.x,R.g0.y,R.gc.x,R.gc.y,col,8);
-        if(R.phase==='aim'){const deg=((Math.round(Math.atan2(-dy,dx)*180/Math.PI)%360)+360)%360;hintText(c,`ทิศม้วน ${deg}°`,clamp(R.gc.x,140,860),clamp(R.gc.y-46,40,960),26)}
-      }
-    } else if(!R.anim){
-      if(R.phase==='aim'){
-        const a=clock*0.6, cx=GC+Math.cos(a)*250, cy=GC+Math.sin(a)*250;
-        drawArrow(c,cx,cy,cx+(GC-cx)*0.4,cy+(GC-cy)*0.4,'rgba(255,248,234,.9)',7);
-        hintText(c,'ปัดจากขอบแผ่นเข้าหาไส้ ทิศไหนก็ได้',GC,930,26);
-      } else if(R.phase==='roll'){
-        const mid=(R.y0L+R.y1L)/2, b=pulse*24;
-        const p0=rollToWorld(R.E+30+b,mid), p1=rollToWorld(R.E+170+b,mid);
-        drawArrow(c,p0.x,p0.y,p1.x,p1.y,'rgba(255,248,234,.92)',9);
-        const left=Math.max(1,Math.ceil((R.xmaxL-R.E)/(R.E-R.cut)-0.1));
-        hintText(c,`ปัดตามลูกศรเพื่อพลิกพับ · อีกราว ${left} ครั้ง`,GC,930,26);
-      }
+    if(!R.rolls.length&&!(R.cur&&R.cur.mass>0)){
+      const b=pulse*30; drawArrow(c,GC,GC+150-b,GC,GC+20-b,'rgba(255,248,234,.9)',8);
+      hintText(c,'ลากไม้พายดันไปตามแผ่น ทิศไหนก็ได้',GC,930,26);
+    } else if(R.cur&&R.cur.F&&R.cur.mass<MINM){
+      hintText(c,'แตะแล้วดันม้วนต่ออีกนิด',GC,930,26);
+    } else {
+      const left=Math.round(100*(1-R.massRolled/Math.max(1,R.totalMass)));
+      hintText(c,left>8?`ได้ ${R.rolls.length} ม้วน · แป้งเหลือ ${left}% ดันม้วนใหม่ได้`:`ได้ ${R.rolls.length} ม้วน · กดเสิร์ฟได้เลย`,GC,930,26);
     }
   }
 }
@@ -1192,7 +1209,7 @@ cv.addEventListener('pointerdown',e=>{
     case LACE: laceSeg(p.x,p.y,p.x,p.y); break;
     case POUR: S.pouring=true; break;
     case FILL: fillDown(p); break;
-    case ROLL: rollGestureStart(p); break;
+    case ROLL: pushDown(p); break;
   }
 });
 cv.addEventListener('pointermove',e=>{
@@ -1203,7 +1220,7 @@ cv.addEventListener('pointermove',e=>{
     case LACE: laceSeg(lx,ly,p.x,p.y); break;
     case SPREAD: if(S.hasBatter){spreadSeg(lx,ly,p.x,p.y);S.spreadStarted=true} break;
     case FILL: fillMove(p.x,p.y); break;
-    case ROLL: rollGestureMove(p); break;
+    case ROLL: pushMove(p); break;
   }
 });
 function pUp(e){
@@ -1214,7 +1231,7 @@ function pUp(e){
     case POUR: S.pouring=false; break;
     case SPREAD: dropCarry(P.x,P.y); break;
     case FILL: fillUp(); break;
-    case ROLL: rollGestureEnd(); break;
+    case ROLL: pushUp(); break;
   }
   if(e.pointerType!=='mouse') P.inside=false;
 }
@@ -1292,9 +1309,16 @@ function renderPanel(){
     const cl=document.createElement('button'); cl.className='ghost'; cl.textContent='ล้างลาย'; cl.onclick=()=>{pat.fill(0);patCk.fill(0);S.hasPat=false;S.paDirty=true;renderPanel()};
     row.append(cl); ta.append(row);
   }
+  if(st===ROLL&&S.roll){
+    const box=document.createElement('div'); const lb=document.createElement('div'); lb.className='lbl'; lb.textContent='ขนาดไม้พาย (กว้างเท่าไหร่ ม้วนก็ยาวเท่านั้น)';
+    const seg=document.createElement('div'); seg.className='seg';
+    [['แคบ',220],['กลาง',320],['กว้าง',460]].forEach(([n,w])=>{const b=document.createElement('button');b.textContent=n;b.classList.toggle('on',S.roll.blade===w);
+      b.onclick=()=>{if(S.roll.cur&&S.roll.cur.mass>0){toast('ปล่อยม้วนนี้ให้เสร็จก่อนค่อยเปลี่ยนไม้พาย');return}S.roll.blade=w;renderPanel()};seg.append(b)});
+    box.append(lb,seg); ta.append(box);
+  }
   const nb=$('#nextBtn'); nb.classList.toggle('hidden',st===SERVE||st<0);
   nb.textContent=st===LACE&&!S.hasPat?'ข้ามไปหยอดแป้ง →':s.next+(st<ROLL?' →':'');
-  nb.disabled=(st===POUR&&S.poured<500)||(st===ROLL&&!(S.roll&&S.roll.done));
+  nb.disabled=(st===POUR&&S.poured<500)||(st===ROLL&&!(S.roll&&(S.roll.rolls.length||(S.roll.cur&&S.roll.cur.mass>=MINM))));
   cv.style.cursor=(st>=BUT&&st<=ROLL)?'none':'default';
 }
 function updateMeters(){
@@ -1307,7 +1331,7 @@ function updateMeters(){
       $('#vCook').textContent=a<0.3?'ยังดิบ':a<0.6?'เริ่มเซ็ตตัว':a<1.0?'เริ่มสุก':a<1.6?'เหลืองทอง กำลังดี!':a<2.2?'เริ่มเกรียม':'ไหม้แล้ว!'}
     else{$('#vCook').textContent='–';$('#kCook').style.left='0%'}
   }
-  if(st===ROLL&&S.roll&&S.roll.xminL!=null){const R=S.roll,v=(R.X-R.xminL)/Math.max(1,R.xmaxL-R.xminL);$('#vRoll').textContent=Math.round(v*100)+'%';$('#fRoll').style.width=v*100+'%'}
+  if(st===ROLL&&S.roll){const R=S.roll,v=clamp((R.massRolled+(R.cur?R.cur.mass:0))/Math.max(1,R.totalMass),0,1);$('#vRoll').textContent=Math.round(v*100)+'%';$('#fRoll').style.width=v*100+'%';$('#nextBtn').disabled=!(R.rolls.length||(R.cur&&R.cur.mass>=MINM))}
 }
 $('#zBatter').style.left=(2600/7200*100)+'%'; $('#zBatter').style.width=((4300-2600)/7200*100)+'%';
 document.querySelectorAll('#heatSeg button').forEach(b=>b.onclick=()=>{S.heat=+b.dataset.h;renderPanel();initAudio()});
@@ -1321,7 +1345,7 @@ function goNext(){
     if(S.cur) fillUp();
     setupRoll(); S.step=ROLL; renderPanel(); return;
   }
-  if(st===ROLL){ if(!S.roll||!S.roll.done) return; S.step=SERVE; S.serveT=0; S.resultShown=false; renderPanel(); blip(520,0.15,0.1,'triangle'); return; }
+  if(st===ROLL){ const R=S.roll; if(!R||!(R.rolls.length||(R.cur&&R.cur.mass>=MINM))){toast('ยังไม่มีม้วนเลย ลากไม้พายดันแผ่นแป้งก่อน');return} finishRoll(); S.step=SERVE; S.serveT=0; S.resultShown=false; renderPanel(); blip(520,0.15,0.1,'triangle'); return; }
   S.step=st+1;
   renderPanel();
 }
